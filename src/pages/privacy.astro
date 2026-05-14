@@ -1,0 +1,287 @@
+---
+import Layout from "../layouts/Layout.astro";
+const repoUrl = "https://github.com/mattenarle10/markamd";
+const version = "v0.1.5";
+const lastUpdated = "2026-05-14";
+---
+
+<Layout
+  title="privacy · marka.md"
+  description="marka.md is local-first. it collects nothing, sends nothing, stores nothing outside your machine."
+>
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__brand">
+        <img src="/mascot/logo.png" alt="" width="28" height="28" />
+        <span>marka.md</span>
+      </a>
+      <nav class="nav__links">
+        <a href="/" class="nav__link">home</a>
+        <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="privacy">
+    <article class="privacy__article">
+      <p class="privacy__eyebrow">privacy</p>
+      <h1 class="privacy__title">
+        marka.md is local-first.
+        <br />
+        <span class="privacy__accent">we collect nothing.</span>
+      </h1>
+      <p class="privacy__lede">
+        the app does not transmit, log, or store any personal data outside your machine.
+        no telemetry. no analytics. no crash reporting. no account, no cloud, no sign-in.
+      </p>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">what stays on your computer</h2>
+        <ul class="privacy__list">
+          <li>
+            the markdown files you open or edit — they remain in the folders you chose.
+            we never move, copy, or upload them.
+          </li>
+          <li>
+            your ui preferences (theme, sidebar width, recent file list, splitter ratio,
+            welcome-tutorial flag) — stored in the app's local
+            <code>localStorage</code>, keyed under <code>mdview.*</code>. clearing the
+            app data resets these to defaults.
+          </li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">what we don't do</h2>
+        <ul class="privacy__list">
+          <li>no network requests are made by the app — no CDN, no fonts loaded remotely, no telemetry beacons.</li>
+          <li>no third-party scripts, no tracking pixels, no fingerprinting.</li>
+          <li>no account creation, no sync service, no remote storage.</li>
+          <li>no crash reports or usage stats are sent anywhere.</li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">third-party assets (bundled, not fetched)</h2>
+        <ul class="privacy__list">
+          <li>
+            <strong>shiki</strong> (code syntax highlighting),
+            <strong>katex</strong> (math),
+            <strong>mermaid</strong> (diagrams) — these libraries are bundled inside
+            the app and run entirely on your device. they do not call home.
+          </li>
+          <li>
+            <strong>system fonts only</strong> — sf pro, jetbrains mono. no webfont fetches.
+          </li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">your data is yours</h2>
+        <p class="privacy__p">
+          marka.md works because your notes are just files on disk. delete the app, your
+          notes stay. move them, rename them, sync them with whatever you like — marka.md
+          has no opinion. there is no proprietary format, no database, no lock-in.
+        </p>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">distribution</h2>
+        <p class="privacy__p">
+          the macOS dmg is published on
+          <a href={`${repoUrl}/releases`} target="_blank" rel="noopener">github releases</a>.
+          downloads happen directly from github's CDN; they do not pass through any
+          server we control. github's own privacy policy applies to the download itself.
+        </p>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">changes</h2>
+        <p class="privacy__p">
+          last updated: <strong>{lastUpdated}</strong>. if this policy changes, the
+          updated version will appear here. the source of this page is part of the
+          open-source repository — diffs are public.
+        </p>
+      </section>
+
+      <section class="privacy__section">
+        <h2 class="privacy__h2">contact</h2>
+        <p class="privacy__p">
+          questions or concerns: open an issue at
+          <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">github.com/mattenarle10/markamd/issues</a>.
+        </p>
+      </section>
+
+      <p class="privacy__version">marka.md · {version} · MIT</p>
+    </article>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <div class="foot__brand">
+        <img src="/mascot/logo.png" alt="" width="20" height="20" />
+        <span>marka.md · {version}</span>
+      </div>
+      <nav class="foot__links">
+        <a href="/">home</a>
+        <a href={repoUrl} target="_blank" rel="noopener">github</a>
+        <a href="/privacy">privacy</a>
+        <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
+      </nav>
+    </div>
+  </footer>
+</Layout>
+
+<style is:global>
+  /* nav — match the index.astro nav so styles cascade in both pages */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .nav__links { display: flex; align-items: center; gap: 4px; }
+  .nav__link {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+  .nav__link:hover { color: var(--fg); }
+
+  .privacy {
+    background: var(--bg);
+    padding: 96px 24px 128px;
+  }
+  .privacy__article {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--fg);
+  }
+  .privacy__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .privacy__title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+  .privacy__accent { color: var(--accent); }
+  .privacy__lede {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 64px;
+  }
+  .privacy__section { margin-bottom: 48px; }
+  .privacy__h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .privacy__list {
+    margin: 0;
+    padding-left: 22px;
+    list-style: square;
+    color: var(--muted);
+  }
+  .privacy__list li {
+    font-size: 16px;
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+  .privacy__list li::marker { color: var(--accent); }
+  .privacy__list code,
+  .privacy__p code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .privacy__list strong,
+  .privacy__p strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .privacy__p {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .privacy__p a,
+  .privacy__list a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    transition: border-color 180ms ease;
+  }
+  .privacy__p a:hover,
+  .privacy__list a:hover {
+    border-bottom-color: var(--accent);
+  }
+  .privacy__version {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* footer — mirror index.astro */
+  .foot { padding: 40px 24px; border-top: 1px solid var(--border); }
+  .foot__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (min-width: 640px) { .foot__inner { flex-direction: row; } }
+  .foot__brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
+  .foot__links { display: flex; gap: 20px; }
+  .foot__links a { color: var(--muted); text-decoration: none; transition: color 180ms ease; }
+  .foot__links a:hover { color: var(--fg); }
+</style>

@@ -1,0 +1,343 @@
+---
+// stylized mock of the marka.md window — no real screenshot needed.
+// chrome → traffic lights, title, sidebar tree, editor with blinking cursor,
+// rendered preview pane. light catppuccin-inspired palette to match the app.
+---
+
+<div class="mock">
+  <div class="mock__win">
+    <!-- title bar -->
+    <div class="mock__titlebar">
+      <div class="mock__lights">
+        <span class="mock__light mock__light--red"></span>
+        <span class="mock__light mock__light--yellow"></span>
+        <span class="mock__light mock__light--green"></span>
+      </div>
+      <div class="mock__filename">claude-prompt.md</div>
+      <div class="mock__actions">
+        <span class="mock__copy"></span>
+        <span class="mock__action"></span>
+      </div>
+    </div>
+
+    <!-- breadcrumb -->
+    <div class="mock__breadcrumb">
+      <span class="mock__seg">notes</span>
+      <span class="mock__sep">›</span>
+      <span class="mock__seg">claude</span>
+      <span class="mock__sep">›</span>
+      <span class="mock__seg mock__seg--leaf">claude-prompt.md</span>
+      <span class="mock__save">saved</span>
+    </div>
+
+    <!-- main panes -->
+    <div class="mock__shell">
+      <!-- sidebar -->
+      <aside class="mock__sidebar">
+        <div class="mock__sb-head">
+          <span>claude/</span>
+          <span class="mock__sb-icons">⌕ 📂</span>
+        </div>
+        <ul class="mock__tree">
+          <li class="mock__row">▸ inbox</li>
+          <li class="mock__row">▸ projects</li>
+          <li class="mock__row mock__row--file">📄 architecture.md</li>
+          <li class="mock__row mock__row--file mock__row--active">
+            📄 claude-prompt.md
+          </li>
+          <li class="mock__row mock__row--file">📄 system-msg.md</li>
+          <li class="mock__row mock__row--file">📄 today.md</li>
+        </ul>
+      </aside>
+
+      <!-- editor -->
+      <div class="mock__editor">
+        <div class="mock__lines">
+          <div class="mock__line"><span class="mock__gutter">1</span><span class="mock__h"># claude prompt</span></div>
+          <div class="mock__line"><span class="mock__gutter">2</span></div>
+          <div class="mock__line"><span class="mock__gutter">3</span><span>you are a senior reviewer for</span></div>
+          <div class="mock__line"><span class="mock__gutter">4</span><span>this <span class="mock__em">markdown</span> editor.</span></div>
+          <div class="mock__line"><span class="mock__gutter">5</span></div>
+          <div class="mock__line"><span class="mock__gutter">6</span><span class="mock__list">- be terse</span></div>
+          <div class="mock__line"><span class="mock__gutter">7</span><span class="mock__list">- cite line numbers</span></div>
+          <div class="mock__line">
+            <span class="mock__gutter">8</span>
+            <span class="mock__list">- <span class="mock__typing">flag missing checks</span><span class="mock__cursor"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- preview -->
+      <div class="mock__preview">
+        <h1 class="mock__pv-h1">claude prompt</h1>
+        <div class="mock__pv-rule"></div>
+        <p class="mock__pv-p">you are a senior reviewer for this <em>markdown</em> editor.</p>
+        <ul class="mock__pv-list">
+          <li>be terse</li>
+          <li>cite line numbers</li>
+          <li class="mock__pv-fade">flag missing checks</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- status bar -->
+    <div class="mock__statusbar">
+      <span>claude-prompt.md</span>
+      <span>42 words · ~58 tokens · 1 min read · ?</span>
+    </div>
+  </div>
+
+  <!-- floating "copied" toast — top-right of the window -->
+  <div class="mock__toast">
+    <span class="mock__toast-art"></span>
+    <span>copied to clipboard · paste into claude</span>
+  </div>
+</div>
+
+<style>
+  .mock {
+    position: relative;
+    width: 100%;
+    perspective: 1400px;
+  }
+
+  .mock__win {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #fafaf9;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.22),
+                0 6px 18px -6px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 36px 28px 1fr 24px;
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    color: #4c4f69;
+    transform: rotateX(2deg);
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible .mock__win {
+    transform: rotateX(0deg);
+  }
+
+  /* titlebar */
+  .mock__titlebar {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px;
+    align-items: center;
+    padding: 0 12px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .mock__lights { display: inline-flex; gap: 6px; }
+  .mock__light { width: 11px; height: 11px; border-radius: 999px; }
+  .mock__light--red    { background: #ff5f57; }
+  .mock__light--yellow { background: #febc2e; }
+  .mock__light--green  { background: #28c840; }
+  .mock__filename {
+    text-align: center;
+    color: #4c4f69;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+  .mock__actions { display: inline-flex; gap: 6px; justify-content: flex-end; }
+  .mock__copy, .mock__action {
+    width: 18px; height: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+  }
+  .mock__copy { background: #fff3eb; border-color: rgba(226, 114, 46, 0.35); }
+
+  /* breadcrumb */
+  .mock__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 10.5px;
+    color: #8c8fa1;
+  }
+  .mock__seg--leaf { color: #4c4f69; }
+  .mock__sep { color: #ccd0da; }
+  .mock__save {
+    margin-left: auto;
+    padding: 1px 8px;
+    background: #fff3eb;
+    color: #e2722e;
+    border-radius: 999px;
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* shell */
+  .mock__shell {
+    display: grid;
+    grid-template-columns: minmax(0, 21%) minmax(0, 38%) minmax(0, 41%);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* sidebar */
+  .mock__sidebar {
+    background: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+  .mock__sb-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 10px;
+    color: #4c4f69;
+  }
+  .mock__sb-icons { color: #9ca0b0; letter-spacing: 0.18em; }
+  .mock__tree { list-style: none; margin: 0; padding: 6px 0; }
+  .mock__row {
+    padding: 4px 12px;
+    font-size: 10.5px;
+    color: #4c4f69;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mock__row--active {
+    background: rgba(226, 114, 46, 0.12);
+    color: #e2722e;
+    box-shadow: inset 2px 0 0 #e2722e;
+  }
+
+  /* editor */
+  .mock__editor {
+    background: #fafaf9;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    padding: 14px 0;
+  }
+  .mock__lines {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #4c4f69;
+  }
+  .mock__line { display: flex; gap: 10px; padding: 0 14px; }
+  .mock__gutter { color: #bcc0cc; width: 14px; text-align: right; flex-shrink: 0; }
+  .mock__h { color: #1d1d1f; font-weight: 600; }
+  .mock__em { color: #e2722e; font-style: italic; }
+  .mock__cursor {
+    display: inline-block;
+    width: 2px;
+    height: 12px;
+    margin-left: 1px;
+    margin-bottom: -2px;
+    background: #e2722e;
+    animation: mock-blink 1s steps(2, end) infinite;
+  }
+  @keyframes mock-blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+  }
+
+  /* preview */
+  .mock__preview {
+    background: #fff;
+    overflow: hidden;
+    padding: 16px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    color: #1d1d1f;
+  }
+  .mock__pv-h1 {
+    font-family: -apple-system, "SF Pro Display", system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    color: #1d1d1f;
+  }
+  .mock__pv-rule {
+    height: 1px;
+    width: 30%;
+    background: #e2722e;
+    margin-bottom: 12px;
+    border-radius: 1px;
+  }
+  .mock__pv-p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #4c4f69;
+    margin: 0 0 10px;
+  }
+  .mock__pv-p em {
+    font-style: italic;
+    color: #e2722e;
+  }
+  .mock__pv-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #4c4f69;
+  }
+  .mock__pv-fade {
+    opacity: 0;
+    animation: mock-fade-in 600ms cubic-bezier(0.2, 0.7, 0.2, 1) 1.4s forwards;
+  }
+  @keyframes mock-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* statusbar */
+  .mock__statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 10px;
+    color: #8c8fa1;
+  }
+
+  /* toast — slides in from the right after editor "types", fades out */
+  .mock__toast {
+    position: absolute;
+    top: 56px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid rgba(226, 114, 46, 0.35);
+    border-radius: 10px;
+    font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+    font-size: 11px;
+    color: #1d1d1f;
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateX(20px);
+    animation: mock-toast-in 600ms cubic-bezier(0.2, 0.7, 0.2, 1) 1.8s forwards,
+               mock-toast-out 600ms cubic-bezier(0.2, 0.7, 0.2, 1) 4.5s forwards;
+  }
+  @keyframes mock-toast-in {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes mock-toast-out {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(8px); }
+  }
+  .mock__toast-art {
+    width: 16px; height: 16px;
+    background: #e2722e;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+</style>

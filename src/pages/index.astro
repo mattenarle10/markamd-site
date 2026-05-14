@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import HeroMascot from "../components/HeroMascot.astro";
 import Reveal from "../components/Reveal.astro";
 import FeatureCard from "../components/FeatureCard.astro";
+import AppPreview from "../components/AppPreview.astro";
 
 const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
 const repoUrl = "https://github.com/mattenarle10/markamd";
@@ -15,7 +16,7 @@ const features = [
   },
   {
     title: "reading mode",
-    body: "press ⌘. for an iA Writer-style preview-only view. calm typography, generous margins.",
+    body: "press ⌘. for a calm, preview-only view with generous typography. perfect for proofing.",
   },
   {
     title: "folder search",
@@ -110,12 +111,7 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
 
   <section class="screen-wrap">
     <Reveal class="screen-frame">
-      <div class="screen">
-        <img src="/mascot/write.png" alt="" width="120" height="120" class="screen__art" />
-        <p class="screen__hint">
-          drop a screenshot at <code>public/screens/hero-app.png</code>
-        </p>
-      </div>
+      <AppPreview />
     </Reveal>
   </section>
 
@@ -128,11 +124,12 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
       <Reveal class="loop__grid">
         {
           steps.map((s) => (
-            <div class="step reveal-child">
-              <img src={s.art} alt="" width="96" height="96" class="step__art" />
-              <p class="step__n">{s.n}</p>
-              <h3 class="step__title">{s.title}</h3>
-              <p class="step__body">{s.body}</p>
+            <div class="slide reveal-child">
+              <div class="slide__halo" aria-hidden></div>
+              <img src={s.art} alt="" width="112" height="112" class="slide__art" />
+              <p class="slide__n">{s.n}</p>
+              <h3 class="slide__title">{s.title}</h3>
+              <p class="slide__body">{s.body}</p>
             </div>
           ))
         }
@@ -199,6 +196,7 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
       </div>
       <nav class="foot__links">
         <a href={repoUrl} target="_blank" rel="noopener">github</a>
+        <a href="/privacy">privacy</a>
         <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
         <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">report a bug</a>
       </nav>
@@ -405,18 +403,60 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
   .loop__inner { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
   .loop__grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
   @media (min-width: 640px) { .loop__grid { grid-template-columns: repeat(3, 1fr); } }
-  .step { text-align: center; }
-  .step__art { margin: 0 auto 24px; opacity: 0.95; }
-  .step__n { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-  .step__title {
+  /* welcome-overlay-style slide cards */
+  .slide {
+    position: relative;
+    text-align: center;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 40px 28px 36px;
+    transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+                box-shadow 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
+                border-color 320ms ease;
+  }
+  .slide:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    box-shadow: 0 22px 50px -22px rgba(226, 114, 46, 0.28);
+  }
+  .slide__halo {
+    position: absolute;
+    inset: -2px 30% auto 30%;
+    height: 130px;
+    background: radial-gradient(ellipse at top, var(--accent-soft) 0%, transparent 70%);
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .slide__art {
+    position: relative;
+    margin: 0 auto 22px;
+    filter: drop-shadow(0 14px 28px rgba(226, 114, 46, 0.18));
+  }
+  .slide__n {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .slide__title {
     font-family: var(--font-display);
-    font-size: 24px;
-    letter-spacing: -0.015em;
+    font-size: 26px;
+    letter-spacing: -0.02em;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--fg);
   }
-  .step__body { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 22ch; margin: 0 auto; }
+  .slide__body {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 24ch;
+    margin: 0 auto;
+  }
 
   /* ─── big type ────────────────────────────────────────── */
   .big-type { padding: 128px 24px; text-align: center; }
