@@ -5,6 +5,10 @@ import Reveal from "../components/Reveal.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import AppPreview from "../components/AppPreview.astro";
 import Typewriter from "../components/Typewriter.astro";
+import AppleIcon from "../components/icons/AppleIcon.astro";
+import GithubIcon from "../components/icons/GithubIcon.astro";
+import CopyIcon from "../components/icons/CopyIcon.astro";
+import CheckIcon from "../components/icons/CheckIcon.astro";
 import { getLatestVersion } from "../lib/version";
 
 const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
@@ -90,6 +94,11 @@ const shortcuts: { key: string; label: string }[] = [
 
   <section class="hero">
     <div class="hero__glow" aria-hidden></div>
+    <div class="hero__orbs" aria-hidden>
+      <span class="hero__orb hero__orb--a"></span>
+      <span class="hero__orb hero__orb--b"></span>
+      <span class="hero__orb hero__orb--c"></span>
+    </div>
     <div class="hero__inner">
       <Reveal class="hero__mascot">
         <HeroMascot size={148} />
@@ -106,13 +115,13 @@ const shortcuts: { key: string; label: string }[] = [
       </Reveal>
       <Reveal delay={540} class="hero__ctas">
         <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--primary">
+          <AppleIcon size={14} />
           download for macOS
           <span class="btn__ver">{version}</span>
-          <span aria-hidden>↓</span>
         </a>
         <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost">
+          <GithubIcon size={14} />
           view source
-          <span aria-hidden>↗</span>
         </a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
@@ -177,7 +186,15 @@ const shortcuts: { key: string; label: string }[] = [
     <div class="features__inner">
       <Reveal class="section-head">
         <p class="eyebrow">features</p>
-        <h2 class="h2">everything you need to read, write, share.</h2>
+        <h2 class="h2 h2--split" data-words>
+          <span class="word">everything</span>{" "}
+          <span class="word">you</span>{" "}
+          <span class="word">need</span>{" "}
+          <span class="word">to</span>{" "}
+          <span class="word">read,</span>{" "}
+          <span class="word">write,</span>{" "}
+          <span class="word">share.</span>
+        </h2>
       </Reveal>
       <Reveal class="features__grid">
         {features.map((f) => <FeatureCard title={f.title} body={f.body} />)}
@@ -198,7 +215,22 @@ const shortcuts: { key: string; label: string }[] = [
           that's the unsigned-build warning macOS shows for apps outside the app store.
           paste this once in terminal — it clears apple's quarantine flag:
         </p>
-        <pre class="install__code"><code>xattr -rd com.apple.quarantine /Applications/marka.md.app</code></pre>
+        <div class="install__codeblock">
+          <pre class="install__code"><code><span class="install__prompt">$</span> xattr -rd com.apple.quarantine /Applications/marka.md.app</code></pre>
+          <button
+            type="button"
+            class="install__copy"
+            data-copy="xattr -rd com.apple.quarantine /Applications/marka.md.app"
+            aria-label="copy command"
+          >
+            <span class="install__copy-icon install__copy-icon--copy">
+              <CopyIcon size={14} />
+            </span>
+            <span class="install__copy-icon install__copy-icon--check">
+              <CheckIcon size={14} />
+            </span>
+          </button>
+        </div>
         <p class="install__note-foot">
           apple developer signing is in flight. v1.0 will be fully notarized and you won't see this again.
         </p>
@@ -214,11 +246,12 @@ const shortcuts: { key: string; label: string }[] = [
       </h2>
       <div class="final__ctas">
         <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--accent">
+          <AppleIcon size={14} />
           download {version}
-          <span aria-hidden>↓</span>
         </a>
         <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost-dark">
-          view on github <span aria-hidden>→</span>
+          <GithubIcon size={14} />
+          view on github
         </a>
       </div>
     </Reveal>
@@ -317,6 +350,11 @@ const shortcuts: { key: string; label: string }[] = [
     font-weight: 600;
     color: var(--fg);
   }
+  /* split-word reveal — each .word is animated by word-reveal.ts */
+  .h2--split .word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
   .section-head { text-align: center; margin-bottom: 64px; }
   .accent { color: var(--accent); }
   .btn {
@@ -360,7 +398,50 @@ const shortcuts: { key: string; label: string }[] = [
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse at top, var(--accent-soft) 0%, transparent 55%);
+    z-index: -2;
+    pointer-events: none;
+  }
+  /* ambient orbs — minimal warm haze, drifted by GSAP in hero-ambient.ts */
+  .hero__orbs {
+    position: absolute;
+    inset: 0;
     z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 65%);
+    mix-blend-mode: multiply;
+    filter: blur(8px);
+    will-change: transform;
+  }
+  .hero__orb--a {
+    top: 8%;
+    left: 12%;
+    width: 320px;
+    height: 320px;
+    opacity: 0.55;
+  }
+  .hero__orb--b {
+    top: 35%;
+    right: 6%;
+    width: 460px;
+    height: 460px;
+    opacity: 0.7;
+  }
+  .hero__orb--c {
+    bottom: 8%;
+    left: 38%;
+    width: 220px;
+    height: 220px;
+    opacity: 0.5;
+  }
+  @media (max-width: 640px) {
+    .hero__orb--a { width: 200px; height: 200px; }
+    .hero__orb--b { width: 260px; height: 260px; }
+    .hero__orb--c { width: 160px; height: 160px; }
   }
   .hero__inner {
     max-width: var(--max-content);
@@ -647,9 +728,13 @@ const shortcuts: { key: string; label: string }[] = [
     line-height: 1.55;
     margin: 0 0 14px;
   }
-  .install__code {
+  .install__codeblock {
+    position: relative;
     margin: 0 0 14px;
-    padding: 14px 16px;
+  }
+  .install__code {
+    margin: 0;
+    padding: 14px 52px 14px 16px;
     background: #1d1d1f;
     color: #f4f4f3;
     border-radius: 10px;
@@ -657,13 +742,64 @@ const shortcuts: { key: string; label: string }[] = [
     font-size: 13px;
     line-height: 1.5;
     overflow-x: auto;
-    user-select: all;
+    user-select: text;
   }
   .install__code code {
     font-family: inherit;
     background: transparent;
     padding: 0;
     color: inherit;
+  }
+  .install__prompt {
+    color: color-mix(in srgb, var(--accent) 75%, #f4f4f3);
+    margin-right: 6px;
+    user-select: none;
+  }
+  .install__code ::selection {
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
+    color: #fff;
+  }
+  /* copy button — top-right of code block */
+  .install__copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #d4d4d2;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .install__copy:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+  .install__copy:active { transform: scale(0.94); }
+  .install__copy-icon {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      opacity 200ms ease,
+      transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .install__copy-icon--copy  { opacity: 1; transform: scale(1); }
+  .install__copy-icon--check { opacity: 0; transform: scale(0.6); color: var(--accent); }
+  .install__copy.is-copied .install__copy-icon--copy  { opacity: 0; transform: scale(0.6); }
+  .install__copy.is-copied .install__copy-icon--check { opacity: 1; transform: scale(1); }
+  .install__copy.is-copied {
+    background: color-mix(in srgb, var(--accent) 18%, rgba(255, 255, 255, 0.06));
   }
   .install__note-foot {
     font-family: var(--font-mono);
@@ -731,4 +867,18 @@ const shortcuts: { key: string; label: string }[] = [
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }
+
+  // [data-copy] — clipboard write + check-icon flash for 1.4s
+  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.copy ?? "";
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add("is-copied");
+        window.setTimeout(() => btn.classList.remove("is-copied"), 1400);
+      } catch (err) {
+        console.error("[markamd-site] clipboard write failed", err);
+      }
+    });
+  });
 </script>
