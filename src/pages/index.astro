@@ -4,10 +4,11 @@ import HeroMascot from "../components/HeroMascot.astro";
 import Reveal from "../components/Reveal.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import AppPreview from "../components/AppPreview.astro";
+import { getLatestVersion } from "../lib/version";
 
 const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
 const repoUrl = "https://github.com/mattenarle10/markamd";
-const version = "v0.1.5";
+const version = await getLatestVersion();
 
 const features = [
   {
@@ -57,7 +58,15 @@ const steps = [
   },
 ];
 
-const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"];
+const shortcuts: { key: string; label: string }[] = [
+  { key: "⌘K", label: "command palette" },
+  { key: "⌘⇧O", label: "open folder" },
+  { key: "⌘S", label: "save" },
+  { key: "⌘.", label: "reading mode" },
+  { key: "⌘⇧C", label: "copy markdown" },
+  { key: "⌘B", label: "toggle sidebar" },
+  { key: "⌘/", label: "help" },
+];
 ---
 
 <Layout>
@@ -119,7 +128,15 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
     <Reveal class="keys__inner">
       <p class="eyebrow keys__caption">made for the keyboard.</p>
       <div class="keys__grid">
-        {shortcuts.map((k) => <kbd class="key reveal-child">{k}</kbd>)}
+        {shortcuts.map((s) => (
+          <kbd
+            class="key reveal-child"
+            data-tooltip={s.label}
+            aria-label={`${s.label} — keyboard shortcut ${s.key}`}
+          >
+            {s.key}
+          </kbd>
+        ))}
       </div>
     </Reveal>
   </section>
@@ -203,9 +220,6 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
           view on github <span aria-hidden>→</span>
         </a>
       </div>
-      <p class="final__note">
-        unsigned build — see readme for the xattr workaround until apple signing lands
-      </p>
     </Reveal>
   </section>
 
@@ -527,6 +541,7 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
   }
   .keys__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .key {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -544,6 +559,32 @@ const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"]
     transition: transform 200ms ease, border-color 200ms ease, color 200ms ease;
   }
   .key:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+
+  /* hover tooltip — sits above each chip, no JS */
+  .key::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--fg);
+    color: #fff;
+    font-family: var(--font-text);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.35);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+  .key:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 
   /* ─── install ─────────────────────────────────────────── */
   .install { padding: 96px 24px; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
