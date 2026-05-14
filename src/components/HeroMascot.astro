@@ -1,0 +1,57 @@
+---
+type Props = {
+  size?: number;
+};
+
+const { size = 148 } = Astro.props;
+---
+
+<div class="mascot-wrap">
+  <img
+    src="/mascot/logo.png"
+    alt="marka.md mascot"
+    width={size}
+    height={size}
+    class="mascot float"
+    draggable="false"
+  />
+</div>
+
+<style>
+  .mascot-wrap {
+    display: inline-block;
+    perspective: 800px;
+  }
+
+  .mascot {
+    transform: translate(var(--px, 0), var(--py, 0)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    filter: drop-shadow(0 24px 60px rgba(226, 114, 46, 0.28));
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+</style>
+
+<script>
+  const wrap = document.querySelector<HTMLElement>(".mascot-wrap");
+  const mascot = wrap?.querySelector<HTMLImageElement>(".mascot");
+  if (wrap && mascot) {
+    let frame: number | undefined;
+    const MAX = 8;
+    const TILT = 4;
+    const onMove = (e: MouseEvent) => {
+      if (frame != null) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+        mascot.style.setProperty("--px", `${dx * MAX}px`);
+        mascot.style.setProperty("--py", `${dy * MAX}px`);
+        mascot.style.setProperty("--ry", `${dx * TILT}deg`);
+        mascot.style.setProperty("--rx", `${-dy * TILT}deg`);
+      });
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+  }
+</script>

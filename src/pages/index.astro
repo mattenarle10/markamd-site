@@ -1,0 +1,544 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HeroMascot from "../components/HeroMascot.astro";
+import Reveal from "../components/Reveal.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+
+const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
+const repoUrl = "https://github.com/mattenarle10/markamd";
+const version = "v0.1.5";
+
+const features = [
+  {
+    title: "live preview",
+    body: "edit on the left, watch markdown render on the right. mermaid + math + shiki, all live.",
+  },
+  {
+    title: "reading mode",
+    body: "press ⌘. for an iA Writer-style preview-only view. calm typography, generous margins.",
+  },
+  {
+    title: "folder search",
+    body: "open a folder of notes. tap the search icon to fuzzy-find every .md in the tree.",
+  },
+  {
+    title: "copy for claude",
+    body: "press ⌘⇧C to copy the current file as clean markdown. paste straight into any chat.",
+  },
+  {
+    title: "5 themes",
+    body: "catppuccin latte, frappé, macchiato, mocha — plus a custom matcha. transparency toggle.",
+  },
+  {
+    title: "stays local",
+    body: "your notes never leave your machine. no telemetry, no cloud, no account. just files.",
+  },
+];
+
+const steps = [
+  {
+    n: "01",
+    art: "/mascot/notebook.png",
+    title: "collect",
+    body: "open a folder of markdown notes. that's your context library.",
+  },
+  {
+    n: "02",
+    art: "/mascot/pen.png",
+    title: "write",
+    body: "edit side-by-side with live preview. save when ready.",
+  },
+  {
+    n: "03",
+    art: "/mascot/excite.png",
+    title: "share",
+    body: "copy clean markdown to clipboard. paste into claude.",
+  },
+];
+
+const shortcuts = ["⌘K", "⌘⇧O", "⌘S", "⌘.", "⌘⇧C", "⌘B", "⌘/"];
+---
+
+<Layout>
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__brand">
+        <img src="/mascot/logo.png" alt="" width="28" height="28" />
+        <span>marka.md</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#features" class="nav__link">features</a>
+        <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
+        <a href={releaseUrl} target="_blank" rel="noopener" class="nav__cta">
+          download {version}
+          <span aria-hidden>↓</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__glow" aria-hidden></div>
+    <div class="hero__inner">
+      <Reveal class="hero__mascot">
+        <HeroMascot size={148} />
+      </Reveal>
+      <Reveal as="h1" delay={120} class="hero__title">
+        <span class="reveal-child">write markdown.</span>
+        <span class="reveal-child">share with ai.</span>
+        <span class="reveal-child accent">nothing leaves your machine.</span>
+      </Reveal>
+      <Reveal as="p" delay={420} class="hero__sub">
+        the calm markdown editor for the notes you ship to claude. local-first, MIT, macOS.
+      </Reveal>
+      <Reveal delay={540} class="hero__ctas">
+        <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--primary">
+          download for macOS
+          <span class="btn__ver">{version}</span>
+          <span aria-hidden>↓</span>
+        </a>
+        <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost">
+          view source
+          <span aria-hidden>↗</span>
+        </a>
+      </Reveal>
+      <Reveal as="p" delay={660} class="hero__trust">
+        local-first · MIT · macOS 13+ · tauri 2
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="screen-wrap">
+    <Reveal class="screen-frame">
+      <div class="screen">
+        <img src="/mascot/write.png" alt="" width="120" height="120" class="screen__art" />
+        <p class="screen__hint">
+          drop a screenshot at <code>public/screens/hero-app.png</code>
+        </p>
+      </div>
+    </Reveal>
+  </section>
+
+  <section id="how" class="loop">
+    <div class="loop__inner">
+      <Reveal class="section-head">
+        <p class="eyebrow">how it works</p>
+        <h2 class="h2">one loop. nothing leaves your machine.</h2>
+      </Reveal>
+      <Reveal class="loop__grid">
+        {
+          steps.map((s) => (
+            <div class="step reveal-child">
+              <img src={s.art} alt="" width="96" height="96" class="step__art" />
+              <p class="step__n">{s.n}</p>
+              <h3 class="step__title">{s.title}</h3>
+              <p class="step__body">{s.body}</p>
+            </div>
+          ))
+        }
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="big-type">
+    <Reveal>
+      <p class="big-type__text">
+        <span class="big-type__lead">context-ready markdown.</span>
+        <span class="big-type__sub">built for the prompts you actually paste.</span>
+      </p>
+    </Reveal>
+  </section>
+
+  <section id="features" class="features">
+    <div class="features__inner">
+      <Reveal class="section-head">
+        <p class="eyebrow">features</p>
+        <h2 class="h2">everything you need to read, write, share.</h2>
+      </Reveal>
+      <Reveal class="features__grid">
+        {features.map((f) => <FeatureCard title={f.title} body={f.body} />)}
+      </Reveal>
+    </div>
+  </section>
+
+  <section class="keys">
+    <Reveal class="keys__inner">
+      <p class="eyebrow keys__caption">made for the keyboard.</p>
+      <div class="keys__grid">
+        {shortcuts.map((k) => <kbd class="key reveal-child">{k}</kbd>)}
+      </div>
+    </Reveal>
+  </section>
+
+  <section class="final">
+    <Reveal class="final__inner">
+      <img src="/mascot/inspect.png" alt="" width="120" height="120" class="final__art" />
+      <h2 class="final__title">
+        ready to ship cleaner <span class="accent">context</span>?
+      </h2>
+      <div class="final__ctas">
+        <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--accent">
+          download {version}
+          <span aria-hidden>↓</span>
+        </a>
+        <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost-dark">
+          view on github <span aria-hidden>→</span>
+        </a>
+      </div>
+      <p class="final__note">
+        unsigned build — see readme for the xattr workaround until apple signing lands
+      </p>
+    </Reveal>
+  </section>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <div class="foot__brand">
+        <img src="/mascot/logo.png" alt="" width="20" height="20" />
+        <span>marka.md · {version}</span>
+      </div>
+      <nav class="foot__links">
+        <a href={repoUrl} target="_blank" rel="noopener">github</a>
+        <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
+        <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">report a bug</a>
+      </nav>
+    </div>
+  </footer>
+</Layout>
+
+<style is:global>
+  /* ─── nav ─────────────────────────────────────────────── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease;
+  }
+  .nav.is-scrolled { border-bottom-color: var(--border); }
+  .nav__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav__brand img { transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .nav__brand:hover img { transform: rotate(8deg); }
+  .nav__links { display: flex; align-items: center; gap: 4px; }
+  .nav__link {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+  .nav__link:hover { color: var(--fg); }
+  .nav__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 4px;
+    padding: 8px 16px;
+    background: var(--fg);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nav__cta:hover { background: var(--accent); transform: translateY(-1px); }
+  @media (max-width: 640px) { .nav__link { display: none; } }
+
+  /* ─── shared ──────────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .section-head { text-align: center; margin-bottom: 64px; }
+  .accent { color: var(--accent); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--fg); color: #fff; }
+  .btn--primary:hover { background: var(--accent); transform: translateY(-2px) scale(1.01); }
+  .btn__ver { opacity: 0.55; font-family: var(--font-mono); font-size: 12px; }
+  .btn--ghost { background: #fff; color: var(--fg); border-color: var(--border); }
+  .btn--ghost:hover { border-color: var(--fg); }
+  .btn--accent {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent);
+    animation: cta-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent); }
+    50%      { box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+  .btn--accent:hover { background: #fff; color: var(--fg); animation: none; }
+  .btn--ghost-dark {
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: transparent;
+  }
+  .btn--ghost-dark:hover { color: #fff; border-color: rgba(255, 255, 255, 0.45); }
+
+  /* ─── hero ─────────────────────────────────────────────── */
+  .hero { position: relative; overflow: hidden; }
+  .hero__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, var(--accent-soft) 0%, transparent 55%);
+    z-index: -1;
+  }
+  .hero__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 96px 24px 112px;
+    text-align: center;
+  }
+  @media (min-width: 640px) { .hero__inner { padding: 144px 24px 144px; } }
+  .hero__mascot { margin-bottom: 36px; }
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6.5vw, 78px);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.08em;
+    margin-bottom: 28px;
+  }
+  .hero__sub {
+    font-size: clamp(16px, 1.6vw, 20px);
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto 36px;
+    line-height: 1.55;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .hero__trust {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  /* ─── screen ──────────────────────────────────────────── */
+  .screen-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 96px; }
+  @media (min-width: 640px) { .screen-wrap { padding: 0 24px 128px; } }
+  .screen-frame { max-width: 1000px; margin: 0 auto; }
+  .screen {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    transform: rotateX(2deg);
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible .screen { transform: rotateX(0deg); }
+  .screen__art { opacity: 0.9; margin-bottom: 20px; }
+  .screen__hint { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .screen__hint code { color: var(--fg); }
+
+  /* ─── loop ────────────────────────────────────────────── */
+  .loop {
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 96px 0;
+  }
+  @media (min-width: 640px) { .loop { padding: 128px 0; } }
+  .loop__inner { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
+  .loop__grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+  @media (min-width: 640px) { .loop__grid { grid-template-columns: repeat(3, 1fr); } }
+  .step { text-align: center; }
+  .step__art { margin: 0 auto 24px; opacity: 0.95; }
+  .step__n { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .step__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+  .step__body { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 22ch; margin: 0 auto; }
+
+  /* ─── big type ────────────────────────────────────────── */
+  .big-type { padding: 128px 24px; text-align: center; }
+  .big-type__text {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  .big-type__lead { display: block; font-size: clamp(40px, 7vw, 96px); color: var(--fg); }
+  .big-type__sub  { display: block; margin-top: 0.2em; font-size: clamp(40px, 7vw, 96px); color: var(--muted); }
+
+  /* ─── features ────────────────────────────────────────── */
+  .features { padding: 96px 0; }
+  @media (min-width: 640px) { .features { padding: 128px 0; } }
+  .features__inner { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
+  .features__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .features__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .features__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* ─── keys ────────────────────────────────────────────── */
+  .keys {
+    padding: 96px 24px;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .keys__inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .keys__caption {
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: -0.005em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 36px;
+  }
+  .keys__grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    padding: 12px 18px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    transition: transform 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .key:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+
+  /* ─── final cta ───────────────────────────────────────── */
+  .final {
+    background: var(--fg);
+    color: #fff;
+    padding: 128px 24px;
+    text-align: center;
+  }
+  .final__inner { max-width: 720px; margin: 0 auto; }
+  .final__art { opacity: 0.95; margin: 0 auto 28px; }
+  .final__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-bottom: 36px;
+  }
+  .final__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px; }
+  .final__note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ─── footer ──────────────────────────────────────────── */
+  .foot { padding: 40px 24px; border-top: 1px solid var(--border); }
+  .foot__inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  @media (min-width: 640px) { .foot__inner { flex-direction: row; } }
+  .foot__brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); }
+  .foot__links { display: flex; gap: 20px; }
+  .foot__links a { color: var(--muted); text-decoration: none; transition: color 180ms ease; }
+  .foot__links a:hover { color: var(--fg); }
+</style>
+
+<script>
+  // hairline border on the sticky nav once you scroll past the top
+  const nav = document.querySelector(".nav");
+  if (nav) {
+    const onScroll = () => {
+      if (window.scrollY > 8) nav.classList.add("is-scrolled");
+      else nav.classList.remove("is-scrolled");
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+</script>

@@ -1,0 +1,69 @@
+---
+type Props = {
+  title: string;
+  body: string;
+};
+
+const { title, body } = Astro.props;
+---
+
+<div class="feature">
+  <div class="feature__inner">
+    <h3 class="feature__title">{title}</h3>
+    <p class="feature__body">{body}</p>
+  </div>
+</div>
+
+<style>
+  .feature {
+    background: var(--bg);
+    padding: 32px 28px;
+    cursor: default;
+    perspective: 900px;
+    transition: background 200ms ease;
+  }
+
+  .feature:hover {
+    background: var(--bg-soft);
+  }
+
+  .feature__inner {
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .feature__title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .feature__body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+</style>
+
+<script>
+  const cards = document.querySelectorAll<HTMLElement>(".feature");
+  cards.forEach((card) => {
+    const inner = card.querySelector<HTMLElement>(".feature__inner");
+    if (!inner) return;
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const dx = (e.clientX - rect.left) / rect.width - 0.5;
+      const dy = (e.clientY - rect.top) / rect.height - 0.5;
+      inner.style.setProperty("--ry", `${dx * 6}deg`);
+      inner.style.setProperty("--rx", `${-dy * 6}deg`);
+    });
+    card.addEventListener("mouseleave", () => {
+      inner.style.setProperty("--ry", "0deg");
+      inner.style.setProperty("--rx", "0deg");
+    });
+  });
+</script>
