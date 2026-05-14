@@ -29,7 +29,7 @@ const { lines } = Astro.props as Props;
       {lines.map((line) => (
         <p class={`tw__line tw__line--${line.tone ?? "fg"}`} data-full={line.text}>
           <span class="tw__text"></span>
-          <span class="tw__caret" aria-hidden="true">▍</span>
+          <span class="tw__caret" aria-hidden="true"></span>
         </p>
       ))}
     </div>
@@ -88,16 +88,17 @@ const { lines } = Astro.props as Props;
   .tw__line--fg    { color: var(--fg); }
   .tw__line--muted { color: var(--muted); }
 
+  /* solid bar caret — same construction as the hero caret, scaled to the
+     line's cap-height. sits flush with the typed text. */
   .tw__caret {
     display: inline-block;
-    margin-left: 0.04em;
-    color: var(--accent);
+    width: 0.07em;
+    height: 0.72em;
+    margin-left: 0.06em;
+    background: var(--accent);
+    border-radius: 1px;
+    vertical-align: -0.04em;
     animation: tw-blink 1s steps(2, end) infinite;
-    transform: translateY(-0.04em);
-    font-weight: 400;
-    /* narrow the caret glyph so it reads as a text cursor, not a block */
-    font-family: var(--font-mono);
-    font-size: 0.85em;
   }
   /* once a line is fully typed and is NOT the active line, hide its caret */
   .tw__line[data-active="false"] .tw__caret { display: none; }

@@ -107,7 +107,7 @@ const shortcuts: { key: string; label: string }[] = [
         <span class="reveal-child">write markdown.</span>
         <span class="reveal-child">share with ai.</span>
         <span class="reveal-child accent">
-          nothing leaves your machine.<span class="hero__caret" aria-hidden="true">▍</span>
+          nothing leaves your machine.<span class="hero__caret" aria-hidden="true"></span>
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
@@ -484,15 +484,18 @@ const shortcuts: { key: string; label: string }[] = [
     letter-spacing: 0.14em;
     color: var(--muted);
   }
+  /* solid bar caret — sized in em so it scales with the headline,
+     vertical-align tuned so the bar's top sits roughly at cap-height
+     and the bottom rests on the text baseline. */
   .hero__caret {
     display: inline-block;
-    margin-left: 0.04em;
-    color: var(--accent);
+    width: 0.07em;
+    height: 0.72em;
+    margin-left: 0.1em;
+    background: var(--accent);
+    border-radius: 1px;
+    vertical-align: -0.04em;
     animation: hero-blink 1s steps(2, end) infinite;
-    transform: translateY(-0.04em);
-    font-weight: 400;
-    font-family: var(--font-mono);
-    font-size: 0.7em;
   }
   @keyframes hero-blink {
     0%, 50%      { opacity: 1; }
