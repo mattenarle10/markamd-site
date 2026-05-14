@@ -4,6 +4,7 @@ import HeroMascot from "../components/HeroMascot.astro";
 import Reveal from "../components/Reveal.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import AppPreview from "../components/AppPreview.astro";
+import Typewriter from "../components/Typewriter.astro";
 import { getLatestVersion } from "../lib/version";
 
 const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
@@ -96,7 +97,9 @@ const shortcuts: { key: string; label: string }[] = [
       <Reveal as="h1" delay={120} class="hero__title">
         <span class="reveal-child">write markdown.</span>
         <span class="reveal-child">share with ai.</span>
-        <span class="reveal-child accent">nothing leaves your machine.</span>
+        <span class="reveal-child accent">
+          nothing leaves your machine.<span class="hero__caret" aria-hidden="true">▮</span>
+        </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
         the calm markdown editor for the notes you ship to claude. local-first, MIT, macOS.
@@ -163,14 +166,12 @@ const shortcuts: { key: string; label: string }[] = [
     </div>
   </section>
 
-  <section class="big-type">
-    <Reveal>
-      <p class="big-type__text">
-        <span class="big-type__lead">context-ready markdown.</span>
-        <span class="big-type__sub">built for the prompts you actually paste.</span>
-      </p>
-    </Reveal>
-  </section>
+  <Typewriter
+    lines={[
+      { text: "context-ready markdown.", tone: "fg" },
+      { text: "built for the prompts you actually paste.", tone: "muted" },
+    ]}
+  />
 
   <section id="features" class="features">
     <div class="features__inner">
@@ -253,7 +254,7 @@ const shortcuts: { key: string; label: string }[] = [
   }
   .nav.is-scrolled { border-bottom-color: var(--border); }
   .nav__inner {
-    max-width: 1100px;
+    max-width: var(--max-content);
     margin: 0 auto;
     padding: 0 24px;
     height: 56px;
@@ -362,7 +363,7 @@ const shortcuts: { key: string; label: string }[] = [
     z-index: -1;
   }
   .hero__inner {
-    max-width: 1024px;
+    max-width: var(--max-content);
     margin: 0 auto;
     padding: 96px 24px 112px;
     text-align: center;
@@ -402,11 +403,26 @@ const shortcuts: { key: string; label: string }[] = [
     letter-spacing: 0.14em;
     color: var(--muted);
   }
+  .hero__caret {
+    display: inline-block;
+    margin-left: 0.08em;
+    color: var(--accent);
+    animation: hero-blink 1s steps(2, end) infinite;
+    transform: translateY(-0.04em);
+    font-weight: 500;
+  }
+  @keyframes hero-blink {
+    0%, 50%      { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__caret { animation: none; }
+  }
 
   /* ─── screen ──────────────────────────────────────────── */
-  .screen-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 96px; }
+  .screen-wrap { max-width: var(--max-content); margin: 0 auto; padding: 0 24px 96px; }
   @media (min-width: 640px) { .screen-wrap { padding: 0 24px 128px; } }
-  .screen-frame { max-width: 1000px; margin: 0 auto; }
+  .screen-frame { margin: 0 auto; }
   .screen {
     position: relative;
     aspect-ratio: 16 / 10;
@@ -435,7 +451,7 @@ const shortcuts: { key: string; label: string }[] = [
     padding: 96px 0;
   }
   @media (min-width: 640px) { .loop { padding: 128px 0; } }
-  .loop__inner { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
+  .loop__inner { max-width: var(--max-content); margin: 0 auto; padding: 0 24px; }
   .loop__grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
   @media (min-width: 640px) { .loop__grid { grid-template-columns: repeat(3, 1fr); } }
   /* welcome-overlay-style slide cards */
@@ -493,23 +509,12 @@ const shortcuts: { key: string; label: string }[] = [
     margin: 0 auto;
   }
 
-  /* ─── big type ────────────────────────────────────────── */
-  .big-type { padding: 128px 24px; text-align: center; }
-  .big-type__text {
-    max-width: 1100px;
-    margin: 0 auto;
-    font-family: var(--font-display);
-    font-weight: 600;
-    line-height: 1.02;
-    letter-spacing: -0.03em;
-  }
-  .big-type__lead { display: block; font-size: clamp(40px, 7vw, 96px); color: var(--fg); }
-  .big-type__sub  { display: block; margin-top: 0.2em; font-size: clamp(40px, 7vw, 96px); color: var(--muted); }
+  /* big-type section now lives in Typewriter.astro (scroll-scrubbed) */
 
   /* ─── features ────────────────────────────────────────── */
   .features { padding: 96px 0; }
   @media (min-width: 640px) { .features { padding: 128px 0; } }
-  .features__inner { max-width: 1024px; margin: 0 auto; padding: 0 24px; }
+  .features__inner { max-width: var(--max-content); margin: 0 auto; padding: 0 24px; }
   .features__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -529,7 +534,7 @@ const shortcuts: { key: string; label: string }[] = [
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
-  .keys__inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .keys__inner { max-width: var(--max-narrow); margin: 0 auto; text-align: center; }
   .keys__caption {
     font-size: 14px;
     text-transform: none;
@@ -589,7 +594,7 @@ const shortcuts: { key: string; label: string }[] = [
   /* ─── install ─────────────────────────────────────────── */
   .install { padding: 96px 24px; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   @media (min-width: 640px) { .install { padding: 128px 24px; } }
-  .install__inner { max-width: 720px; margin: 0 auto; text-align: center; }
+  .install__inner { max-width: var(--max-narrow); margin: 0 auto; text-align: center; }
   .install .eyebrow { text-align: center; }
   .install__lede {
     font-size: 17px;
@@ -663,7 +668,7 @@ const shortcuts: { key: string; label: string }[] = [
     padding: 128px 24px;
     text-align: center;
   }
-  .final__inner { max-width: 720px; margin: 0 auto; }
+  .final__inner { max-width: var(--max-narrow); margin: 0 auto; }
   .final__art { opacity: 0.95; margin: 0 auto 28px; }
   .final__title {
     font-family: var(--font-display);
@@ -685,7 +690,7 @@ const shortcuts: { key: string; label: string }[] = [
   /* ─── footer ──────────────────────────────────────────── */
   .foot { padding: 40px 24px; border-top: 1px solid var(--border); }
   .foot__inner {
-    max-width: 1024px;
+    max-width: var(--max-content);
     margin: 0 auto;
     display: flex;
     flex-direction: column;

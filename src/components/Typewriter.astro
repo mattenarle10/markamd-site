@@ -1,0 +1,189 @@
+---
+// scroll-scrubbed typewriter — characters type in as you scroll the section
+// past the viewport center, and backspace as you scroll back up.
+//
+// driven by GSAP/ScrollTrigger; falls back to fully-revealed text under
+// prefers-reduced-motion.
+
+type Line = {
+  text: string;
+  /** color token: 'fg' = primary, 'muted' = secondary */
+  tone?: "fg" | "muted";
+};
+
+type Props = {
+  lines: Line[];
+};
+
+const { lines } = Astro.props as Props;
+---
+
+<section class="tw" data-typewriter aria-label="context-ready markdown — typed as you scroll">
+  <div class="tw__inner">
+    <div class="tw__gutter" aria-hidden="true">
+      {lines.map((_, i) => (
+        <span class="tw__lineno">{String(i + 1).padStart(2, "0")}</span>
+      ))}
+    </div>
+    <div class="tw__body">
+      {lines.map((line) => (
+        <p class={`tw__line tw__line--${line.tone ?? "fg"}`} data-full={line.text}>
+          <span class="tw__text"></span>
+          <span class="tw__caret" aria-hidden="true">▮</span>
+        </p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .tw {
+    padding: 128px 24px;
+    background: var(--bg);
+  }
+  .tw__inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .tw__inner { grid-template-columns: 1fr; gap: 0; }
+    .tw__gutter { display: none; }
+  }
+
+  .tw__gutter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    padding-top: 0.15em;
+    border-right: 1px solid var(--border);
+    padding-right: 16px;
+    align-items: flex-end;
+  }
+  .tw__lineno {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: color-mix(in srgb, var(--accent) 65%, var(--muted));
+    letter-spacing: 0.04em;
+    line-height: 1.04;
+    height: clamp(40px, 7vw, 96px);
+    display: flex;
+    align-items: center;
+  }
+
+  .tw__body { min-width: 0; }
+  .tw__line {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    font-size: clamp(40px, 7vw, 96px);
+    margin: 0;
+    display: block;
+  }
+  .tw__line + .tw__line { margin-top: 0.2em; }
+  .tw__line--fg    { color: var(--fg); }
+  .tw__line--muted { color: var(--muted); }
+
+  .tw__caret {
+    display: inline-block;
+    width: 0.4em;
+    margin-left: 0.06em;
+    color: var(--accent);
+    animation: tw-blink 1s steps(2, end) infinite;
+    transform: translateY(-0.04em);
+  }
+  /* once a line is fully typed and is NOT the active line, hide its caret */
+  .tw__line[data-active="false"] .tw__caret { display: none; }
+
+  @keyframes tw-blink {
+    0%, 50%      { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tw__caret { animation: none; opacity: 1; }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  function setup() {
+    const section = document.querySelector<HTMLElement>("[data-typewriter]");
+    if (!section) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lines = Array.from(section.querySelectorAll<HTMLElement>(".tw__line"));
+    if (lines.length === 0) return;
+
+    const items = lines.map((lineEl) => ({
+      el: lineEl,
+      textEl: lineEl.querySelector<HTMLElement>(".tw__text")!,
+      full: lineEl.dataset.full ?? "",
+    }));
+
+    if (reduced) {
+      items.forEach((it, i) => {
+        it.textEl.textContent = it.full;
+        it.el.dataset.active = String(i === items.length - 1);
+      });
+      return;
+    }
+
+    items.forEach((it, i) => {
+      it.textEl.textContent = "";
+      it.el.dataset.active = String(i === 0);
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const totals = items.map((it) => it.full.length);
+    const grand = totals.reduce((a, b) => a + b, 0);
+    const starts = totals.reduce<number[]>((acc, n, i) => {
+      acc.push(i === 0 ? 0 : acc[i - 1] + totals[i - 1]);
+      return acc;
+    }, []);
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 80%",
+      end: "bottom 30%",
+      scrub: 0.6,
+      onUpdate: (self) => {
+        const charsTyped = Math.round(self.progress * grand);
+        items.forEach((it, i) => {
+          const localCount = Math.max(
+            0,
+            Math.min(it.full.length, charsTyped - starts[i]),
+          );
+          it.textEl.textContent = it.full.slice(0, localCount);
+        });
+        let activeIdx = items.length - 1;
+        for (let i = 0; i < items.length; i++) {
+          const localCount = Math.max(
+            0,
+            Math.min(items[i].full.length, charsTyped - starts[i]),
+          );
+          if (localCount < items[i].full.length) {
+            activeIdx = i;
+            break;
+          }
+        }
+        items.forEach((it, i) => {
+          it.el.dataset.active = String(i === activeIdx);
+        });
+      },
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setup, { once: true });
+  } else {
+    setup();
+  }
+</script>
