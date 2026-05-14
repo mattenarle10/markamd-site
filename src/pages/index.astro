@@ -98,7 +98,7 @@ const shortcuts: { key: string; label: string }[] = [
         <span class="reveal-child">write markdown.</span>
         <span class="reveal-child">share with ai.</span>
         <span class="reveal-child accent">
-          nothing leaves your machine.<span class="hero__caret" aria-hidden="true">▮</span>
+          nothing leaves your machine.<span class="hero__caret" aria-hidden="true">▍</span>
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
@@ -405,11 +405,13 @@ const shortcuts: { key: string; label: string }[] = [
   }
   .hero__caret {
     display: inline-block;
-    margin-left: 0.08em;
+    margin-left: 0.04em;
     color: var(--accent);
     animation: hero-blink 1s steps(2, end) infinite;
     transform: translateY(-0.04em);
-    font-weight: 500;
+    font-weight: 400;
+    font-family: var(--font-mono);
+    font-size: 0.7em;
   }
   @keyframes hero-blink {
     0%, 50%      { opacity: 1; }
@@ -462,6 +464,10 @@ const shortcuts: { key: string; label: string }[] = [
     border: 1px solid var(--border);
     border-radius: 18px;
     padding: 40px 28px 36px;
+    /* stretch all cards to equal height so labels/titles align across the row */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
                 box-shadow 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
                 border-color 320ms ease;
@@ -480,8 +486,15 @@ const shortcuts: { key: string; label: string }[] = [
     pointer-events: none;
     opacity: 0.7;
   }
+  /* fixed-height art frame — keeps the 01/02/03 labels and titles
+     aligned across all 3 cards regardless of each mascot's intrinsic
+     padding/aspect inside its PNG. */
   .slide__art {
     position: relative;
+    display: block;
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
     margin: 0 auto 22px;
     filter: drop-shadow(0 14px 28px rgba(226, 114, 46, 0.18));
   }

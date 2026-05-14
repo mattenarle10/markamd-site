@@ -29,7 +29,7 @@ const { lines } = Astro.props as Props;
       {lines.map((line) => (
         <p class={`tw__line tw__line--${line.tone ?? "fg"}`} data-full={line.text}>
           <span class="tw__text"></span>
-          <span class="tw__caret" aria-hidden="true">▮</span>
+          <span class="tw__caret" aria-hidden="true">▍</span>
         </p>
       ))}
     </div>
@@ -90,11 +90,14 @@ const { lines } = Astro.props as Props;
 
   .tw__caret {
     display: inline-block;
-    width: 0.4em;
-    margin-left: 0.06em;
+    margin-left: 0.04em;
     color: var(--accent);
     animation: tw-blink 1s steps(2, end) infinite;
     transform: translateY(-0.04em);
+    font-weight: 400;
+    /* narrow the caret glyph so it reads as a text cursor, not a block */
+    font-family: var(--font-mono);
+    font-size: 0.85em;
   }
   /* once a line is fully typed and is NOT the active line, hide its caret */
   .tw__line[data-active="false"] .tw__caret { display: none; }
@@ -151,9 +154,12 @@ const { lines } = Astro.props as Props;
 
     ScrollTrigger.create({
       trigger: section,
-      start: "top 80%",
-      end: "bottom 30%",
-      scrub: 0.6,
+      // widen the range so each character gets ~3x more scroll travel —
+      // feels deliberate, not rushed. start the moment the section appears,
+      // end well past it.
+      start: "top 90%",
+      end: "bottom 10%",
+      scrub: 1.0,
       onUpdate: (self) => {
         const charsTyped = Math.round(self.progress * grand);
         items.forEach((it, i) => {
