@@ -123,6 +123,12 @@ const shortcuts: { key: string; label: string }[] = [
           view source
         </a>
       </Reveal>
+      <Reveal as="p" delay={600} class="hero__status">
+        <span class="hero__status-pill">
+          <span class="hero__status-dot" aria-hidden></span>
+          pre-release · auto-updates ship with v1.0
+        </span>
+      </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
         local-first · MIT · macOS 13+ · no telemetry
       </Reveal>
@@ -474,7 +480,40 @@ const shortcuts: { key: string; label: string }[] = [
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
+  }
+  .hero__status {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .hero__status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 11px 4px 9px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: color-mix(in srgb, var(--accent) 85%, var(--fg));
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .hero__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: hero-status-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes hero-status-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__status-dot { animation: none; }
   }
   .hero__trust {
     font-family: var(--font-mono);
