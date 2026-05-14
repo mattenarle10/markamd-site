@@ -107,7 +107,7 @@ const shortcuts: { key: string; label: string }[] = [
         <span class="reveal-child">write markdown.</span>
         <span class="reveal-child">share with ai.</span>
         <span class="reveal-child accent">
-          nothing leaves your machine.<span class="hero__caret" aria-hidden="true"></span>
+          nothing leaves your machine.<span class="caret hero__caret" aria-hidden="true"></span>
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
@@ -484,26 +484,9 @@ const shortcuts: { key: string; label: string }[] = [
     letter-spacing: 0.14em;
     color: var(--muted);
   }
-  /* solid bar caret — sized in em so it scales with the headline,
-     vertical-align tuned so the bar's top sits roughly at cap-height
-     and the bottom rests on the text baseline. */
-  .hero__caret {
-    display: inline-block;
-    width: 0.07em;
-    height: 0.72em;
-    margin-left: 0.1em;
-    background: var(--accent);
-    border-radius: 1px;
-    vertical-align: -0.04em;
-    animation: hero-blink 1s steps(2, end) infinite;
-  }
-  @keyframes hero-blink {
-    0%, 50%      { opacity: 1; }
-    50.01%, 100% { opacity: 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero__caret { animation: none; }
-  }
+  /* hero caret — visuals come from .caret in global.css; this only
+     overrides the gap from the trailing period. */
+  .hero__caret { margin-left: 0.1em; }
 
   /* ─── screen ──────────────────────────────────────────── */
   .screen-wrap { max-width: var(--max-content); margin: 0 auto; padding: 0 24px 96px; }

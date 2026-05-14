@@ -65,6 +65,27 @@ html, body {
   letter-spacing: 0;
 }
 
+/* shared caret — used by hero h1 + typewriter lines.
+   per-component classes only override margin-left. */
+.caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 0.72em;
+  background: var(--accent);
+  border-radius: 1px;
+  vertical-align: -0.04em;
+  animation: blink 1s steps(2, end) infinite;
+}
+
+@keyframes blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; opacity: 1; }
+}
+
 /* slow ambient float for the hero mascot */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
