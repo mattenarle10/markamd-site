@@ -45,5 +45,8 @@ const canonical = new URL(Astro.url.pathname, siteUrl).toString();
     <slot />
     <Analytics />
     <SpeedInsights />
+    <script>
+      import "../scripts/motion";
+    </script>
   </body>
 </html>

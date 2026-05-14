@@ -10,6 +10,10 @@
   --accent: #e2722e;       /* marka warm orange */
   --accent-soft: #fff3eb;
 
+  /* unified content rails — every section uses one of these */
+  --max-content: 1024px;
+  --max-narrow: 720px;
+
   /* type — system fonts give SF Pro on apple platforms automatically */
   --font-display:
     -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
@@ -45,6 +49,20 @@ html, body {
 ::selection {
   background: color-mix(in srgb, var(--accent) 28%, transparent);
   color: var(--fg);
+}
+
+/* editor-immersion: lowercase `## ` prefix on eyebrows — purely decorative,
+   only adds a markdown-doc feel. screen readers will read the `##` as
+   "number number" which is fine for an aria-hidden affordance, but to be
+   safe we render it via ::before so it stays out of the DOM text content. */
+.eyebrow::before {
+  content: "## ";
+  color: color-mix(in srgb, var(--accent) 65%, var(--muted));
+  margin-right: 2px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 /* slow ambient float for the hero mascot */
