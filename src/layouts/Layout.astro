@@ -10,6 +10,13 @@ const {
   title = "marka.md — your local markdown for AI context",
   description = "a calm, local markdown editor built for the notes you share with claude. collect, write, share. macOS, open source, MIT.",
 } = Astro.props;
+
+// Google Search Console verification — set GSC_VERIFICATION in Vercel env to
+// the code from the "HTML tag" verification method (just the content value).
+// If unset, the meta tag is omitted.
+const gscVerification = import.meta.env.GSC_VERIFICATION as string | undefined;
+const siteUrl = "https://markamd.vercel.app";
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 ---
 
 <!doctype html>
@@ -18,12 +25,18 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/mascot/logo.png" />
+    <meta property="og:image" content={`${siteUrl}/mascot/logo.png`} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    {gscVerification ? (
+      <meta name="google-site-verification" content={gscVerification} />
+    ) : null}
     <link rel="icon" type="image/png" href="/mascot/logo.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
   </head>
   <body class="bg-bg text-fg">
