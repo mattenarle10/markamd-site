@@ -9,11 +9,10 @@ import AppleIcon from "../components/icons/AppleIcon.astro";
 import GithubIcon from "../components/icons/GithubIcon.astro";
 import CopyIcon from "../components/icons/CopyIcon.astro";
 import CheckIcon from "../components/icons/CheckIcon.astro";
-import { getLatestVersion } from "../lib/version";
+import { getLatestRelease } from "../lib/version";
 
-const releaseUrl = "https://github.com/mattenarle10/markamd/releases/latest";
 const repoUrl = "https://github.com/mattenarle10/markamd";
-const version = await getLatestVersion();
+const { tag: version, downloadUrl } = await getLatestRelease();
 
 const features = [
   {
@@ -84,7 +83,7 @@ const shortcuts: { key: string; label: string }[] = [
       <nav class="nav__links">
         <a href="#features" class="nav__link">features</a>
         <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
-        <a href={releaseUrl} target="_blank" rel="noopener" class="nav__cta">
+        <a href={downloadUrl} target="_blank" rel="noopener" class="nav__cta">
           download {version}
           <span aria-hidden>↓</span>
         </a>
@@ -114,7 +113,7 @@ const shortcuts: { key: string; label: string }[] = [
         the calm markdown editor for the notes you ship to claude. local-first, MIT, macOS.
       </Reveal>
       <Reveal delay={540} class="hero__ctas">
-        <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--primary">
+        <a href={downloadUrl} target="_blank" rel="noopener" class="btn btn--primary">
           <AppleIcon size={14} />
           download for macOS
           <span class="btn__ver">{version}</span>
@@ -245,7 +244,7 @@ const shortcuts: { key: string; label: string }[] = [
         ready to ship cleaner <span class="accent">context</span>?
       </h2>
       <div class="final__ctas">
-        <a href={releaseUrl} target="_blank" rel="noopener" class="btn btn--accent">
+        <a href={downloadUrl} target="_blank" rel="noopener" class="btn btn--accent">
           <AppleIcon size={14} />
           download {version}
         </a>
