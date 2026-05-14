@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getLatestVersion } from "../lib/version";
 const repoUrl = "https://github.com/mattenarle10/markamd";
-const version = "v0.1.5";
+const version = await getLatestVersion();
 const lastUpdated = "2026-05-14";
 ---
 
