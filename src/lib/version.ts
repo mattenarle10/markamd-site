@@ -28,8 +28,54 @@ let cached: Release | null = null;
 
 type ApiRelease = {
   tag_name?: string;
+  name?: string;
+  published_at?: string;
+  body?: string;
+  html_url?: string;
+  prerelease?: boolean;
   assets?: Array<{ name?: string; browser_download_url?: string }>;
 };
+
+export type ReleaseEntry = {
+  tag: string;
+  name: string;
+  publishedAt: string;
+  body: string;
+  htmlUrl: string;
+  isPrerelease: boolean;
+};
+
+let releasesCached: ReleaseEntry[] | null = null;
+
+/**
+ * Fetched at build time by /changelog. Returns up to `limit` most recent
+ * releases (newest first). On API failure returns an empty array — the page
+ * gracefully degrades to a link to the GitHub releases listing.
+ */
+export async function getReleases(limit = 20): Promise<ReleaseEntry[]> {
+  if (releasesCached) return releasesCached;
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/mattenarle10/markamd/releases?per_page=${limit}`,
+      { headers: { Accept: "application/vnd.github+json" } },
+    );
+    if (!res.ok) throw new Error(`gh api ${res.status}`);
+    const arr = (await res.json()) as ApiRelease[];
+    releasesCached = arr.map((r): ReleaseEntry => ({
+      tag: r.tag_name ?? "",
+      name: r.name ?? r.tag_name ?? "",
+      publishedAt: r.published_at ?? "",
+      body: r.body ?? "",
+      htmlUrl: r.html_url ?? RELEASES_PAGE,
+      isPrerelease: r.prerelease ?? false,
+    }));
+    return releasesCached;
+  } catch (err) {
+    console.warn("[markamd-site] releases fetch failed, returning empty:", err);
+    releasesCached = [];
+    return releasesCached;
+  }
+}
 
 export async function getLatestRelease(): Promise<Release> {
   if (cached) return cached;

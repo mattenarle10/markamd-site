@@ -1,0 +1,62 @@
+---
+const repoUrl = "https://github.com/mattenarle10/markamd";
+---
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__brand">
+      <img src="/mascot/logo.png" alt="" width="28" height="28" />
+      <span>marka.md</span>
+    </a>
+    <nav class="nav__links">
+      <a href="/" class="nav__link">home</a>
+      <a href="/changelog" class="nav__link">changelog</a>
+      <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
+    </nav>
+  </div>
+</header>
+
+<style is:global>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .nav__link {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+  .nav__link:hover {
+    color: var(--fg);
+  }
+</style>

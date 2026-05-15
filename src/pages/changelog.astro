@@ -1,0 +1,258 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getReleases, getLatestRelease } from "../lib/version";
+import { marked } from "marked";
+
+const repoUrl = "https://github.com/mattenarle10/markamd";
+const { tag: version } = await getLatestRelease();
+const releases = await getReleases(20);
+
+const formatDate = (iso: string): string => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+};
+
+// release bodies are author-controlled (we write them via release.yml); safe to render as html.
+const rendered = releases.map((r) => ({
+  ...r,
+  bodyHtml: r.body.trim() ? (marked.parse(r.body, { async: false }) as string) : "",
+  prettyDate: formatDate(r.publishedAt),
+}));
+---
+
+<Layout
+  title="changelog · marka.md"
+  description="every release of marka.md — auto-fresh source of truth for what's new."
+>
+  <SiteNav />
+
+  <main class="changelog">
+    <article class="changelog__article">
+      <header class="changelog__head">
+        <p class="changelog__eyebrow">changelog</p>
+        <h1 class="changelog__title">what's new</h1>
+        <p class="changelog__lede">
+          every release. auto-fresh from github.
+        </p>
+      </header>
+
+      {rendered.length === 0 ? (
+        <div class="changelog__empty">
+          <p>couldn't load releases right now — see the full list on github:</p>
+          <a href={`${repoUrl}/releases`} target="_blank" rel="noopener">
+            github.com/mattenarle10/markamd/releases →
+          </a>
+        </div>
+      ) : (
+        <ol class="release-list">
+          {rendered.map((r) => (
+            <li class="release-entry">
+              <div class="release-meta">
+                <h2 class="release-tag">{r.tag}</h2>
+                {r.prettyDate && <span class="release-date">{r.prettyDate}</span>}
+                {r.isPrerelease && <span class="release-pill">pre</span>}
+                <a class="release-link" href={r.htmlUrl} target="_blank" rel="noopener">
+                  github →
+                </a>
+              </div>
+              {r.bodyHtml ? (
+                <div class="release-body" set:html={r.bodyHtml} />
+              ) : (
+                <p class="release-body release-body--empty">no notes for this release.</p>
+              )}
+            </li>
+          ))}
+        </ol>
+      )}
+    </article>
+  </main>
+
+  <SiteFooter version={version} />
+</Layout>
+
+<style is:global>
+  .changelog {
+    background: var(--bg);
+    padding: 56px 24px 96px;
+  }
+  .changelog__article {
+    max-width: 680px;
+    margin: 0 auto;
+    color: var(--fg);
+  }
+  .changelog__head {
+    margin-bottom: 40px;
+  }
+  .changelog__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .changelog__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.6vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .changelog__lede {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .changelog__empty {
+    padding: 20px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .changelog__empty a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .release-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .release-entry {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .release-entry:last-child {
+    border-bottom: none;
+  }
+
+  .release-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .release-tag {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .release-date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .release-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .release-link {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 180ms ease;
+  }
+  .release-link:hover {
+    color: var(--accent);
+  }
+
+  .release-body {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .release-body--empty {
+    font-style: italic;
+    opacity: 0.6;
+    font-size: 12.5px;
+  }
+  .release-body > :first-child {
+    margin-top: 0;
+  }
+  .release-body > :last-child {
+    margin-bottom: 0;
+  }
+  .release-body h1,
+  .release-body h2,
+  .release-body h3 {
+    color: var(--fg);
+    margin: 14px 0 4px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .release-body h1 { font-size: 16px; }
+  .release-body h2 { font-size: 14.5px; }
+  .release-body h3 { font-size: 13px; }
+  .release-body p { margin: 0 0 8px; }
+  .release-body ul,
+  .release-body ol {
+    margin: 0 0 8px;
+    padding-left: 20px;
+  }
+  .release-body li { margin-bottom: 2px; }
+  .release-body li::marker { color: var(--accent); }
+  .release-body strong { color: var(--fg); font-weight: 600; }
+  .release-body code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--fg) 6%, transparent);
+    color: var(--fg);
+  }
+  .release-body pre {
+    margin: 10px 0;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    overflow-x: auto;
+  }
+  .release-body pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 11.5px;
+  }
+  .release-body a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  .release-body a:hover { border-bottom-style: solid; }
+  .release-body hr {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 14px 0;
+  }
+</style>

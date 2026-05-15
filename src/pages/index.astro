@@ -16,24 +16,24 @@ const { tag: version, downloadUrl } = await getLatestRelease();
 
 const features = [
   {
+    title: "IDE-style sidebar",
+    body: "drag files between folders. right-click for rename, new file, new folder. ⌘⌥Z to undo. your context library, organized like a project.",
+  },
+  {
     title: "live preview",
     body: "edit on the left, watch markdown render on the right. mermaid + math + shiki, all live.",
   },
   {
     title: "reading mode",
-    body: "press ⌘. for a calm, preview-only view with generous typography. perfect for proofing.",
+    body: "press ⌘. for a calm, preview-only view with generous typography. perfect for proofing before you paste.",
   },
   {
-    title: "folder search",
-    body: "open a folder of notes. tap the search icon to fuzzy-find every .md in the tree.",
+    title: "share with ai",
+    body: "press ⌘⇧C to copy the current file as clean markdown. paste into claude, chatgpt, gemini, your local agent — anywhere that reads text.",
   },
   {
-    title: "copy for claude",
-    body: "press ⌘⇧C to copy the current file as clean markdown. paste straight into any chat.",
-  },
-  {
-    title: "5 themes",
-    body: "catppuccin latte, frappé, macchiato, mocha — plus a custom matcha. transparency toggle.",
+    title: "find · undo · all keyboard",
+    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. it's all there. 5 themes too — catppuccin + matcha.",
   },
   {
     title: "stays local",
@@ -128,6 +128,7 @@ const shortcuts: { key: string; label: string }[] = [
           <span class="hero__status-dot" aria-hidden></span>
           pre-release · auto-updates ship with v1.0
         </span>
+        <a href="/changelog" class="hero__status-link">view changelog →</a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
         local-first · MIT · macOS 13+ · no telemetry
@@ -270,6 +271,7 @@ const shortcuts: { key: string; label: string }[] = [
       </div>
       <nav class="foot__links">
         <a href={repoUrl} target="_blank" rel="noopener">github</a>
+        <a href="/changelog">changelog</a>
         <a href="/privacy">privacy</a>
         <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
         <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">report a bug</a>
@@ -485,8 +487,20 @@ const shortcuts: { key: string; label: string }[] = [
   .hero__status {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 14px;
   }
+  .hero__status-link {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 180ms ease;
+  }
+  .hero__status-link:hover { color: var(--accent); }
   .hero__status-pill {
     display: inline-flex;
     align-items: center;
