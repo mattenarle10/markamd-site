@@ -23,3 +23,11 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .vercel
+
+# defensive secret ignores
+*.p12
+*.pem
+*.cer
+*.key
+.env.local
+.env.*.local

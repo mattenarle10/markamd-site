@@ -126,7 +126,7 @@ const shortcuts: { key: string; label: string }[] = [
       <Reveal as="p" delay={600} class="hero__status">
         <span class="hero__status-pill">
           <span class="hero__status-dot" aria-hidden></span>
-          pre-release · auto-updates ship with v1.0
+          notarized · auto-updating · macOS native
         </span>
         <a href="/changelog" class="hero__status-link">view changelog →</a>
       </Reveal>
@@ -206,42 +206,6 @@ const shortcuts: { key: string; label: string }[] = [
         {features.map((f) => <FeatureCard title={f.title} body={f.body} />)}
       </Reveal>
     </div>
-  </section>
-
-  <section class="install">
-    <Reveal class="install__inner">
-      <p class="eyebrow">install</p>
-      <h2 class="h2">drag, drop, done.</h2>
-      <p class="install__lede">
-        download the dmg → drag <span class="mono">marka.md.app</span> into your applications folder. that's it.
-      </p>
-      <div class="install__note">
-        <p class="install__note-title">if macOS says "marka.md is damaged"</p>
-        <p class="install__note-body">
-          that's the unsigned-build warning macOS shows for apps outside the app store.
-          paste this once in terminal — it clears apple's quarantine flag:
-        </p>
-        <div class="install__codeblock">
-          <pre class="install__code"><code><span class="install__prompt">$</span> xattr -rd com.apple.quarantine /Applications/marka.md.app</code></pre>
-          <button
-            type="button"
-            class="install__copy"
-            data-copy="xattr -rd com.apple.quarantine /Applications/marka.md.app"
-            aria-label="copy command"
-          >
-            <span class="install__copy-icon install__copy-icon--copy">
-              <CopyIcon size={14} />
-            </span>
-            <span class="install__copy-icon install__copy-icon--check">
-              <CheckIcon size={14} />
-            </span>
-          </button>
-        </div>
-        <p class="install__note-foot">
-          apple developer signing is in flight. v1.0 will be fully notarized and you won't see this again.
-        </p>
-      </div>
-    </Reveal>
   </section>
 
   <section class="final">
