@@ -41,6 +41,9 @@ const { lines } = Astro.props as Props;
     padding: 128px 24px;
     background: var(--bg);
   }
+  @media (max-width: 640px) {
+    .tw { padding: 80px 20px; }
+  }
   .tw__inner {
     max-width: var(--max-content);
     margin: 0 auto;
@@ -69,7 +72,7 @@ const { lines } = Astro.props as Props;
     color: color-mix(in srgb, var(--accent) 65%, var(--muted));
     letter-spacing: 0.04em;
     line-height: 1.04;
-    height: clamp(40px, 7vw, 96px);
+    height: clamp(28px, 7vw, 96px);
     display: flex;
     align-items: center;
   }
@@ -80,9 +83,11 @@ const { lines } = Astro.props as Props;
     font-weight: 600;
     line-height: 1.04;
     letter-spacing: -0.03em;
-    font-size: clamp(40px, 7vw, 96px);
+    font-size: clamp(28px, 7vw, 96px);
     margin: 0;
     display: block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   .tw__line + .tw__line { margin-top: 0.2em; }
   .tw__line--fg    { color: var(--fg); }
