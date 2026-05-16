@@ -1,153 +1,179 @@
 ---
-// gallery of marka.md screenshots — click a tab to swap the main image.
-// to add more shots: drop a PNG into /public/preview/ and add an entry below.
-const screenshots: { src: string; label: string; alt: string }[] = [
-  {
-    src: "/preview/hero.png",
-    label: "editor",
-    alt: "split editor + live preview of a README, with a sidebar of markdown files",
-  },
-  {
-    src: "/preview/preview.png",
-    label: "preview",
-    alt: "rendered markdown with code blocks, headings, and inline formatting",
-  },
-  {
-    src: "/preview/themes.png",
-    label: "themes",
-    alt: "theme switcher showing catppuccin and matcha color palettes",
-  },
-  {
-    src: "/preview/diagrams.png",
-    label: "diagrams",
-    alt: "mermaid diagram rendered inline with surrounding markdown",
-  },
+// rotating carousel of real marka.md screenshots — crossfades through 4
+// slides every ~4s. preserves the 3D tilt-on-reveal from the previous
+// single-image version. dot indicators below let users jump.
+
+const slides = [
+  { src: "/preview/01-editor.png", label: "split editor with live preview" },
+  { src: "/preview/02-palette.png", label: "⌘K command palette in dark theme" },
+  { src: "/preview/03-reading.png", label: "reading mode with copy toast" },
+  { src: "/preview/04-matcha.png", label: "matcha theme welcome screen" },
 ];
 ---
 
-<div class="preview-wrap">
+<div class="preview" data-carousel>
   <div
-    class="preview"
+    class="preview__viewport"
     role="img"
-    aria-label={`screenshot of marka.md — ${screenshots[0].alt}`}
+    aria-label="screenshots of marka.md cycling through editor, palette, reading mode, and matcha theme"
   >
-    <img
-      id="preview-img"
-      src={screenshots[0].src}
-      alt=""
-      width="2048"
-      height="1280"
-      decoding="async"
-      loading="lazy"
-      data-fallback="/preview/hero.png"
-    />
+    {slides.map((slide, i) => (
+      <img
+        class="preview__slide"
+        data-slide={i}
+        data-active={i === 0 ? "true" : "false"}
+        src={slide.src}
+        alt={slide.label}
+        width="2048"
+        height="1280"
+        decoding="async"
+        loading={i === 0 ? "eager" : "lazy"}
+      />
+    ))}
   </div>
-
-  <div class="preview__tabs" role="tablist" aria-label="screenshot views">
-    {
-      screenshots.map((s, i) => (
-        <button
-          type="button"
-          class={`preview__tab${i === 0 ? " preview__tab--active" : ""}`}
-          role="tab"
-          aria-selected={i === 0 ? "true" : "false"}
-          data-src={s.src}
-          data-alt={s.alt}
-        >
-          {s.label}
-        </button>
-      ))
-    }
+  <div class="preview__dots" role="tablist" aria-label="preview slide selector">
+    {slides.map((slide, i) => (
+      <button
+        type="button"
+        class="preview__dot"
+        data-dot={i}
+        data-active={i === 0 ? "true" : "false"}
+        role="tab"
+        aria-label={`show ${slide.label}`}
+        aria-selected={i === 0 ? "true" : "false"}
+      ></button>
+    ))}
   </div>
 </div>
 
-<script>
-  const img = document.getElementById("preview-img") as HTMLImageElement | null;
-  const wrap = document.querySelector(".preview") as HTMLElement | null;
-  const tabs = document.querySelectorAll<HTMLButtonElement>(".preview__tab");
-  if (img && wrap && tabs.length) {
-    const fallback = img.dataset.fallback || "/preview/hero.png";
-    img.addEventListener("error", () => {
-      if (!img.src.endsWith(fallback)) img.src = fallback;
-    });
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        const src = tab.dataset.src;
-        const alt = tab.dataset.alt || "";
-        if (!src) return;
-        img.src = src;
-        wrap.setAttribute("aria-label", `screenshot of marka.md — ${alt}`);
-        tabs.forEach((t) => {
-          t.classList.toggle("preview__tab--active", t === tab);
-          t.setAttribute("aria-selected", t === tab ? "true" : "false");
-        });
-      });
-    });
-  }
-</script>
-
 <style is:global>
-  .preview-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
   .preview {
     position: relative;
     width: 100%;
     perspective: 1400px;
   }
-  .preview img {
+  .preview__viewport {
+    position: relative;
     width: 100%;
-    height: auto;
-    display: block;
+    aspect-ratio: 2048 / 1280;
     border-radius: 14px;
+    overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow:
       0 30px 80px -20px rgba(0, 0, 0, 0.22),
       0 6px 18px -6px rgba(0, 0, 0, 0.08);
     transform: rotateX(2deg);
-    transition:
-      transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1),
-      opacity 220ms ease;
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background: #1a1a1a;
   }
-  .reveal.is-visible .preview img {
+  .reveal.is-visible .preview__viewport {
     transform: rotateX(0deg);
   }
-  .preview__tabs {
+  .preview__slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0;
+    transition: opacity 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    display: block;
+  }
+  .preview__slide[data-active="true"] {
+    opacity: 1;
+  }
+  .preview__dots {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 4px;
-    padding: 4px;
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    width: fit-content;
-    margin: 0 auto;
-    font-family: var(--font-mono);
+    gap: 8px;
+    margin-top: 18px;
   }
-  .preview__tab {
-    appearance: none;
-    background: transparent;
+  .preview__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
     border: 0;
-    padding: 6px 14px;
-    font: inherit;
-    font-size: 12.5px;
-    color: var(--muted);
+    background: var(--border);
     cursor: pointer;
-    border-radius: 999px;
-    transition:
-      color 180ms ease,
-      background 180ms ease;
+    padding: 0;
+    transition: background 220ms ease, transform 220ms ease, width 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .preview__tab:hover {
-    color: var(--fg);
+  .preview__dot:hover {
+    background: color-mix(in srgb, var(--accent) 55%, var(--border));
   }
-  .preview__tab--active {
-    background: var(--bg);
-    color: var(--fg);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  .preview__dot[data-active="true"] {
+    background: var(--accent);
+    width: 22px;
+  }
+  @media (max-width: 640px) {
+    .preview__dot { width: 7px; height: 7px; }
+    .preview__dot[data-active="true"] { width: 18px; }
+    .preview__dots { margin-top: 14px; gap: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .preview__slide { transition: none; }
+    .preview__dot { transition: none; }
   }
 </style>
+
+<script>
+  function setup() {
+    const root = document.querySelector<HTMLElement>("[data-carousel]");
+    if (!root) return;
+
+    const slides = Array.from(root.querySelectorAll<HTMLElement>(".preview__slide"));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>(".preview__dot"));
+    if (slides.length === 0) return;
+
+    let current = 0;
+    let timer: number | null = null;
+    const intervalMs = 4200;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const show = (next: number) => {
+      const n = ((next % slides.length) + slides.length) % slides.length;
+      slides.forEach((s, i) => s.dataset.active = String(i === n));
+      dots.forEach((d, i) => {
+        d.dataset.active = String(i === n);
+        d.setAttribute("aria-selected", String(i === n));
+      });
+      current = n;
+    };
+
+    const start = () => {
+      if (reduced) return;
+      stop();
+      timer = window.setInterval(() => show(current + 1), intervalMs);
+    };
+    const stop = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        show(i);
+        start();
+      });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else start();
+    });
+
+    root.addEventListener("pointerenter", stop);
+    root.addEventListener("pointerleave", start);
+
+    start();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setup, { once: true });
+  } else {
+    setup();
+  }
+</script>
