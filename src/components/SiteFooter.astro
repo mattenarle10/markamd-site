@@ -7,6 +7,22 @@ const repoUrl = "https://github.com/mattenarle10/markamd";
 ---
 
 <footer class="foot">
+  <div class="foot__featured">
+    <a
+      href="https://www.producthunt.com/products/marka-md?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-marka-md"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="marka.md featured on Product Hunt"
+    >
+      <img
+        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1148089&theme=light&t=1778916303617"
+        alt="marka.md - the markdown editor for AI context. | Product Hunt"
+        width="250"
+        height="54"
+        loading="lazy"
+      />
+    </a>
+  </div>
   <div class="foot__inner">
     <div class="foot__brand">
       <img src="/mascot/logo.png" alt="" width="20" height="20" />
@@ -26,6 +42,21 @@ const repoUrl = "https://github.com/mattenarle10/markamd";
   .foot {
     background: var(--bg);
     border-top: 1px solid var(--border);
+  }
+  .foot__featured {
+    display: flex;
+    justify-content: center;
+    padding: 24px 24px 0;
+  }
+  .foot__featured a {
+    display: inline-block;
+    line-height: 0;
+    transition: opacity 180ms ease;
+  }
+  .foot__featured a:hover { opacity: 0.85; }
+  .foot__featured img {
+    width: 250px;
+    height: 54px;
   }
   .foot__inner {
     max-width: 1100px;
