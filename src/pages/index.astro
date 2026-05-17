@@ -6,13 +6,21 @@ import FeatureCard from "../components/FeatureCard.astro";
 import AppPreview from "../components/AppPreview.astro";
 import Typewriter from "../components/Typewriter.astro";
 import AppleIcon from "../components/icons/AppleIcon.astro";
+import WindowsIcon from "../components/icons/WindowsIcon.astro";
+import LinuxIcon from "../components/icons/LinuxIcon.astro";
 import GithubIcon from "../components/icons/GithubIcon.astro";
 import CopyIcon from "../components/icons/CopyIcon.astro";
 import CheckIcon from "../components/icons/CheckIcon.astro";
 import { getLatestRelease } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
-const { tag: version, downloadUrl } = await getLatestRelease();
+const { tag: version, macUrl, windowsUrl, linuxUrl, releasesPageUrl } = await getLatestRelease();
+// fall back gracefully when an asset isn't published yet (e.g. linuxUrl pre-v1.1.1)
+const macHref = macUrl || releasesPageUrl;
+const windowsHref = windowsUrl || releasesPageUrl;
+const linuxHref = linuxUrl || releasesPageUrl;
+const hasWindows = windowsUrl.length > 0;
+const hasLinux = linuxUrl.length > 0;
 
 const features = [
   {
@@ -83,7 +91,7 @@ const shortcuts: { key: string; label: string }[] = [
       <nav class="nav__links">
         <a href="#features" class="nav__link">features</a>
         <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
-        <a href={downloadUrl} target="_blank" rel="noopener" class="nav__cta">
+        <a href={macHref} target="_blank" rel="noopener" class="nav__cta">
           download {version}
           <span aria-hidden>↓</span>
         </a>
@@ -110,14 +118,76 @@ const shortcuts: { key: string; label: string }[] = [
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
-        the calm markdown editor for the notes you share with ai. local-first, MIT, macOS.
+        the calm markdown editor for the notes you share with ai. local-first, MIT, macOS + Windows.
       </Reveal>
       <Reveal delay={540} class="hero__ctas">
-        <a href={downloadUrl} target="_blank" rel="noopener" class="btn btn--primary">
-          <AppleIcon size={14} />
-          download for macOS
-          <span class="btn__ver">{version}</span>
-        </a>
+        <div
+          class="dl"
+          data-dl
+          data-mac={macHref}
+          data-windows={hasWindows ? windowsHref : ""}
+          data-linux={hasLinux ? linuxHref : ""}
+        >
+          <a
+            href={macHref}
+            target="_blank"
+            rel="noopener"
+            class="btn btn--primary dl__primary"
+            data-dl-primary
+          >
+            <span class="dl__primary-icon" data-dl-icon>
+              <AppleIcon size={14} />
+            </span>
+            <span data-dl-label>download for macOS</span>
+            <span class="btn__ver">{version}</span>
+          </a>
+          <button
+            type="button"
+            class="btn btn--primary dl__chevron"
+            data-dl-toggle
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-label="show other platforms"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="dl__menu" role="menu" data-dl-menu hidden>
+            <a class="dl__row" href={macHref} target="_blank" rel="noopener" role="menuitem">
+              <AppleIcon size={14} />
+              <span class="dl__row-label">macOS <span class="dl__row-meta">· apple silicon, notarized</span></span>
+            </a>
+            <a
+              class={`dl__row${hasWindows ? "" : " dl__row--soon"}`}
+              href={hasWindows ? windowsHref : releasesPageUrl}
+              target="_blank"
+              rel="noopener"
+              role="menuitem"
+              aria-disabled={hasWindows ? "false" : "true"}
+            >
+              <WindowsIcon size={14} />
+              <span class="dl__row-label">
+                Windows <span class="dl__row-meta">{hasWindows ? "· 10+, x64" : "· soon"}</span>
+              </span>
+              {!hasWindows && <span class="dl__row-badge">soon</span>}
+            </a>
+            <a
+              class={`dl__row${hasLinux ? "" : " dl__row--soon"}`}
+              href={hasLinux ? linuxHref : releasesPageUrl}
+              target="_blank"
+              rel="noopener"
+              role="menuitem"
+              aria-disabled={hasLinux ? "false" : "true"}
+            >
+              <LinuxIcon size={14} />
+              <span class="dl__row-label">
+                Linux <span class="dl__row-meta">{hasLinux ? "· x86_64 AppImage" : "· coming v1.1.1"}</span>
+              </span>
+              {!hasLinux && <span class="dl__row-badge">soon</span>}
+            </a>
+          </div>
+        </div>
         <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost">
           <GithubIcon size={14} />
           view source
@@ -126,12 +196,12 @@ const shortcuts: { key: string; label: string }[] = [
       <Reveal as="p" delay={600} class="hero__status">
         <span class="hero__status-pill">
           <span class="hero__status-dot" aria-hidden></span>
-          notarized · auto-updating · macOS native
+          notarized on macOS · auto-updating · macOS + Windows
         </span>
         <a href="/changelog" class="hero__status-link">view changelog →</a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
-        local-first · MIT · macOS 13+ · no telemetry
+        local-first · MIT · macOS 13+ · Windows 10+ · no telemetry
       </Reveal>
     </div>
   </section>
@@ -215,7 +285,7 @@ const shortcuts: { key: string; label: string }[] = [
         ready to ship cleaner <span class="accent">context</span>?
       </h2>
       <div class="final__ctas">
-        <a href={downloadUrl} target="_blank" rel="noopener" class="btn btn--accent">
+        <a href={macHref} target="_blank" rel="noopener" class="btn btn--accent">
           <AppleIcon size={14} />
           download {version}
         </a>
@@ -909,6 +979,103 @@ const shortcuts: { key: string; label: string }[] = [
   .foot__links { display: flex; gap: 20px; }
   .foot__links a { color: var(--muted); text-decoration: none; transition: color 180ms ease; }
   .foot__links a:hover { color: var(--fg); }
+
+  /* ─── download dropdown (multi-platform) ──────────────── */
+  .dl {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: 999px;
+    background: var(--fg);
+    box-shadow: 0 0 0 0 transparent;
+    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .dl:hover { transform: translateY(-2px); }
+  .dl__primary {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 16px;
+  }
+  .dl__primary:hover { transform: none; }
+  .dl__primary-icon { display: inline-flex; align-items: center; }
+  .dl__chevron {
+    padding: 14px 14px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    cursor: pointer;
+    appearance: none;
+    font: inherit;
+  }
+  .dl__chevron:hover { transform: none; }
+  .dl__chevron svg {
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .dl[data-open="true"] .dl__chevron svg {
+    transform: rotate(180deg);
+  }
+  .dl__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 260px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.2);
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .dl[data-open="true"] .dl__menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .dl__menu[hidden] { display: flex; }  /* override [hidden] so the transition can run; visibility gated by data-open */
+  .dl__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--fg);
+    font-size: 14px;
+    transition: background 160ms ease;
+  }
+  .dl__row:hover { background: var(--bg-soft); }
+  .dl__row-label { font-weight: 500; }
+  .dl__row-meta {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 12.5px;
+    font-family: var(--font-mono);
+  }
+  .dl__row-badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .dl__row--soon { opacity: 0.7; cursor: default; }
+  .dl__row--soon:hover { background: transparent; }
+  @media (max-width: 480px) {
+    .dl { width: 100%; }
+    .dl__primary { flex: 1; justify-content: center; }
+    .dl__menu { right: auto; left: 0; width: 100%; min-width: 0; }
+  }
 </style>
 
 <script>
@@ -936,4 +1103,62 @@ const shortcuts: { key: string; label: string }[] = [
       }
     });
   });
+
+  // [data-dl] — multi-platform download dropdown with OS auto-detection
+  (() => {
+    const dl = document.querySelector<HTMLElement>("[data-dl]");
+    if (!dl) return;
+    const primary = dl.querySelector<HTMLAnchorElement>("[data-dl-primary]");
+    const iconWrap = dl.querySelector<HTMLElement>("[data-dl-icon]");
+    const label = dl.querySelector<HTMLElement>("[data-dl-label]");
+    const toggle = dl.querySelector<HTMLButtonElement>("[data-dl-toggle]");
+    const menu = dl.querySelector<HTMLElement>("[data-dl-menu]");
+    if (!primary || !label || !toggle || !menu) return;
+
+    // detect OS — set primary CTA href + label to match user's platform
+    const ua = navigator.userAgent;
+    const macHref = dl.dataset.mac ?? "";
+    const winHref = dl.dataset.windows ?? "";
+    const linuxHref = dl.dataset.linux ?? "";
+    let chosen: "mac" | "windows" | "linux" = "mac";
+    if (/Windows/i.test(ua) && winHref) chosen = "windows";
+    else if (/Linux/i.test(ua) && linuxHref) chosen = "linux";
+    else if (/Mac|iPhone|iPad|iPod/i.test(ua)) chosen = "mac";
+
+    if (chosen === "windows" && winHref) {
+      primary.href = winHref;
+      label.textContent = "download for Windows";
+      if (iconWrap) {
+        // swap apple → windows SVG by reusing the matching dropdown row's icon
+        const winRow = menu.querySelector<HTMLElement>(".dl__row:nth-child(2) [data-icon]") ||
+                       menu.querySelector<HTMLElement>(".dl__row:nth-child(2) svg");
+        if (winRow) iconWrap.innerHTML = winRow.outerHTML;
+      }
+    } else if (chosen === "linux" && linuxHref) {
+      primary.href = linuxHref;
+      label.textContent = "download for Linux";
+      if (iconWrap) {
+        const linuxRow = menu.querySelector<HTMLElement>(".dl__row:nth-child(3) [data-icon]") ||
+                         menu.querySelector<HTMLElement>(".dl__row:nth-child(3) svg");
+        if (linuxRow) iconWrap.innerHTML = linuxRow.outerHTML;
+      }
+    }
+    // mac is default — no swap needed (rendered server-side)
+
+    // dropdown open/close
+    const setOpen = (open: boolean) => {
+      dl.dataset.open = String(open);
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(dl.dataset.open !== "true");
+    });
+    document.addEventListener("click", (e) => {
+      if (!dl.contains(e.target as Node)) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  })();
 </script>
