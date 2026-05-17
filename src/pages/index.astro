@@ -1104,6 +1104,30 @@ const shortcuts: { key: string; label: string }[] = [
     });
   });
 
+  // platform-aware shortcut display — Windows visitors see Ctrl+K instead of ⌘K
+  // (the app itself uses Ctrl on Windows; the landing copy should match what
+  // they'll actually press once installed). Mac UA = leave symbols alone.
+  if (/Windows/i.test(navigator.userAgent)) {
+    const swap = (el: Element) => {
+      el.childNodes.forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+          const t = node.textContent;
+          if (/⌘|⌥|⇧/.test(t)) {
+            node.textContent = t
+              .replace(/⌘\s*⇧\s*/g, "Ctrl+Shift+")
+              .replace(/⌘\s*⌥\s*/g, "Ctrl+Alt+")
+              .replace(/⌘\s*/g, "Ctrl+")
+              .replace(/⌥\s*/g, "Alt+")
+              .replace(/⇧\s*/g, "Shift+");
+          }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          swap(node as Element);
+        }
+      });
+    };
+    swap(document.body);
+  }
+
   // [data-dl] — multi-platform download dropdown with OS auto-detection
   (() => {
     const dl = document.querySelector<HTMLElement>("[data-dl]");
