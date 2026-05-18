@@ -42,23 +42,6 @@ const canonical = new URL(Astro.url.pathname, siteUrl).toString();
     <title>{title}</title>
   </head>
   <body class="bg-bg text-fg">
-    <a
-      class="launch-banner"
-      href="https://www.producthunt.com/products/marka-md"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="marka.md is launching on Product Hunt today — vote and support"
-    >
-      <span class="launch-banner__inner">
-        <span class="launch-banner__rocket" aria-hidden>🚀</span>
-        <span class="launch-banner__text">
-          <strong>we're live on Product Hunt today</strong>
-          <span class="launch-banner__sep" aria-hidden>·</span>
-          <span class="launch-banner__cta">find us & vote</span>
-        </span>
-        <span class="launch-banner__arrow" aria-hidden>→</span>
-      </span>
-    </a>
     <slot />
     <Analytics />
     <SpeedInsights />
@@ -67,82 +50,5 @@ const canonical = new URL(Astro.url.pathname, siteUrl).toString();
       import "../scripts/word-reveal";
       import "../scripts/hero-ambient";
     </script>
-
-    <style is:global>
-      .launch-banner {
-        display: block;
-        background: linear-gradient(
-          90deg,
-          var(--accent) 0%,
-          color-mix(in srgb, var(--accent) 80%, #ffaa66) 50%,
-          var(--accent) 100%
-        );
-        background-size: 200% 100%;
-        color: #fff;
-        text-decoration: none;
-        text-align: center;
-        font-family: var(--font-mono);
-        font-size: 13px;
-        letter-spacing: -0.005em;
-        padding: 10px 16px;
-        position: relative;
-        animation: launch-banner-shimmer 6s ease-in-out infinite;
-        transition: filter 200ms ease;
-      }
-      .launch-banner:hover {
-        filter: brightness(1.06);
-      }
-      .launch-banner__inner {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        max-width: 100%;
-      }
-      .launch-banner__rocket {
-        font-size: 14px;
-        display: inline-flex;
-        animation: launch-banner-rocket 2.4s ease-in-out infinite;
-      }
-      .launch-banner__text {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .launch-banner__text strong {
-        font-weight: 600;
-      }
-      .launch-banner__sep {
-        opacity: 0.55;
-      }
-      .launch-banner__cta {
-        font-weight: 500;
-        opacity: 0.92;
-      }
-      .launch-banner__arrow {
-        display: inline-block;
-        transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
-      }
-      .launch-banner:hover .launch-banner__arrow {
-        transform: translateX(3px);
-      }
-      @keyframes launch-banner-shimmer {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-      }
-      @keyframes launch-banner-rocket {
-        0%, 100% { transform: translateY(0); }
-        40% { transform: translateY(-2px); }
-      }
-      @media (max-width: 640px) {
-        .launch-banner { font-size: 11.5px; padding: 9px 12px; }
-        .launch-banner__rocket { font-size: 12.5px; }
-        .launch-banner__sep { display: none; }
-        .launch-banner__cta { display: none; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .launch-banner { animation: none; }
-        .launch-banner__rocket { animation: none; }
-      }
-    </style>
   </body>
 </html>
