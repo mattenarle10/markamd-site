@@ -292,6 +292,38 @@ const shortcuts: { key: string; label: string }[] = [
     </div>
   </section>
 
+  <section class="featured">
+    <Reveal class="featured__inner">
+      <p class="featured__eyebrow">in the wild</p>
+      <ul class="featured__list">
+        <li class="featured__item">
+          <a href="https://alternativeto.net/software/marka-md/" target="_blank" rel="noopener" class="featured__link">
+            <span class="featured__name">AlternativeTo</span>
+            <span class="featured__meta">listed</span>
+          </a>
+        </li>
+        <li class="featured__item">
+          <a href="https://kachibito.net/useful-resource/marka-md" target="_blank" rel="noopener" class="featured__link">
+            <span class="featured__name">kachibito.net</span>
+            <span class="featured__meta">featured 🇯🇵</span>
+          </a>
+        </li>
+        <li class="featured__item">
+          <a href="https://github.com/mundimark/awesome-markdown-editors" target="_blank" rel="noopener" class="featured__link">
+            <span class="featured__name">awesome-markdown-editors</span>
+            <span class="featured__meta">merged</span>
+          </a>
+        </li>
+        <li class="featured__item">
+          <a href="https://www.producthunt.com/products/marka-md" target="_blank" rel="noopener" class="featured__link">
+            <span class="featured__name">Product Hunt</span>
+            <span class="featured__meta">launched</span>
+          </a>
+        </li>
+      </ul>
+    </Reveal>
+  </section>
+
   <section id="faq" class="faq">
     <div class="faq__inner">
       <Reveal class="section-head">
@@ -970,6 +1002,71 @@ const shortcuts: { key: string; label: string }[] = [
     letter-spacing: 0.1em;
     color: var(--muted);
     margin: 0;
+  }
+
+  /* ─── featured on (in the wild) ──────────────────────── */
+  .featured {
+    padding: 48px 24px 56px;
+    border-top: 1px solid var(--border);
+  }
+  .featured__inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    text-align: center;
+  }
+  .featured__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin: 0 0 22px;
+  }
+  .featured__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .featured__item { display: inline-flex; }
+  .featured__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--fg);
+    font-size: 13px;
+    transition:
+      border-color 200ms ease,
+      transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 200ms ease;
+  }
+  .featured__link:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -12px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .featured__name {
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .featured__meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+  @media (max-width: 640px) {
+    .featured { padding: 36px 16px 44px; }
+    .featured__link { padding: 8px 12px; font-size: 12.5px; }
+    .featured__meta { font-size: 10.5px; }
   }
 
   /* ─── faq ─────────────────────────────────────────────── */
