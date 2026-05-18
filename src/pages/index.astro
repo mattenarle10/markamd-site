@@ -15,7 +15,7 @@ import { getLatestRelease } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
 const { tag: version, macUrl, windowsUrl, linuxUrl, releasesPageUrl } = await getLatestRelease();
-// fall back gracefully when an asset isn't published yet (e.g. linuxUrl pre-v1.1.1)
+// fall back gracefully when an asset isn't published yet
 const macHref = macUrl || releasesPageUrl;
 const windowsHref = windowsUrl || releasesPageUrl;
 const linuxHref = linuxUrl || releasesPageUrl;
@@ -119,7 +119,7 @@ const shortcuts: { key: string; label: string }[] = [
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
-        the calm markdown editor for the notes you share with ai. local-first, MIT, macOS + Windows.
+        the calm markdown editor for the notes you share with ai. local-first, MIT, macOS · Windows · Linux.
       </Reveal>
       <Reveal delay={540} class="hero__ctas">
         <div
@@ -197,7 +197,7 @@ const shortcuts: { key: string; label: string }[] = [
             >
               <span class="dl__row-icon"><LinuxIcon size={14} /></span>
               <span class="dl__row-title">Linux</span>
-              <span class="dl__row-meta">{hasLinux ? "AppImage · .deb · .rpm" : "coming v1.1.1"}</span>
+              <span class="dl__row-meta">{hasLinux ? "AppImage · .deb · .rpm" : "coming soon"}</span>
               {hasLinux ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
             </a>
           </div>
@@ -210,12 +210,12 @@ const shortcuts: { key: string; label: string }[] = [
       <Reveal as="p" delay={600} class="hero__status">
         <span class="hero__status-pill">
           <span class="hero__status-dot" aria-hidden></span>
-          notarized on macOS · auto-updating · macOS + Windows
+          notarized on macOS · auto-updating · macOS · Windows · Linux
         </span>
         <a href="/changelog" class="hero__status-link">view changelog →</a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
-        local-first · MIT · macOS 13+ · Windows 10+ · no telemetry
+        local-first · MIT · macOS 13+ · Windows 10+ · Linux x86_64 · no telemetry
       </Reveal>
     </div>
   </section>
@@ -309,7 +309,7 @@ const shortcuts: { key: string; label: string }[] = [
         </details>
         <details class="faq__item">
           <summary class="faq__q">does it work on Windows? Linux?</summary>
-          <p class="faq__a">macOS (notarized) and Windows (unsigned) ship today. Linux is coming next — same matrix CI just needs the ubuntu runner wired. SmartScreen on Windows shows a warning the first time (we're not code-signed there — paid certs aren't worth it for a free OSS project). click "More info" → "Run anyway" and you're in.</p>
+          <p class="faq__a">all three ship today. <strong>macOS</strong> (notarized + auto-updating), <strong>Windows</strong> (unsigned — SmartScreen → "More info" → "Run anyway" on first install), and <strong>Linux</strong> (AppImage works on any distro, .deb for Debian/Ubuntu/Mint/Pop!_OS, .rpm for Fedora/RHEL/Rocky/openSUSE). we don't sign Windows builds because paid certs aren't worth it for a free MIT project — full source on GitHub if you want to inspect or build yourself.</p>
         </details>
         <details class="faq__item">
           <summary class="faq__q">how do updates work?</summary>
