@@ -19,6 +19,38 @@ const {
 const gscVerification = import.meta.env.GSC_VERIFICATION as string | undefined;
 const siteUrl = "https://markamd.vercel.app";
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "marka.md",
+  alternateName: ["markamd", "marka md", "marka-md"],
+  description:
+    "a calm, local markdown editor built for the notes you share with claude and other ai assistants. local-first, no telemetry, MIT licensed.",
+  url: siteUrl,
+  downloadUrl: "https://github.com/mattenarle10/markamd/releases/latest",
+  image: `${siteUrl}/mascot/logo.png`,
+  applicationCategory: "ProductivityApplication",
+  applicationSubCategory: "Markdown Editor",
+  operatingSystem: "macOS, Windows, Linux",
+  softwareVersion: "1.3.1",
+  license: "https://opensource.org/licenses/MIT",
+  author: {
+    "@type": "Person",
+    name: "Matt Enarle",
+    url: "https://github.com/mattenarle10",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  sameAs: [
+    "https://github.com/mattenarle10/markamd",
+    "https://www.producthunt.com/products/marka-md",
+    "https://alternativeto.net/software/marka-md/",
+  ],
+};
 ---
 
 <!doctype html>
@@ -27,19 +59,30 @@ const canonical = new URL(Astro.url.pathname, siteUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="keywords" content="markamd, marka.md, marka md, markdown editor, ai context editor, claude context, claude.md editor, local markdown, tauri markdown app, macos markdown editor, windows markdown editor, linux markdown editor, open source markdown" />
+    <meta name="author" content="Matt Enarle" />
     <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="marka.md (markamd)" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={`${siteUrl}/mascot/logo.png`} />
+    <meta property="og:image:alt" content="marka.md — orange octopus mascot logo" />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/mascot/logo.png`} />
     {gscVerification ? (
       <meta name="google-site-verification" content={gscVerification} />
     ) : null}
     <link rel="icon" type="image/png" href="/mascot/logo.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{title}</title>
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(softwareSchema)}
+    />
   </head>
   <body class="bg-bg text-fg">
     <slot />
