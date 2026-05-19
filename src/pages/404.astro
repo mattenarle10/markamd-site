@@ -1,0 +1,199 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getLatestRelease } from "../lib/version";
+
+const { tag: version } = await getLatestRelease();
+---
+
+<Layout
+  title="404 · marka.md"
+  description="this page swam away. let's get you back to dry land 🐙"
+>
+  <SiteNav />
+
+  <main class="nf">
+    <div class="nf__inner">
+      <div class="nf__mascot" aria-hidden="true">
+        <img src="/mascot/inspect.png" alt="" width="200" height="200" />
+      </div>
+
+      <p class="nf__code">404</p>
+      <h1 class="nf__title">
+        hmm, this page<br /><span class="nf__accent">swam away.</span>
+      </h1>
+      <p class="nf__lede">
+        the octopus searched everywhere — no luck. maybe the link is old, or the
+        page never existed. let's get you back to dry land.
+      </p>
+
+      <div class="nf__ctas">
+        <a class="nf__btn nf__btn--primary" href="/">← back home</a>
+        <a class="nf__btn" href="/changelog">changelog</a>
+        <a class="nf__btn" href="/feedback">report broken link</a>
+      </div>
+
+      <div class="nf__hints">
+        <p class="nf__hints-title">looking for something specific?</p>
+        <ul class="nf__hints-list">
+          <li><a href="/">home + downloads</a></li>
+          <li><a href="/changelog">changelog (every release)</a></li>
+          <li><a href="/privacy">privacy policy</a></li>
+          <li><a href="/feedback">feedback &amp; bug reports</a></li>
+          <li>
+            <a
+              href="https://github.com/mattenarle10/markamd"
+              target="_blank"
+              rel="noopener">github repo</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <SiteFooter version={version} />
+</Layout>
+
+<style is:global>
+  .nf {
+    background: var(--bg);
+    padding: 64px 24px 96px;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nf__inner {
+    max-width: 640px;
+    margin: 0 auto;
+    color: var(--fg);
+    text-align: center;
+  }
+  .nf__mascot {
+    margin: 0 auto 32px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: nf-float 4s ease-in-out infinite;
+  }
+  .nf__mascot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  @keyframes nf-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .nf__code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .nf__title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5.5vw, 56px);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .nf__accent { color: var(--accent); }
+  .nf__lede {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 auto 36px;
+    max-width: 480px;
+  }
+  .nf__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+  .nf__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--fg) 3%, transparent);
+    color: var(--fg);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition:
+      border-color 220ms ease,
+      background 220ms ease,
+      transform 180ms ease;
+  }
+  .nf__btn:hover {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: color-mix(in srgb, var(--accent) 6%, transparent);
+    transform: translateY(-1px);
+  }
+  .nf__btn--primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .nf__btn--primary:hover {
+    background: color-mix(in srgb, var(--accent) 92%, black);
+    border-color: color-mix(in srgb, var(--accent) 92%, black);
+    color: #fff;
+  }
+  .nf__hints {
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+    text-align: left;
+    display: inline-block;
+  }
+  .nf__hints-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .nf__hints-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .nf__hints-list li {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .nf__hints-list a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .nf__hints-list a:hover {
+    color: var(--accent);
+    border-bottom-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nf__mascot {
+      animation: none;
+    }
+  }
+</style>
