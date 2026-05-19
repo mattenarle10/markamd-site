@@ -1,0 +1,178 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getLatestRelease } from "../lib/version";
+
+const repoUrl = "https://github.com/mattenarle10/markamd";
+const { tag: version } = await getLatestRelease();
+
+const feedbackUrl = `${repoUrl}/issues/new?template=feedback.yml`;
+const bugUrl = `${repoUrl}/issues/new?template=bug-report.yml`;
+const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
+---
+
+<Layout
+  title="feedback · marka.md"
+  description="share thoughts, ideas, or report a bug. github for technical, email for everything else."
+>
+  <SiteNav />
+
+  <main class="fb">
+    <article class="fb__article">
+      <p class="fb__eyebrow">feedback</p>
+      <h1 class="fb__title">
+        tell me what you think.
+        <br />
+        <span class="fb__accent">honestly.</span>
+      </h1>
+      <p class="fb__lede">
+        marka.md is built in the open. every idea, complaint, or "would be cool if…"
+        helps shape the next release. pick whichever channel feels right.
+      </p>
+
+      <section class="fb__cards">
+        <a class="fb__card" href={feedbackUrl} target="_blank" rel="noopener">
+          <div class="fb__card-icon" aria-hidden="true">💬</div>
+          <h2 class="fb__card-title">share an idea or feature request</h2>
+          <p class="fb__card-body">
+            opens a structured form on github. best for ideas, missing features,
+            or things you wish worked differently. requires a github account.
+          </p>
+          <span class="fb__card-cta">open feedback form →</span>
+        </a>
+
+        <a class="fb__card" href={bugUrl} target="_blank" rel="noopener">
+          <div class="fb__card-icon" aria-hidden="true">🐛</div>
+          <h2 class="fb__card-title">report a bug</h2>
+          <p class="fb__card-body">
+            something not working? this opens a quick bug report form with the
+            fields i need to reproduce it. version + platform + steps.
+          </p>
+          <span class="fb__card-cta">open bug report →</span>
+        </a>
+
+        <a class="fb__card" href={mailto}>
+          <div class="fb__card-icon" aria-hidden="true">✉️</div>
+          <h2 class="fb__card-title">just send an email</h2>
+          <p class="fb__card-body">
+            no github account, no form, no public thread. opens your mail app
+            with a draft to me directly. honest thoughts welcome.
+          </p>
+          <span class="fb__card-cta">send email →</span>
+        </a>
+      </section>
+
+      <p class="fb__note">
+        i read everything. response time depends on the channel — github usually
+        within a day or two, email when i can. salamat 🐙
+      </p>
+    </article>
+  </main>
+
+  <SiteFooter version={version} />
+</Layout>
+
+<style is:global>
+  .fb {
+    background: var(--bg);
+    padding: 96px 24px 128px;
+  }
+  .fb__article {
+    max-width: 880px;
+    margin: 0 auto;
+    color: var(--fg);
+  }
+  .fb__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .fb__title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5.5vw, 64px);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    margin-bottom: 32px;
+  }
+  .fb__accent { color: var(--accent); }
+  .fb__lede {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 56px;
+    max-width: 640px;
+  }
+  .fb__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  @media (min-width: 720px) {
+    .fb__cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .fb__card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 24px;
+    background: color-mix(in srgb, var(--fg) 3%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 220ms ease,
+      transform 220ms ease,
+      background 220ms ease;
+  }
+  .fb__card:hover {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    transform: translateY(-2px);
+  }
+  .fb__card-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+  .fb__card-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+  }
+  .fb__card-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+    flex-grow: 1;
+  }
+  .fb__card-cta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .fb__note {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    max-width: 640px;
+  }
+</style>
