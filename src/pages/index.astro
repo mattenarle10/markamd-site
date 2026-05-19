@@ -11,6 +11,7 @@ import LinuxIcon from "../components/icons/LinuxIcon.astro";
 import GithubIcon from "../components/icons/GithubIcon.astro";
 import CopyIcon from "../components/icons/CopyIcon.astro";
 import CheckIcon from "../components/icons/CheckIcon.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import { getLatestRelease } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
@@ -352,8 +353,8 @@ const shortcuts: { key: string; label: string }[] = [
           <p class="faq__a">those are great. marka.md isn't trying to replace them as your main editor — it's a focused tool for one specific loop: open a folder of <code>.md</code>, edit, ⌘⇧C clean markdown to clipboard, paste into Claude / ChatGPT / any AI chat. if obsidian's vault + plugins feel right for you, you don't need this.</p>
         </details>
         <details class="faq__item">
-          <summary class="faq__q">how do I report a bug or contribute?</summary>
-          <p class="faq__a">open an issue on <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">github</a> — i read everything. for security issues see <a href={`${repoUrl}/blob/main/SECURITY.md`} target="_blank" rel="noopener">SECURITY.md</a>. PRs welcome.</p>
+          <summary class="faq__q">how do I send feedback or report a bug?</summary>
+          <p class="faq__a">head to the <a href="/feedback">feedback page</a> — pick the github form for ideas/bugs, or just email me. i read everything. for security issues see <a href={`${repoUrl}/blob/main/SECURITY.md`} target="_blank" rel="noopener">SECURITY.md</a>. PRs welcome.</p>
         </details>
       </Reveal>
     </div>
@@ -378,37 +379,7 @@ const shortcuts: { key: string; label: string }[] = [
     </Reveal>
   </section>
 
-  <footer class="foot">
-    <div class="foot__featured">
-      <a
-        href="https://www.producthunt.com/products/marka-md?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-marka-md"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="marka.md featured on Product Hunt"
-      >
-        <img
-          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1148089&theme=light&t=1778916303617"
-          alt="marka.md - the markdown editor for AI context. | Product Hunt"
-          width="250"
-          height="54"
-          loading="lazy"
-        />
-      </a>
-    </div>
-    <div class="foot__inner">
-      <div class="foot__brand">
-        <img src="/mascot/logo.png" alt="" width="20" height="20" />
-        <span>marka.md · {version}</span>
-      </div>
-      <nav class="foot__links">
-        <a href={repoUrl} target="_blank" rel="noopener">github</a>
-        <a href="/changelog">changelog</a>
-        <a href="/privacy">privacy</a>
-        <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
-        <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">report a bug</a>
-      </nav>
-    </div>
-  </footer>
+  <SiteFooter version={version} />
 </Layout>
 
 <style is:global>
