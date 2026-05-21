@@ -17,8 +17,10 @@ export type Release = {
   tag: string;
   /** legacy: direct .dmg link or releases page (kept for backwards compat with privacy.astro) */
   downloadUrl: string;
-  /** macOS .dmg, or releases page fallback */
+  /** macOS apple-silicon .dmg, or releases page fallback */
   macUrl: string;
+  /** macOS intel .dmg (marka.md_intel.dmg). Empty until v1.3.8 ships intel artifacts. */
+  macIntelUrl: string;
   /** Windows -setup.exe (NSIS), or releases page fallback. Empty when no Windows asset on the release. */
   windowsUrl: string;
   /** Linux .AppImage (preferred) or .deb. Empty until v1.1.1 ships Linux. */
@@ -31,6 +33,7 @@ const FALLBACK: Release = {
   tag: "v0.1.5",
   downloadUrl: RELEASES_PAGE,
   macUrl: RELEASES_PAGE,
+  macIntelUrl: "",
   windowsUrl: "",
   linuxUrl: "",
   releasesPageUrl: RELEASES_PAGE,
@@ -103,14 +106,18 @@ export async function getLatestRelease(): Promise<Release> {
     const tag = release.tag_name ?? FALLBACK.tag;
     const assets = release.assets ?? [];
 
-    // macOS: prefer apple silicon .dmg (most macs in 2026); fall back to any .dmg;
-    // last resort, point at the releases listing page so the user can pick.
-    const aarch64 = assets.find((a) => a.name?.endsWith("_aarch64.dmg"));
+    // macOS: apple silicon = marka.md.dmg (post-rename) or *_aarch64.dmg (pre-rename).
+    // intel = marka.md_intel.dmg (post-rename). Fall back to any .dmg, then releases page.
+    const aarch64 = assets.find((a) => a.name === "marka.md.dmg")
+      ?? assets.find((a) => a.name?.endsWith("_aarch64.dmg"));
+    const intel = assets.find((a) => a.name === "marka.md_intel.dmg")
+      ?? assets.find((a) => a.name?.includes("x64") && a.name?.endsWith(".dmg"));
     const anyDmg = assets.find((a) => a.name?.endsWith(".dmg"));
     const macUrl =
       aarch64?.browser_download_url ??
       anyDmg?.browser_download_url ??
       RELEASES_PAGE;
+    const macIntelUrl = intel?.browser_download_url ?? "";
 
     // Windows: prefer the NSIS installer (-setup.exe); MSI as fallback.
     const winSetup = assets.find((a) => a.name?.endsWith("-setup.exe"));
@@ -127,8 +134,9 @@ export async function getLatestRelease(): Promise<Release> {
 
     cached = {
       tag,
-      downloadUrl: macUrl, // back-compat: existing callers still get a working link
+      downloadUrl: macUrl,
       macUrl,
+      macIntelUrl,
       windowsUrl,
       linuxUrl,
       releasesPageUrl: RELEASES_PAGE,

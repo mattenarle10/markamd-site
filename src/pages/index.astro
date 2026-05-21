@@ -15,11 +15,12 @@ import SiteFooter from "../components/SiteFooter.astro";
 import { getLatestRelease } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
-const { tag: version, macUrl, windowsUrl, linuxUrl, releasesPageUrl } = await getLatestRelease();
-// fall back gracefully when an asset isn't published yet
+const { tag: version, macUrl, macIntelUrl, windowsUrl, linuxUrl, releasesPageUrl } = await getLatestRelease();
 const macHref = macUrl || releasesPageUrl;
+const macIntelHref = macIntelUrl || releasesPageUrl;
 const windowsHref = windowsUrl || releasesPageUrl;
 const linuxHref = linuxUrl || releasesPageUrl;
+const hasMacIntel = macIntelUrl.length > 0;
 const hasWindows = windowsUrl.length > 0;
 const hasLinux = linuxUrl.length > 0;
 
@@ -172,6 +173,20 @@ const shortcuts: { key: string; label: string }[] = [
               <span class="dl__row-title">macOS</span>
               <span class="dl__row-meta">apple silicon</span>
               <span class="dl__row-arrow" aria-hidden="true">↓</span>
+            </a>
+            <a
+              class={`dl__row${hasMacIntel ? "" : " dl__row--soon"}`}
+              href={hasMacIntel ? macIntelHref : releasesPageUrl}
+              target="_blank"
+              rel="noopener"
+              role="menuitem"
+              data-dl-row="mac-intel"
+              aria-disabled={hasMacIntel ? "false" : "true"}
+            >
+              <span class="dl__row-icon"><AppleIcon size={14} /></span>
+              <span class="dl__row-title">macOS</span>
+              <span class="dl__row-meta">{hasMacIntel ? "intel" : "intel · coming soon"}</span>
+              {hasMacIntel ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
             </a>
             <a
               class={`dl__row${hasWindows ? "" : " dl__row--soon"}`}
