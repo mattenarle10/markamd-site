@@ -148,3 +148,61 @@ export async function getLatestRelease(): Promise<Release> {
     return cached;
   }
 }
+
+// ─── live repo stats (build-time only) ──────────────────────────────────────
+// Used by the landing's "in the wild" stats strip. Stars come from the repo
+// endpoint, installs are the sum of all release-asset download counts, open
+// issues come from search API (lets us exclude PRs). All fail-safe to zeros.
+
+export type RepoStats = {
+  stars: number;
+  /** sum of all release asset download counts across all releases */
+  installs: number;
+  /** open issues only (PRs excluded via the search API filter) */
+  openIssues: number;
+};
+
+const STATS_FALLBACK: RepoStats = { stars: 0, installs: 0, openIssues: 0 };
+
+let statsCached: RepoStats | null = null;
+
+export async function getRepoStats(): Promise<RepoStats> {
+  if (statsCached) return statsCached;
+  try {
+    const headers = { Accept: "application/vnd.github+json" };
+    const [repoRes, releasesRes, issuesRes] = await Promise.all([
+      fetch("https://api.github.com/repos/mattenarle10/markamd", { headers }),
+      fetch("https://api.github.com/repos/mattenarle10/markamd/releases?per_page=20", { headers }),
+      fetch(
+        "https://api.github.com/search/issues?q=repo:mattenarle10/markamd+is:issue+is:open&per_page=1",
+        { headers },
+      ),
+    ]);
+    if (!repoRes.ok || !releasesRes.ok) {
+      statsCached = STATS_FALLBACK;
+      return statsCached;
+    }
+    const repo = (await repoRes.json()) as { stargazers_count?: number };
+    const releases = (await releasesRes.json()) as Array<{
+      assets?: Array<{ download_count?: number }>;
+    }>;
+    const issues = issuesRes.ok
+      ? ((await issuesRes.json()) as { total_count?: number })
+      : { total_count: 0 };
+    const installs = releases.reduce(
+      (sum, r) =>
+        sum + (r.assets ?? []).reduce((s, a) => s + (a.download_count ?? 0), 0),
+      0,
+    );
+    statsCached = {
+      stars: repo.stargazers_count ?? 0,
+      installs,
+      openIssues: issues.total_count ?? 0,
+    };
+    return statsCached;
+  } catch (err) {
+    console.warn("[markamd-site] stats fetch failed, using zeros:", err);
+    statsCached = STATS_FALLBACK;
+    return statsCached;
+  }
+}

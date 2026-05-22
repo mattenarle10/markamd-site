@@ -12,10 +12,11 @@ import GithubIcon from "../components/icons/GithubIcon.astro";
 import CopyIcon from "../components/icons/CopyIcon.astro";
 import CheckIcon from "../components/icons/CheckIcon.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { getLatestRelease } from "../lib/version";
+import { getLatestRelease, getRepoStats } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
 const { tag: version, macUrl, macIntelUrl, windowsUrl, linuxUrl, releasesPageUrl } = await getLatestRelease();
+const stats = await getRepoStats();
 const macHref = macUrl || releasesPageUrl;
 const macIntelHref = macIntelUrl || releasesPageUrl;
 const windowsHref = windowsUrl || releasesPageUrl;
@@ -347,6 +348,17 @@ const shortcuts: { key: string; label: string }[] = [
           </a>
         </li>
       </ul>
+      {stats.installs > 0 || stats.stars > 0 ? (
+        <p class="featured__stats" aria-label="live repository stats">
+          <span><strong>{stats.installs.toLocaleString()}+</strong> installs</span>
+          <span aria-hidden>·</span>
+          <span>⭐ <strong>{stats.stars}</strong> stars</span>
+          <span aria-hidden>·</span>
+          <span><strong>{stats.openIssues}</strong> open {stats.openIssues === 1 ? "issue" : "issues"}</span>
+          <span aria-hidden>·</span>
+          <span>MIT</span>
+        </p>
+      ) : null}
     </Reveal>
   </section>
 
@@ -1067,10 +1079,27 @@ const shortcuts: { key: string; label: string }[] = [
     color: var(--muted);
     letter-spacing: -0.005em;
   }
+  .featured__stats {
+    margin: 24px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+  .featured__stats strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
   @media (max-width: 640px) {
     .featured { padding: 36px 16px 44px; }
     .featured__link { padding: 8px 12px; font-size: 12.5px; }
     .featured__meta { font-size: 10.5px; }
+    .featured__stats { margin-top: 18px; font-size: 11px; gap: 6px 10px; }
   }
 
   /* ─── faq ─────────────────────────────────────────────── */
