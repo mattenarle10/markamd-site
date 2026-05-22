@@ -292,27 +292,50 @@ const shortcuts: { key: string; label: string }[] = [
 
   <section class="themes">
     <Reveal class="themes__inner">
-      <p class="eyebrow themes__caption">8 themes. hover-preview in the menu.</p>
+      <p class="eyebrow themes__caption">8 themes across 5 families. hover-preview in the menu.</p>
       <div class="themes__grid">
         {[
-          // 4 colors per swatch (bg, surface, text, accent) make each catppuccin
-          // variant visually distinct + show the personality of the rest.
-          { name: "latte",     colors: ["#eff1f5", "#e6e9ef", "#4c4f69", "#dc8a78"] },
-          { name: "frappé",    colors: ["#303446", "#414559", "#c6d0f5", "#ef9f76"] },
-          { name: "macchiato", colors: ["#24273a", "#363a4f", "#cad3f5", "#f5a97f"] },
-          { name: "mocha",     colors: ["#1e1e2e", "#313244", "#cdd6f4", "#fab387"] },
-          { name: "matcha",    colors: ["#f9f6ee", "#ebe7d8", "#2e3340", "#5a9a76"] },
-          { name: "kanagawa",  colors: ["#1f1f28", "#2a2a37", "#dcd7ba", "#7e9cd8"] },
-          { name: "rose pine", colors: ["#191724", "#26233a", "#e0def4", "#ebbcba"] },
-          { name: "ayu",       colors: ["#0b0e14", "#131721", "#bfbdb6", "#ffb454"] },
+          // catppuccin is intentionally one design at 4 brightness levels — show
+          // the full ramp in one swatch instead of 4 near-identical chips.
+          {
+            name: "catppuccin",
+            sub: "4 levels",
+            kind: "ramp" as const,
+            stops: ["#eff1f5", "#303446", "#24273a", "#1e1e2e"],
+          },
+          {
+            name: "matcha",
+            sub: "washi + kelly",
+            kind: "duo" as const,
+            stops: ["#f9f6ee", "#5a9a76"],
+          },
+          {
+            name: "kanagawa",
+            sub: "ink + cream",
+            kind: "duo" as const,
+            stops: ["#1f1f28", "#7e9cd8"],
+          },
+          {
+            name: "rose pine",
+            sub: "warm dusk",
+            kind: "duo" as const,
+            stops: ["#191724", "#ebbcba"],
+          },
+          {
+            name: "ayu",
+            sub: "amber dark",
+            kind: "duo" as const,
+            stops: ["#0b0e14", "#ffb454"],
+          },
         ].map((t) => (
-          <div class="theme reveal-child" data-tooltip={t.name}>
-            <span class="theme__swatch" aria-hidden>
-              {t.colors.map((c) => (
+          <div class="theme reveal-child">
+            <span class={`theme__swatch theme__swatch--${t.kind}`} aria-hidden>
+              {t.stops.map((c) => (
                 <span class="theme__chip" style={`background:${c}`}></span>
               ))}
             </span>
             <span class="theme__name">{t.name}</span>
+            <span class="theme__sub">{t.sub}</span>
           </div>
         ))}
       </div>
@@ -963,14 +986,22 @@ const shortcuts: { key: string; label: string }[] = [
   .theme:hover { transform: translateY(-2px); }
   .theme__swatch {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border);
     transition: box-shadow 200ms ease, transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* duo swatch — diagonal split, light bg / accent */
+  .theme__swatch--duo {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+  /* ramp swatch — 4 brightness levels in one row (catppuccin) */
+  .theme__swatch--ramp {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
   }
   .theme__chip {
     display: block;
@@ -983,17 +1014,25 @@ const shortcuts: { key: string; label: string }[] = [
   }
   .theme__name {
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
+    font-size: 12px;
+    color: var(--fg);
     letter-spacing: -0.005em;
+    margin-top: 2px;
   }
-  .theme:hover .theme__name { color: var(--fg); }
+  .theme__sub {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+  }
+  .theme:hover .theme__sub { color: var(--fg); }
   @media (max-width: 640px) {
     .themes { padding: 44px 16px 56px; }
     .themes__caption { font-size: 13px; margin-bottom: 22px; }
     .themes__grid { gap: 14px 16px; }
-    .theme__swatch { width: 42px; height: 42px; }
-    .theme__name { font-size: 10.5px; }
+    .theme__swatch { width: 56px; height: 56px; }
+    .theme__name { font-size: 11px; }
+    .theme__sub { font-size: 10px; }
   }
 
   /* ─── install ─────────────────────────────────────────── */
