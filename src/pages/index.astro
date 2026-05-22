@@ -34,8 +34,8 @@ const features = [
     body: "edit on the left, watch markdown render on the right. mermaid + shiki, all live.",
   },
   {
-    title: "reading mode",
-    body: "press ⌘. for a calm, preview-only view with generous typography. perfect for proofing before you paste.",
+    title: "reading mode + editor-only",
+    body: "⌘. for a calm preview-only view (great for proofing). ⌘⇧. for editor-only when you just want to write. mirror modes, mutually exclusive.",
   },
   {
     title: "share with ai",
@@ -43,7 +43,7 @@ const features = [
   },
   {
     title: "find · undo · all keyboard",
-    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. it's all there. 5 themes too — catppuccin + matcha.",
+    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. it's all there. 8 themes too — catppuccin family, matcha, kanagawa, rose pine, ayu.",
   },
   {
     title: "stays local",
@@ -76,7 +76,9 @@ const shortcuts: { key: string; label: string }[] = [
   { key: "⌘K", label: "command palette" },
   { key: "⌘⇧O", label: "open folder" },
   { key: "⌘S", label: "save" },
+  { key: "⌘⇧S", label: "save as" },
   { key: "⌘.", label: "reading mode" },
+  { key: "⌘⇧.", label: "editor-only" },
   { key: "⌘⇧C", label: "copy markdown" },
   { key: "⌘B", label: "toggle sidebar" },
   { key: "⌘/", label: "help" },
