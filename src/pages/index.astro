@@ -42,12 +42,20 @@ const features = [
     body: "press ⌘⇧C to copy the current file as clean markdown. paste into claude, chatgpt, gemini, your local agent — anywhere that reads text.",
   },
   {
+    title: "vim mode (opt-in)",
+    body: "toggle from the theme menu. NORMAL/INSERT/VISUAL/REPLACE pill in the status bar. hjkl, dd, yy, : command bar — full vim defaults via @replit/codemirror-vim. lazy-loaded so non-vim users don't pay the ~200KB cost.",
+  },
+  {
     title: "find · undo · all keyboard",
     body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. it's all there. 8 themes too — catppuccin family, matcha, kanagawa, rose pine, ayu.",
   },
   {
     title: "stays local",
     body: "your notes never leave your machine. no telemetry, no cloud, no account. just files.",
+  },
+  {
+    title: "lean & lazy",
+    body: "~240 MB resident on macOS. shiki themes + 36 langs lazy-loaded only when you actually hit them. mermaid only loads when a doc has a diagram. tauri 2 + native webview, zero electron bloat.",
   },
 ];
 
@@ -228,9 +236,9 @@ const shortcuts: { key: string; label: string }[] = [
       <Reveal as="p" delay={600} class="hero__status">
         <span class="hero__status-pill">
           <span class="hero__status-dot" aria-hidden></span>
-          notarized on macOS · auto-updating · macOS · Windows · Linux
+          notarized · auto-updating · {version} · MIT
         </span>
-        <a href="/changelog" class="hero__status-link">view changelog →</a>
+        <a href="/changelog" class="hero__status-link">what's new →</a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
         local-first · MIT · macOS 13+ · Windows 10+ · Linux x86_64 · no telemetry
@@ -368,6 +376,14 @@ const shortcuts: { key: string; label: string }[] = [
         <details class="faq__item">
           <summary class="faq__q">why not obsidian / bear / iA Writer?</summary>
           <p class="faq__a">those are great. marka.md isn't trying to replace them as your main editor — it's a focused tool for one specific loop: open a folder of <code>.md</code>, edit, ⌘⇧C clean markdown to clipboard, paste into Claude / ChatGPT / any AI chat. if obsidian's vault + plugins feel right for you, you don't need this.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">what about VS Code / Cursor / Zed?</summary>
+          <p class="faq__a">those are full code editors. marka.md is single-purpose: a calm markdown editor for the loop of "collect notes → write context → share with ai". if you already live in VS Code / Cursor / Zed, you don't need this — open <code>.md</code> from there and you're fine. marka.md exists for people who want a focused space for that workflow without the language-server / extension noise.</p>
+        </details>
+        <details class="faq__item">
+          <summary class="faq__q">does it support vim?</summary>
+          <p class="faq__a">yes — opt-in. open the theme menu and toggle "vim mode" under <code>editor</code>. status bar shows a colored pill (NORMAL/INSERT/VISUAL/REPLACE) so you always know where you are. uses <a href="https://github.com/replit/codemirror-vim" target="_blank" rel="noopener">@replit/codemirror-vim</a>, lazy-loaded — non-vim users don't pay the cost.</p>
         </details>
         <details class="faq__item">
           <summary class="faq__q">how do I send feedback or report a bug?</summary>
