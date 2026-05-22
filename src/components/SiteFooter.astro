@@ -4,97 +4,211 @@ type Props = {
 };
 const { version } = Astro.props;
 const repoUrl = "https://github.com/mattenarle10/markamd";
+const year = new Date().getFullYear();
 ---
 
 <footer class="foot">
-  <div class="foot__featured">
-    <a
-      href="https://www.producthunt.com/products/marka-md?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-marka-md"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="marka.md featured on Product Hunt"
-    >
-      <img
-        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1148089&theme=light&t=1778916303617"
-        alt="marka.md - the markdown editor for AI context. | Product Hunt"
-        width="250"
-        height="54"
-        loading="lazy"
-      />
-    </a>
-  </div>
-  <div class="foot__inner">
-    <div class="foot__brand">
-      <img src="/mascot/logo.png" alt="" width="20" height="20" />
-      <span>marka.md · {version}</span>
+  <div class="foot__card">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <div class="foot__brand-row">
+          <img src="/mascot/logo.png" alt="" width="22" height="22" class="foot__brand-mark" />
+          <span class="foot__brand-name">marka.md</span>
+        </div>
+        <p class="foot__tag">a calm markdown editor for the notes you share with ai.</p>
+        <p class="foot__by">
+          built by
+          <a href="https://github.com/mattenarle10" target="_blank" rel="noopener" class="foot__by-link">matt enarle</a>
+          · {version}
+        </p>
+      </div>
+
+      <div class="foot__cols">
+        <div class="foot__col">
+          <p class="foot__col-h">product</p>
+          <a href="/" class="foot__link">home</a>
+          <a href="/changelog" class="foot__link">changelog</a>
+          <a href="/feedback" class="foot__link">feedback</a>
+        </div>
+        <div class="foot__col">
+          <p class="foot__col-h">code</p>
+          <a href={repoUrl} target="_blank" rel="noopener" class="foot__link">github</a>
+          <a href={`${repoUrl}/releases`} target="_blank" rel="noopener" class="foot__link">releases</a>
+          <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener" class="foot__link">MIT license</a>
+        </div>
+        <div class="foot__col">
+          <p class="foot__col-h">legal</p>
+          <a href="/privacy" class="foot__link">privacy</a>
+          <a href={`${repoUrl}/blob/main/SECURITY.md`} target="_blank" rel="noopener" class="foot__link">security</a>
+          <a href="mailto:enarlem10@gmail.com" class="foot__link">contact</a>
+        </div>
+      </div>
     </div>
-    <nav class="foot__links">
-      <a href="/">home</a>
-      <a href={repoUrl} target="_blank" rel="noopener">github</a>
-      <a href="/changelog">changelog</a>
-      <a href="/feedback">feedback</a>
-      <a href="/privacy">privacy</a>
-      <a href={`${repoUrl}/blob/main/LICENSE`} target="_blank" rel="noopener">MIT</a>
-    </nav>
+
+    <div class="foot__bottom">
+      <p class="foot__legalese">© {year} matt enarle · local-first · MIT · no telemetry</p>
+    </div>
+
+    <!-- big wordmark fade — pure decoration, inspired by indie-OSS landing pages -->
+    <p class="foot__wordmark" aria-hidden>marka.md</p>
   </div>
 </footer>
 
 <style is:global>
   .foot {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-  }
-  .foot__featured {
-    display: flex;
-    justify-content: center;
-    padding: 24px 24px 0;
-  }
-  .foot__featured a {
-    display: inline-block;
-    line-height: 0;
-    transition: opacity 180ms ease;
-  }
-  .foot__featured a:hover { opacity: 0.85; }
-  .foot__featured img {
-    width: 250px;
-    height: 54px;
-  }
-  .foot__inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 32px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
+    background: #fff;
+    padding: 0 16px 16px;
   }
   @media (min-width: 640px) {
-    .foot__inner {
-      flex-direction: row;
+    .foot { padding: 0 24px 24px; }
+  }
+  .foot__card {
+    position: relative;
+    overflow: hidden;
+    max-width: 1240px;
+    margin: 0 auto;
+    background: #0e0e10;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 24px;
+    padding: 56px 32px 0;
+  }
+  @media (min-width: 640px) {
+    .foot__card { padding: 72px 48px 0; border-radius: 28px; }
+  }
+  .foot__top {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  @media (min-width: 880px) {
+    .foot__top {
+      grid-template-columns: minmax(280px, 1.2fr) 2fr;
+      align-items: start;
+      gap: 64px;
     }
   }
-  .foot__brand {
+
+  /* brand block */
+  .foot__brand-row {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--muted);
+    gap: 10px;
   }
-  .foot__links {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
+  .foot__brand-mark {
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .foot__links a {
-    color: var(--muted);
+  .foot__brand:hover .foot__brand-mark { transform: rotate(-8deg); }
+  .foot__brand-name {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .foot__tag {
+    margin: 14px 0 0;
+    max-width: 320px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .foot__by {
+    margin: 18px 0 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: -0.005em;
+  }
+  .foot__by-link {
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
-    transition: color 180ms ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    transition: color 180ms ease, border-color 180ms ease;
   }
-  .foot__links a:hover {
-    color: var(--fg);
+  .foot__by-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* link columns */
+  .foot__cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 24px;
+  }
+  @media (max-width: 540px) {
+    .foot__cols { grid-template-columns: repeat(2, 1fr); }
+  }
+  .foot__col { display: flex; flex-direction: column; gap: 12px; }
+  .foot__col-h {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0 0 6px;
+  }
+  .foot__link {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    transition: color 180ms ease, transform 180ms ease;
+    width: fit-content;
+  }
+  .foot__link:hover {
+    color: #fff;
+    transform: translateX(2px);
+  }
+
+  /* bottom legal strip */
+  .foot__bottom {
+    position: relative;
+    z-index: 2;
+    margin-top: 40px;
+    padding: 20px 0 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .foot__legalese {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.32);
+    letter-spacing: 0.005em;
+  }
+
+  /* giant decorative wordmark — fades into bg, no interaction */
+  .foot__wordmark {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 32px 0 0;
+    text-align: center;
+    font-family: var(--font-display, "Inter", system-ui, sans-serif);
+    font-weight: 700;
+    font-size: clamp(72px, 18vw, 220px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* subtle ambient orb in the corner for extra texture */
+  .foot__card::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.12) 0%, rgba(255, 107, 53, 0) 70%);
+    pointer-events: none;
+    z-index: 1;
   }
 </style>
