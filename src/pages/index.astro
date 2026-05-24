@@ -27,6 +27,10 @@ const hasLinux = linuxUrl.length > 0;
 
 const features = [
   {
+    title: "context tray",
+    body: "stage multiple markdown files from the sidebar, track file/token counts, and copy one AI-ready bundle with relative paths.",
+  },
+  {
     title: "IDE-style sidebar",
     body: "drag files between folders. right-click for rename, new file, new folder. ⌘⌥Z to undo. your context library, organized like a project.",
   },
@@ -40,7 +44,7 @@ const features = [
   },
   {
     title: "share with ai",
-    body: "press ⌘⇧C to copy the current file as clean markdown. paste into claude, chatgpt, gemini, your local agent — anywhere that reads text.",
+    body: "copy the current file as clean markdown, or stage several files and copy one context bundle. paste into claude, chatgpt, gemini, your local agent — anywhere that reads text.",
   },
   {
     title: "vim mode (opt-in)",
@@ -77,7 +81,7 @@ const steps = [
     n: "03",
     art: "/mascot/excite.png",
     title: "share",
-    body: "copy clean markdown to clipboard. paste into claude.",
+    body: "copy one file, or stage many notes into a context bundle. paste into claude.",
   },
 ];
 
@@ -104,6 +108,7 @@ const featured: { name: string; meta: string; href: string }[] = [
 const shortcuts: { key: string; label: string }[] = [
   { key: "⌘K", label: "command palette" },
   { key: "⌘⇧O", label: "open folder" },
+  { key: "⌘ click", label: "stage context" },
   { key: "⌘S", label: "save" },
   { key: "⌘⇧S", label: "save as" },
   { key: "⌘.", label: "reading mode" },
@@ -112,6 +117,43 @@ const shortcuts: { key: string; label: string }[] = [
   { key: "⌘B", label: "toggle sidebar" },
   { key: "⌘/", label: "help" },
 ];
+
+const currentRelease = version.replace(/^v/, "");
+const currentMinor = currentRelease.split(".").slice(0, 2).join(".");
+const releaseHighlightsByMinor = {
+  "1.5": {
+    eyebrow: currentMinor === "1.5" ? version : "v1.5 release",
+    title: "the context tray is here.",
+    body: "marka.md now turns a folder of notes into a clean AI handoff: stage what matters, copy one bundle, paste with structure intact.",
+    items: [
+      {
+        label: "context tray",
+        body: "stage files from the sidebar and copy one prompt-ready bundle with relative paths.",
+      },
+      {
+        label: "what's new",
+        body: "the app now announces v1.5 on first launch after update, with a changelog link.",
+      },
+      {
+        label: "clean PDFs",
+        body: "exported documents get nicer margins without browser-added date, time, or file-path headers.",
+      },
+    ],
+  },
+};
+const releaseHighlight =
+  releaseHighlightsByMinor[currentMinor as keyof typeof releaseHighlightsByMinor] ??
+  releaseHighlightsByMinor["1.5"] ?? {
+    eyebrow: "latest release",
+    title: "new in marka.md.",
+    body: "the newest release keeps the local-first markdown workflow focused, fast, and ready for AI context handoff.",
+    items: [
+      {
+        label: "release notes",
+        body: "read the changelog for the newest fixes, features, and release details.",
+      },
+    ],
+  };
 ---
 
 <Layout>
@@ -152,7 +194,7 @@ const shortcuts: { key: string; label: string }[] = [
         </span>
       </Reveal>
       <Reveal as="p" delay={420} class="hero__sub">
-        the calm markdown editor for the notes you share with ai. local-first, MIT, macOS · Windows · Linux.
+        the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.
       </Reveal>
       <Reveal delay={540} class="hero__ctas">
         <div
@@ -273,6 +315,27 @@ const shortcuts: { key: string; label: string }[] = [
     </Reveal>
   </section>
 
+  <section class="release">
+    <Reveal class="release__inner">
+      <p class="eyebrow release__eyebrow">{releaseHighlight.eyebrow}</p>
+      <div class="release__head">
+        <h2 class="release__title">{releaseHighlight.title}</h2>
+        <p class="release__body">
+          {releaseHighlight.body}
+        </p>
+      </div>
+      <div class="release__grid">
+        {releaseHighlight.items.map((h) => (
+          <article class="release__item reveal-child">
+            <p class="release__label">{h.label}</p>
+            <p class="release__copy">{h.body}</p>
+          </article>
+        ))}
+      </div>
+      <a href="/changelog" class="release__link">read the changelog →</a>
+    </Reveal>
+  </section>
+
   <section class="keys">
     <Reveal class="keys__inner">
       <p class="eyebrow keys__caption">made for the keyboard.</p>
@@ -367,7 +430,7 @@ const shortcuts: { key: string; label: string }[] = [
   <Typewriter
     lines={[
       { text: "context-ready markdown.", tone: "fg" },
-      { text: "built for the prompts you actually paste.", tone: "muted" },
+      { text: "stage files. copy one clean bundle.", tone: "muted" },
     ]}
   />
 
@@ -429,7 +492,7 @@ const shortcuts: { key: string; label: string }[] = [
         </details>
         <details class="faq__item">
           <summary class="faq__q">is my data private?</summary>
-          <p class="faq__a">100%. marka.md is local-first. no telemetry, no analytics, no cloud sync, no accounts. your <code>.md</code> files stay on disk. the only time anything leaves your machine is when you press ⌘⇧C to copy markdown — then it's in your clipboard, and you decide where it goes.</p>
+          <p class="faq__a">100%. marka.md is local-first. no telemetry, no analytics, no cloud sync, no accounts. your <code>.md</code> files stay on disk. the only time anything leaves your machine is when you copy markdown or a staged context bundle — then it's in your clipboard, and you decide where it goes.</p>
         </details>
         <details class="faq__item">
           <summary class="faq__q">does it work on Windows? Linux?</summary>
@@ -441,7 +504,7 @@ const shortcuts: { key: string; label: string }[] = [
         </details>
         <details class="faq__item">
           <summary class="faq__q">why not obsidian / bear / iA Writer?</summary>
-          <p class="faq__a">those are great. marka.md isn't trying to replace them as your main editor — it's a focused tool for one specific loop: open a folder of <code>.md</code>, edit, ⌘⇧C clean markdown to clipboard, paste into Claude / ChatGPT / any AI chat. if obsidian's vault + plugins feel right for you, you don't need this.</p>
+          <p class="faq__a">those are great. marka.md isn't trying to replace them as your main editor — it's a focused tool for one specific loop: open a folder of <code>.md</code>, edit, stage files for context, copy clean markdown, paste into Claude / ChatGPT / any AI chat. if obsidian's vault + plugins feel right for you, you don't need this.</p>
         </details>
         <details class="faq__item">
           <summary class="faq__q">what about VS Code / Cursor / Zed?</summary>
@@ -789,6 +852,101 @@ const shortcuts: { key: string; label: string }[] = [
   .screen__art { opacity: 0.9; margin-bottom: 20px; }
   .screen__hint { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
   .screen__hint code { color: var(--fg); }
+
+  /* ─── release highlight ──────────────────────────────── */
+  .release {
+    padding: 0 24px 96px;
+  }
+  @media (min-width: 640px) {
+    .release { padding-bottom: 128px; }
+  }
+  .release__inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, #fff), #fff 46%),
+      #fff;
+    padding: 36px;
+    box-shadow: 0 26px 70px -34px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .release__eyebrow {
+    margin-bottom: 12px;
+    color: color-mix(in srgb, var(--accent) 82%, var(--muted));
+  }
+  .release__head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: end;
+    margin-bottom: 30px;
+  }
+  .release__title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.04;
+    letter-spacing: -0.026em;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+  }
+  .release__body {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.58;
+    margin: 0;
+  }
+  .release__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--border);
+  }
+  .release__item {
+    background: rgba(255, 255, 255, 0.78);
+    padding: 22px;
+  }
+  .release__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .release__copy {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .release__link {
+    display: inline-flex;
+    margin-top: 24px;
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .release__link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  @media (max-width: 760px) {
+    .release__inner { padding: 28px; }
+    .release__head { grid-template-columns: 1fr; gap: 14px; }
+    .release__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .release { padding: 0 16px 72px; }
+    .release__inner { border-radius: 14px; padding: 22px; }
+  }
 
   /* ─── loop ────────────────────────────────────────────── */
   .loop {

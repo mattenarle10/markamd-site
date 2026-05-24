@@ -1,6 +1,6 @@
 # markamd-site
 
-landing page for [**marka.md**](https://github.com/mattenarle10/markamd) — a local macos markdown editor for the notes you share with ai.
+landing page for [**marka.md**](https://github.com/mattenarle10/markamd) — a cross-platform markdown editor for the notes and context bundles you share with ai.
 
 **live:** https://markamd.vercel.app
 
@@ -27,6 +27,7 @@ bunx astro check       # type-check .astro + .ts files
 ## architecture notes
 
 - **version + download url** fetched at build-time from the github releases api (`src/lib/version.ts`) — uses `/releases?per_page=1` so prereleases are included. falls back to the releases-page url if the api errors.
+- **release highlight block** on `src/pages/index.astro` should stay aligned with the newest release body. the changelog page itself is auto-fresh from github releases.
 - after each `tauri-action` ships a new release, push an empty commit to this repo (`chore: force rebuild — pick up vX.Y.Z release artifact`) to trigger a vercel rebuild that picks up the new version + download url.
 - **alias drift:** vercel doesn't always auto-alias `markamd.vercel.app` to the latest deploy on the betterbacolods scope. if the site shows a stale version after a rebuild, run `bunx vercel alias set <new-deploy-url> markamd.vercel.app`.
 - **reduced-motion** guards: every scroll-driven script in `src/scripts/` checks `prefers-reduced-motion` before binding gsap timelines.
