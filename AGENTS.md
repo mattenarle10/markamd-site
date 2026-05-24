@@ -5,3 +5,4 @@
 - Use "downloads" for GitHub release asset counts, not "installs".
 - Keep the copy casual, direct, and close to Matt's voice.
 - This is an Astro site. Run `bun run build` after meaningful source changes.
+- Use Conventional Commits matching repo history, e.g. `fix(landing): update homepage repo stats`.
