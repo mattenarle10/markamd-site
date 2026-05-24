@@ -151,18 +151,19 @@ export async function getLatestRelease(): Promise<Release> {
 
 // ─── live repo stats (build-time only) ──────────────────────────────────────
 // Used by the landing's "in the wild" stats strip. Stars come from the repo
-// endpoint, installs are the sum of all release-asset download counts, open
+// endpoint, downloads are the sum of recent release-asset download counts, open
 // issues come from search API (lets us exclude PRs). All fail-safe to zeros.
 
 export type RepoStats = {
   stars: number;
-  /** sum of all release asset download counts across all releases */
-  installs: number;
+  forks: number;
+  /** sum of all release asset download counts across recent releases */
+  downloads: number;
   /** open issues only (PRs excluded via the search API filter) */
   openIssues: number;
 };
 
-const STATS_FALLBACK: RepoStats = { stars: 0, installs: 0, openIssues: 0 };
+const STATS_FALLBACK: RepoStats = { stars: 0, forks: 0, downloads: 0, openIssues: 0 };
 
 let statsCached: RepoStats | null = null;
 
@@ -182,21 +183,25 @@ export async function getRepoStats(): Promise<RepoStats> {
       statsCached = STATS_FALLBACK;
       return statsCached;
     }
-    const repo = (await repoRes.json()) as { stargazers_count?: number };
+    const repo = (await repoRes.json()) as {
+      forks_count?: number;
+      stargazers_count?: number;
+    };
     const releases = (await releasesRes.json()) as Array<{
       assets?: Array<{ download_count?: number }>;
     }>;
     const issues = issuesRes.ok
       ? ((await issuesRes.json()) as { total_count?: number })
       : { total_count: 0 };
-    const installs = releases.reduce(
+    const downloads = releases.reduce(
       (sum, r) =>
         sum + (r.assets ?? []).reduce((s, a) => s + (a.download_count ?? 0), 0),
       0,
     );
     statsCached = {
       stars: repo.stargazers_count ?? 0,
-      installs,
+      forks: repo.forks_count ?? 0,
+      downloads,
       openIssues: issues.total_count ?? 0,
     };
     return statsCached;

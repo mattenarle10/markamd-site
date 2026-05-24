@@ -404,15 +404,13 @@ const shortcuts: { key: string; label: string }[] = [
           </li>
         ))}
       </ul>
-      {stats.installs > 0 || stats.stars > 0 ? (
+      {stats.downloads > 0 || stats.forks > 0 || stats.stars > 0 ? (
         <p class="featured__stats" aria-label="live repository stats">
-          <span><strong>{stats.installs.toLocaleString()}+</strong> installs</span>
-          <span aria-hidden>·</span>
           <span>⭐ <strong>{stats.stars}</strong> stars</span>
           <span aria-hidden>·</span>
-          <span><strong>{stats.openIssues}</strong> open {stats.openIssues === 1 ? "issue" : "issues"}</span>
+          <span>⑂ <strong>{stats.forks}</strong> {stats.forks === 1 ? "fork" : "forks"}</span>
           <span aria-hidden>·</span>
-          <span>MIT</span>
+          <span>⬇ <strong>{stats.downloads.toLocaleString()}+</strong> downloads</span>
         </p>
       ) : null}
     </Reveal>
