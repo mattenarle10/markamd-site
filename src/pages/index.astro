@@ -52,7 +52,7 @@ const features = [
   },
   {
     title: "find · undo · all keyboard",
-    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. it's all there. 8 themes too — catppuccin family, matcha, kanagawa, rose pine, ayu.",
+    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. grouped themes too — mono, catppuccin, crafted palettes, and AI-inspired Claude / Codex / Gemini / Cursor.",
   },
   {
     title: "stays local",
@@ -123,25 +123,71 @@ const shortcuts: { key: string; label: string }[] = [
   { key: "⌘/", label: "help" },
 ];
 
+const themeFamilies = [
+  {
+    name: "neutral",
+    sub: "system + mono",
+    note: "quiet black/white modes for plain writing.",
+    swatches: [
+      ["#ffffff", "#e2722e"],
+      ["#f7f7f4", "#171717"],
+      ["#111111", "#f8f8f2"],
+    ],
+  },
+  {
+    name: "catppuccin",
+    sub: "latte → mocha",
+    note: "soft pastel ramp when you want the familiar catppuccin feel.",
+    swatches: [
+      ["#eff1f5", "#1e66f5"],
+      ["#303446", "#ca9ee6"],
+      ["#24273a", "#f5bde6"],
+      ["#1e1e2e", "#cba6f7"],
+    ],
+  },
+  {
+    name: "ai",
+    sub: "claude · codex · gemini · cursor",
+    note: "brand-inspired palettes for the tools your notes usually end up in.",
+    swatches: [
+      ["#fbf7f0", "#cc785c"],
+      ["#0f1115", "#10a37f"],
+      ["#f7f9ff", "#5f6bff"],
+      ["#fbfaf7", "#111111"],
+    ],
+  },
+  {
+    name: "crafted",
+    sub: "matcha · kanagawa · rose pine · ayu",
+    note: "handpicked writing moods for longer sessions.",
+    swatches: [
+      ["#f7f4e9", "#7b9a4e"],
+      ["#1f1f28", "#7e9cd8"],
+      ["#191724", "#ebbcba"],
+      ["#1f2430", "#ffa759"],
+    ],
+  },
+];
+
 const currentRelease = version.replace(/^v/, "");
 const currentMinor = currentRelease.split(".").slice(0, 2).join(".");
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: currentMinor === "1.5" ? version : "v1.5 release",
-    title: "the context tray is here.",
-    body: "marka.md now turns a folder of notes into a clean AI handoff: stage what matters, copy one bundle, paste with structure intact.",
+    title: "context got cleaner. themes got bigger.",
+    body: "v1.5 started with the context tray. v1.5.2 rounds it out with grouped themes, better file opening on macOS, and cleaner rendered code blocks.",
     items: [
       {
-        label: "context tray",
-        body: "stage files from the sidebar and copy one prompt-ready bundle with relative paths.",
+        label: "theme groups",
+        body: "neutral, catppuccin, ai, and crafted palettes now live in animated menu sections.",
       },
       {
-        label: "what's new",
-        body: "the app now announces v1.5 on first launch after update, with a changelog link.",
+        label: "macOS open with",
+        body: "double-clicking or opening .md files now loads the selected file reliably.",
       },
       {
-        label: "clean PDFs",
-        body: "exported documents get nicer margins without browser-added date, time, or file-path headers.",
+        label: "wrapped code",
+        body: "long rendered code lines wrap in preview and PDF export instead of blowing out the page.",
       },
     ],
   },
@@ -306,7 +352,7 @@ const releaseHighlight =
           <span class="hero__status-dot" aria-hidden></span>
           notarized · auto-updating · {version} · MIT
         </span>
-        <a href="/changelog" class="hero__status-link">what's new →</a>
+        <a href="/changelog" class="hero__status-link">release notes →</a>
       </Reveal>
       <Reveal as="p" delay={660} class="hero__trust">
         local-first · MIT · macOS 13+ · Windows 10+ · Linux x86_64 · no telemetry
@@ -360,51 +406,26 @@ const releaseHighlight =
 
   <section class="themes">
     <Reveal class="themes__inner">
-      <p class="eyebrow themes__caption">8 themes across 5 families. hover-preview in the menu.</p>
+      <p class="eyebrow themes__caption">14 themes, grouped like the app menu.</p>
+      <h2 class="themes__title">pick the room before you write.</h2>
+      <p class="themes__lede">
+        mono for focus, catppuccin for comfort, crafted palettes for long writing,
+        and AI-inspired themes for Claude, Codex, Gemini, and Cursor.
+      </p>
       <div class="themes__grid">
-        {[
-          // catppuccin is intentionally one design at 4 brightness levels — show
-          // the full ramp in one swatch instead of 4 near-identical chips.
-          {
-            name: "catppuccin",
-            sub: "4 levels",
-            kind: "ramp" as const,
-            stops: ["#eff1f5", "#303446", "#24273a", "#1e1e2e"],
-          },
-          {
-            name: "matcha",
-            sub: "washi + kelly",
-            kind: "duo" as const,
-            stops: ["#f7f4e9", "#7b9a4e"],
-          },
-          {
-            name: "kanagawa",
-            sub: "ink + crystal",
-            kind: "duo" as const,
-            stops: ["#1f1f28", "#7e9cd8"],
-          },
-          {
-            name: "rose pine",
-            sub: "warm dusk",
-            kind: "duo" as const,
-            stops: ["#191724", "#ebbcba"],
-          },
-          {
-            name: "ayu",
-            sub: "mirage amber",
-            kind: "duo" as const,
-            stops: ["#1f2430", "#ffa759"],
-          },
-        ].map((t) => (
-          <div class="theme reveal-child">
-            <span class={`theme__swatch theme__swatch--${t.kind}`} aria-hidden>
-              {t.stops.map((c) => (
-                <span class="theme__chip" style={`background:${c}`}></span>
+        {themeFamilies.map((family) => (
+          <article class="theme-family reveal-child">
+            <div class="theme-family__swatches" aria-hidden>
+              {family.swatches.map(([bg, accent]) => (
+                <span class="theme-family__swatch" style={`--sw-bg:${bg};--sw-accent:${accent};`}>
+                  <span></span>
+                </span>
               ))}
-            </span>
-            <span class="theme__name">{t.name}</span>
-            <span class="theme__sub">{t.sub}</span>
-          </div>
+            </div>
+            <p class="theme-family__name">{family.name}</p>
+            <p class="theme-family__sub">{family.sub}</p>
+            <p class="theme-family__note">{family.note}</p>
+          </article>
         ))}
       </div>
     </Reveal>
@@ -1119,13 +1140,13 @@ const releaseHighlight =
 
   /* ─── themes swatch row ───────────────────────────────── */
   .themes {
-    padding: 56px 24px 72px;
+    padding: 72px 24px 88px;
     background: var(--bg);
   }
   @media (min-width: 640px) {
-    .themes { padding: 72px 24px 96px; }
+    .themes { padding: 96px 24px 120px; }
   }
-  .themes__inner { max-width: var(--max-narrow); margin: 0 auto; text-align: center; }
+  .themes__inner { max-width: var(--max-content); margin: 0 auto; text-align: center; }
   .themes__caption {
     font-size: 14px;
     text-transform: none;
@@ -1133,74 +1154,114 @@ const releaseHighlight =
     font-family: var(--font-display);
     font-weight: 600;
     color: var(--fg);
-    margin-bottom: 28px;
+    margin-bottom: 12px;
+  }
+  .themes__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.05;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+  }
+  .themes__lede {
+    max-width: 620px;
+    margin: 16px auto 34px;
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.6;
   }
   .themes__grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 18px 22px;
-  }
-  .theme {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    cursor: default;
-    transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .theme:hover { transform: translateY(-2px); }
-  .theme__swatch {
     display: grid;
-    width: 64px;
-    height: 64px;
-    border-radius: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    text-align: left;
+  }
+  .theme-family {
+    min-height: 230px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 200ms ease,
+      box-shadow 240ms ease;
+  }
+  .theme-family:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.28);
+  }
+  .theme-family__swatches {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .theme-family__swatch {
+    position: relative;
+    display: grid;
+    aspect-ratio: 1;
+    min-height: 58px;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--border);
-    transition: box-shadow 200ms ease, transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    background: var(--sw-bg);
   }
-  /* duo swatch — diagonal split, light bg / accent */
-  .theme__swatch--duo {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+  .theme-family__swatch::before {
+    content: "";
+    position: absolute;
+    inset: 10px 10px auto;
+    height: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--sw-accent) 42%, transparent);
   }
-  /* ramp swatch — 4 brightness levels in one row (catppuccin) */
-  .theme__swatch--ramp {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr;
-  }
-  .theme__chip {
+  .theme-family__swatch span {
     display: block;
-    width: 100%;
-    height: 100%;
+    align-self: end;
+    height: 42%;
+    background:
+      linear-gradient(90deg, var(--sw-accent) 0 34%, transparent 34% 42%, color-mix(in srgb, var(--sw-accent) 58%, var(--sw-bg)) 42% 72%, transparent 72%),
+      color-mix(in srgb, var(--sw-bg) 92%, #000);
   }
-  .theme:hover .theme__swatch {
-    transform: scale(1.06);
-    box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.2);
-  }
-  .theme__name {
+  .theme-family__name {
+    margin: auto 0 4px;
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--fg);
-    letter-spacing: -0.005em;
-    margin-top: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
-  .theme__sub {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
+  .theme-family__sub {
+    margin: 0 0 10px;
+    color: var(--fg);
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+  .theme-family__note {
+    margin: 0;
     color: var(--muted);
-    letter-spacing: 0.01em;
+    font-size: 13.5px;
+    line-height: 1.55;
   }
-  .theme:hover .theme__sub { color: var(--fg); }
+  @media (max-width: 760px) {
+    .themes__grid { grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px) {
-    .themes { padding: 44px 16px 56px; }
-    .themes__caption { font-size: 13px; margin-bottom: 22px; }
-    .themes__grid { gap: 14px 16px; }
-    .theme__swatch { width: 56px; height: 56px; }
-    .theme__name { font-size: 11px; }
-    .theme__sub { font-size: 10px; }
+    .themes { padding: 56px 16px 72px; }
+    .themes__caption { font-size: 13px; }
+    .themes__lede { font-size: 14px; margin-bottom: 24px; }
+    .theme-family { min-height: 0; padding: 16px; }
+    .theme-family__swatches { gap: 7px; margin-bottom: 18px; }
+    .theme-family__swatch { min-height: 48px; }
+    .theme-family__sub { font-size: 16px; }
+    .theme-family__note { font-size: 13px; }
   }
-
   /* ─── install ─────────────────────────────────────────── */
   .install { padding: 96px 24px; background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   @media (min-width: 640px) { .install { padding: 128px 24px; } }
