@@ -174,20 +174,20 @@ const currentMinor = currentRelease.split(".").slice(0, 2).join(".");
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: currentMinor === "1.5" ? version : "v1.5 release",
-    title: "context got cleaner. themes got bigger.",
-    body: "v1.5 started with the context tray. v1.5.2 rounds it out with grouped themes, better file opening on macOS, and cleaner rendered code blocks.",
+    title: "tabs, languages, cleaner packages.",
+    body: "v1.5 started with the context tray. v1.5.3 rounds it out with file tabs, more interface languages, grouped themes, and cleaner app naming.",
     items: [
       {
-        label: "theme groups",
-        body: "neutral, catppuccin, ai, and crafted palettes now live in animated menu sections.",
+        label: "file tabs",
+        body: "keep multiple notes open and switch context without losing your place.",
       },
       {
-        label: "macOS open with",
-        body: "double-clicking or opening .md files now loads the selected file reliably.",
+        label: "more languages",
+        body: "the interface now covers a wider set of languages with a cleaner selector.",
       },
       {
-        label: "wrapped code",
-        body: "long rendered code lines wrap in preview and PDF export instead of blowing out the page.",
+        label: "app naming",
+        body: "packaged builds now line up around the marka.md name across release artifacts.",
       },
     ],
   },
