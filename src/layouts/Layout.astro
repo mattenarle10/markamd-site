@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import { getLatestRelease } from "../lib/version";
 
 type Props = {
   title?: string;
@@ -19,6 +20,7 @@ const {
 const gscVerification = import.meta.env.GSC_VERIFICATION as string | undefined;
 const siteUrl = "https://markamd.vercel.app";
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const { tag: version, downloadUrl } = await getLatestRelease();
 
 const softwareSchema = {
   "@context": "https://schema.org",
@@ -28,12 +30,12 @@ const softwareSchema = {
   description:
     "a calm, local markdown editor built for the notes and context bundles you share with claude and other ai assistants. local-first, no telemetry, MIT licensed.",
   url: siteUrl,
-  downloadUrl: "https://github.com/mattenarle10/markamd/releases/latest",
+  downloadUrl,
   image: `${siteUrl}/mascot/logo.png`,
   applicationCategory: "ProductivityApplication",
   applicationSubCategory: "Markdown Editor",
   operatingSystem: "macOS, Windows, Linux",
-  softwareVersion: "1.5.0",
+  softwareVersion: version.replace(/^v/, ""),
   license: "https://opensource.org/licenses/MIT",
   author: {
     "@type": "Person",
