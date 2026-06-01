@@ -1,0 +1,25 @@
+---
+import DownloadIcon from "./icons/DownloadIcon.astro";
+import GithubIcon from "./icons/GithubIcon.astro";
+
+type Props = {
+  href: string;
+  label: string;
+  icon: "download" | "github";
+  primary?: boolean;
+};
+
+const { href, label, icon, primary = false } = Astro.props;
+---
+
+<a
+  class:list={["docs__action", primary && "docs__action--primary"]}
+  href={href}
+  target="_blank"
+  rel="noopener"
+>
+  <span class="docs__action-icon" aria-hidden="true">
+    {icon === "download" ? <DownloadIcon size={14} /> : <GithubIcon size={14} />}
+  </span>
+  <span>{label}</span>
+</a>

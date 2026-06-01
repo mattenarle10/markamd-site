@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import DocAction from "../components/DocAction.astro";
 import { getLatestRelease } from "../lib/version";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
@@ -67,16 +68,13 @@ const shortcuts = [
             <span>macOS · Windows · Linux</span>
           </div>
           <div class="docs__actions">
-            <a href={releasesPageUrl} target="_blank" rel="noopener">download {version}</a>
-            <a href={repoUrl} target="_blank" rel="noopener">view source</a>
+            <DocAction href={releasesPageUrl} label={`download ${version}`} icon="download" primary />
+            <DocAction href={repoUrl} label="view source" icon="github" />
           </div>
         </div>
         <div class="docs__mascot" aria-hidden="true">
-          <img src="/mascot/notebook.png" alt="" width="132" height="132" />
-          <div>
-            <span>current docs</span>
-            <strong>{version}</strong>
-          </div>
+          <img src="/mascot/notebook.png" alt="" width="112" height="112" />
+          <span>docs for {version}</span>
         </div>
       </header>
 
@@ -254,18 +252,49 @@ file contents...</code></pre>
   .docs__nav {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
   }
   .docs__nav a {
-    padding: 7px 0;
+    position: relative;
+    padding: 7px 0 7px 14px;
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 12.5px;
     text-decoration: none;
-    transition: color 180ms ease;
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+  .docs__nav a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 6px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.38;
+    transform: translateY(-50%);
+    transition:
+      width 180ms ease,
+      opacity 180ms ease,
+      background 180ms ease;
+  }
+  .docs__nav a:first-child {
+    color: var(--fg);
+  }
+  .docs__nav a:first-child::before {
+    width: 10px;
+    opacity: 1;
+    background: var(--accent);
   }
   .docs__nav a:hover {
     color: var(--accent);
+    transform: translateX(2px);
+  }
+  .docs__nav a:hover::before {
+    width: 10px;
+    opacity: 1;
   }
   .docs__article {
     max-width: 740px;
@@ -326,37 +355,30 @@ file contents...</code></pre>
     font-size: 11px;
   }
   .docs__mascot {
+    justify-self: end;
+    align-self: center;
+    width: 148px;
     border: 1px solid var(--border);
     border-radius: 8px;
     background:
-      linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 58%),
+      linear-gradient(180deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 62%),
       var(--bg-soft);
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .docs__mascot img {
-    width: 112px;
-    height: 112px;
+    width: 96px;
+    height: 96px;
     object-fit: contain;
   }
-  .docs__mascot div {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    border-top: 1px solid var(--border);
-    padding-top: 10px;
+  .docs__mascot span {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--muted);
-  }
-  .docs__mascot strong {
-    color: var(--fg);
-    font-weight: 600;
+    text-align: center;
   }
   .docs__actions {
     display: flex;
@@ -364,11 +386,12 @@ file contents...</code></pre>
     gap: 10px;
     margin-top: 26px;
   }
-  .docs__actions a {
+  .docs__action {
     display: inline-flex;
     align-items: center;
+    gap: 8px;
     min-height: 36px;
-    padding: 0 14px;
+    padding: 0 13px;
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--fg);
@@ -380,14 +403,28 @@ file contents...</code></pre>
       color 180ms ease,
       background 180ms ease;
   }
-  .docs__actions a:first-child {
+  .docs__action--primary {
     background: var(--fg);
     border-color: var(--fg);
     color: var(--bg);
   }
-  .docs__actions a:hover {
+  .docs__action:hover {
     border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
     color: var(--accent);
+  }
+  .docs__action--primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+  .docs__action-icon {
+    display: inline-flex;
+    width: 14px;
+    height: 14px;
+  }
+  .docs__action-icon svg {
+    width: 14px;
+    height: 14px;
   }
   .docs__section {
     scroll-margin-top: 84px;
@@ -594,6 +631,9 @@ file contents...</code></pre>
     }
     .docs__nav a {
       padding: 4px 0;
+    }
+    .docs__nav a::before {
+      display: none;
     }
     .docs__grid,
     .docs__shortcut-list {
