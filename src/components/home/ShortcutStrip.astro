@@ -1,8 +1,9 @@
 ---
 import Reveal from "../Reveal.astro";
+import type { Shortcut } from "../../lib/home-types";
 
 type Props = {
-  shortcuts: { key: string; label: string }[];
+  shortcuts: Shortcut[];
 };
 
 const { shortcuts } = Astro.props;

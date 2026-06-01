@@ -1,9 +1,10 @@
 ---
 import FeatureCard from "../FeatureCard.astro";
 import Reveal from "../Reveal.astro";
+import type { Feature } from "../../lib/home-types";
 
 type Props = {
-  features: { title: string; body: string }[];
+  features: Feature[];
 };
 
 const { features } = Astro.props;

@@ -9,3 +9,12 @@ export { default as ReleaseSection } from "./ReleaseSection.astro";
 export { default as ScreenSection } from "./ScreenSection.astro";
 export { default as ShortcutStrip } from "./ShortcutStrip.astro";
 export { default as ThemeSection } from "./ThemeSection.astro";
+export type {
+  FeaturedLink,
+  Feature,
+  ReleaseHighlight,
+  RepoStats,
+  Shortcut,
+  Step,
+  ThemeFamily,
+} from "../../lib/home-types";

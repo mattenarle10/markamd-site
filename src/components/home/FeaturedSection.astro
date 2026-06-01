@@ -1,14 +1,9 @@
 ---
 import Reveal from "../Reveal.astro";
-
-type RepoStats = {
-  stars: number;
-  forks: number;
-  downloads: number;
-};
+import type { FeaturedLink, RepoStats } from "../../lib/home-types";
 
 type Props = {
-  featured: { name: string; meta: string; href: string }[];
+  featured: FeaturedLink[];
   stats: RepoStats;
 };
 

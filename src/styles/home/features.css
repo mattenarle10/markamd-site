@@ -1,0 +1,15 @@
+/* ─── features ────────────────────────────────────────── */
+  .features { padding: 96px 0; }
+  @media (min-width: 640px) { .features { padding: 128px 0; } }
+  .features__inner { max-width: var(--max-content); margin: 0 auto; padding: 0 24px; }
+  .features__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .features__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .features__grid { grid-template-columns: repeat(3, 1fr); } }

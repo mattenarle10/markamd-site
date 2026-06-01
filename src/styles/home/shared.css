@@ -1,0 +1,58 @@
+/* ─── shared ──────────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  /* split-word reveal — each .word is animated by word-reveal.ts */
+  .h2--split .word {
+    display: inline-block;
+    will-change: transform, opacity;
+  }
+  .section-head { text-align: center; margin-bottom: 64px; }
+  .accent { color: var(--accent); }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    border: 1px solid transparent;
+  }
+  .btn--primary { background: var(--fg); color: #fff; }
+  .btn--primary:hover { background: var(--accent); transform: translateY(-2px) scale(1.01); }
+  .btn__ver { opacity: 0.55; font-family: var(--font-mono); font-size: 12px; }
+  .btn--ghost { background: #fff; color: var(--fg); border-color: var(--border); }
+  .btn--ghost:hover { border-color: var(--fg); }
+  .btn--accent {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent);
+    animation: cta-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent); }
+    50%      { box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+  .btn--accent:hover { background: #fff; color: var(--fg); animation: none; }
+  .btn--ghost-dark {
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: transparent;
+  }
+  .btn--ghost-dark:hover { color: #fff; border-color: rgba(255, 255, 255, 0.45); }

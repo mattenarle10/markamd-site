@@ -1,0 +1,94 @@
+/* ─── release highlight ──────────────────────────────── */
+  .release {
+    padding: 0 24px 96px;
+  }
+  @media (min-width: 640px) {
+    .release { padding-bottom: 128px; }
+  }
+  .release__inner {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 9%, #fff), #fff 46%),
+      #fff;
+    padding: 36px;
+    box-shadow: 0 26px 70px -34px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .release__eyebrow {
+    margin-bottom: 12px;
+    color: color-mix(in srgb, var(--accent) 82%, var(--muted));
+  }
+  .release__head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: end;
+    margin-bottom: 30px;
+  }
+  .release__title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.04;
+    letter-spacing: -0.026em;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+  }
+  .release__body {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.58;
+    margin: 0;
+  }
+  .release__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--border);
+  }
+  .release__item {
+    background: rgba(255, 255, 255, 0.78);
+    padding: 22px;
+  }
+  .release__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .release__copy {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .release__link {
+    display: inline-flex;
+    margin-top: 24px;
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .release__link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  @media (max-width: 760px) {
+    .release__inner { padding: 28px; }
+    .release__head { grid-template-columns: 1fr; gap: 14px; }
+    .release__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .release { padding: 0 16px 72px; }
+    .release__inner { border-radius: 14px; padding: 22px; }
+  }

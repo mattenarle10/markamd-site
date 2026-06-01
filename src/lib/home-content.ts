@@ -1,6 +1,8 @@
+import type { FeaturedLink, Feature, Shortcut, Step, ThemeFamily } from "./home-types";
+
 export const repoUrl = "https://github.com/mattenarle10/markamd";
 
-export const features = [
+export const features: Feature[] = [
   {
     title: "context tray",
     body: "stage multiple markdown files from the sidebar, track file/token counts, and copy one AI-ready bundle with relative paths.",
@@ -39,7 +41,7 @@ export const features = [
   },
 ];
 
-export const steps = [
+export const steps: Step[] = [
   {
     n: "01",
     art: "/mascot/notebook.png",
@@ -60,7 +62,7 @@ export const steps = [
   },
 ];
 
-export const featured: { name: string; meta: string; href: string }[] = [
+export const featured: FeaturedLink[] = [
   {
     name: "AlternativeTo",
     meta: "5★ user review",
@@ -83,7 +85,7 @@ export const featured: { name: string; meta: string; href: string }[] = [
   },
 ];
 
-export const shortcuts: { key: string; label: string }[] = [
+export const shortcuts: Shortcut[] = [
   { key: "⌘K", label: "command palette" },
   { key: "⌘⇧O", label: "open folder" },
   { key: "⌘ click", label: "stage context" },
@@ -96,7 +98,7 @@ export const shortcuts: { key: string; label: string }[] = [
   { key: "⌘/", label: "help" },
 ];
 
-export const themeFamilies = [
+export const themeFamilies: ThemeFamily[] = [
   {
     name: "neutral",
     sub: "system + mono",

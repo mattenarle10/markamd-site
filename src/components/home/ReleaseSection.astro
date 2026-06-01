@@ -1,12 +1,6 @@
 ---
 import Reveal from "../Reveal.astro";
-
-type ReleaseHighlight = {
-  eyebrow: string;
-  title: string;
-  body: string;
-  items: { label: string; body: string }[];
-};
+import type { ReleaseHighlight } from "../../lib/home-types";
 
 type Props = {
   releaseHighlight: ReleaseHighlight;
