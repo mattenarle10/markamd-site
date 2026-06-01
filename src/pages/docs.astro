@@ -11,7 +11,7 @@ const nav = [
   { href: "#introduction", label: "introduction" },
   { href: "#getting-started", label: "getting started" },
   { href: "#interface", label: "interface" },
-  { href: "#ai-context", label: "ai context" },
+  { href: "#context-bundles", label: "context bundles" },
   { href: "#files", label: "files" },
   { href: "#export", label: "export" },
   { href: "#shortcuts", label: "shortcuts" },
@@ -35,7 +35,7 @@ const shortcuts = [
 
 <Layout
   title="docs · marka.md"
-  description="learn the marka.md workflow: local markdown, file tabs, themes, AI context bundles, CSV preview, PDF export, and shortcuts."
+  description="learn the marka.md workflow: local markdown, file tabs, themes, context bundles, CSV preview, PDF export, and shortcuts."
 >
   <SiteNav />
 
@@ -53,36 +53,63 @@ const shortcuts = [
 
     <article class="docs__article">
       <header class="docs__hero" id="introduction">
-        <p class="docs__eyebrow">introduction</p>
-        <h1>marka.md is a local markdown editor for writing and AI context work.</h1>
-        <p class="docs__lede">
-          Use it like a calm markdown workspace: open a folder, write in plain files,
-          preview rich markdown, stage related notes, then copy one clean context
-          bundle into Claude, ChatGPT, Gemini, Cursor, Codex, or any local agent.
-        </p>
-        <div class="docs__actions">
-          <a href={releasesPageUrl} target="_blank" rel="noopener">download {version}</a>
-          <a href={repoUrl} target="_blank" rel="noopener">view source</a>
+        <div class="docs__hero-copy">
+          <p class="docs__eyebrow">introduction</p>
+          <h1>local markdown, organized for serious writing workflows.</h1>
+          <p class="docs__lede">
+            Marka is a desktop markdown editor for working with plain files, live
+            previews, project notes, and reusable context bundles. It stays local,
+            keeps the interface quiet, and avoids turning your notes into a service.
+          </p>
+          <div class="docs__meta" aria-label="project facts">
+            <span>local-first</span>
+            <span>MIT</span>
+            <span>macOS · Windows · Linux</span>
+          </div>
+          <div class="docs__actions">
+            <a href={releasesPageUrl} target="_blank" rel="noopener">download {version}</a>
+            <a href={repoUrl} target="_blank" rel="noopener">view source</a>
+          </div>
+        </div>
+        <div class="docs__mascot" aria-hidden="true">
+          <img src="/mascot/notebook.png" alt="" width="132" height="132" />
+          <div>
+            <span>current docs</span>
+            <strong>{version}</strong>
+          </div>
         </div>
       </header>
 
       <section class="docs__section" id="getting-started">
         <h2>getting started</h2>
+        <p>
+          The app is file-first: open a folder, edit normal files, and keep ownership of
+          the project structure on disk.
+        </p>
         <ol class="docs__steps">
           <li>
-            <strong>Open a folder.</strong>
-            Pick the notes or project folder you want to work from. The sidebar becomes
-            your local context library.
+            <span>01</span>
+            <div>
+              <strong>Open a folder.</strong>
+              Pick the notes or project folder you want to work from. The sidebar becomes
+              your local context library.
+            </div>
           </li>
           <li>
-            <strong>Open or create a file.</strong>
-            Markdown files open with editor + preview. CSV files open as a lightweight
-            read-only table preview.
+            <span>02</span>
+            <div>
+              <strong>Open or create a file.</strong>
+              Markdown files open with editor + preview. CSV files open as a lightweight
+              read-only table preview.
+            </div>
           </li>
           <li>
-            <strong>Stage context.</strong>
-            Use the sidebar buttons to stage files, watch token counts, then copy one
-            AI-ready bundle.
+            <span>03</span>
+            <div>
+              <strong>Stage context.</strong>
+              Use the sidebar buttons to stage files, watch token counts, then copy one
+              reusable bundle for handoff.
+            </div>
           </li>
         </ol>
       </section>
@@ -109,7 +136,7 @@ const shortcuts = [
             <h3>themes</h3>
             <p>
               Theme groups keep the picker tidy: mono, Catppuccin, crafted palettes, and
-              AI-inspired Claude, Codex, Gemini, and Cursor styles.
+              tool-inspired Claude, Codex, Gemini, and Cursor styles.
             </p>
           </div>
           <div>
@@ -122,13 +149,13 @@ const shortcuts = [
         </div>
       </section>
 
-      <section class="docs__section" id="ai-context">
-        <h2>ai context</h2>
+      <section class="docs__section docs__section--focus" id="context-bundles">
+        <h2>context bundles</h2>
         <p>
           The context tray is the main Marka workflow. Stage related markdown files from
           the sidebar, then copy a single bundle with relative paths and estimated token
           counts. It is built for passing project notes, specs, changelogs, and drafts to
-          an AI assistant without copy-pasting fragments one by one.
+          another tool without copy-pasting fragments one by one.
         </p>
         <pre><code>path/to/file.md
 
@@ -139,6 +166,10 @@ file contents...</code></pre>
 
       <section class="docs__section" id="files">
         <h2>files</h2>
+        <div class="docs__callout">
+          <span>supported inputs</span>
+          <p>Markdown is editable. CSV is previewed as a table. Plain text fallback is available when a file is safe to read.</p>
+        </div>
         <ul class="docs__list">
           <li><strong>Markdown:</strong> edit <code>.md</code>, <code>.markdown</code>, and <code>.mdx</code> files.</li>
           <li><strong>CSV:</strong> open <code>.csv</code> files as a fast table preview.</li>
@@ -197,12 +228,12 @@ file contents...</code></pre>
 
 <style is:global>
   .docs {
-    max-width: 1120px;
+    max-width: var(--max-content);
     margin: 0 auto;
     padding: 52px 24px 104px;
     display: grid;
-    grid-template-columns: 208px minmax(0, 1fr);
-    gap: 56px;
+    grid-template-columns: 184px minmax(0, 1fr);
+    gap: 48px;
   }
   .docs__rail {
     position: relative;
@@ -237,12 +268,20 @@ file contents...</code></pre>
     color: var(--accent);
   }
   .docs__article {
-    max-width: 760px;
+    max-width: 740px;
+    min-width: 0;
   }
   .docs__hero {
-    padding-bottom: 44px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 176px;
+    gap: 28px;
+    align-items: end;
+    padding-bottom: 42px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 42px;
+  }
+  .docs__hero-copy {
+    min-width: 0;
   }
   .docs__eyebrow {
     margin: 0 0 14px;
@@ -256,9 +295,9 @@ file contents...</code></pre>
     margin: 0;
     max-width: 720px;
     font-family: var(--font-display);
-    font-size: clamp(36px, 5.2vw, 58px);
+    font-size: clamp(34px, 5vw, 54px);
     line-height: 1.05;
-    letter-spacing: -0.026em;
+    letter-spacing: -0.02em;
     font-weight: 650;
   }
   .docs__lede {
@@ -267,6 +306,57 @@ file contents...</code></pre>
     color: var(--muted);
     font-size: 18px;
     line-height: 1.65;
+  }
+  .docs__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .docs__meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 9px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .docs__mascot {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 58%),
+      var(--bg-soft);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .docs__mascot img {
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+  }
+  .docs__mascot div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .docs__mascot strong {
+    color: var(--fg);
+    font-weight: 600;
   }
   .docs__actions {
     display: flex;
@@ -302,6 +392,12 @@ file contents...</code></pre>
   .docs__section {
     scroll-margin-top: 84px;
     margin-bottom: 48px;
+  }
+  .docs__section--focus {
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-soft);
   }
   .docs__section h2 {
     margin: 0 0 14px;
@@ -360,11 +456,70 @@ file contents...</code></pre>
   .docs__steps,
   .docs__list {
     margin: 0;
-    padding-left: 20px;
+    padding-left: 0;
+    list-style: none;
   }
   .docs__steps li,
   .docs__list li {
     margin-bottom: 10px;
+  }
+  .docs__steps {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .docs__steps li {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+  .docs__steps li > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .docs__list li {
+    position: relative;
+    padding-left: 18px;
+  }
+  .docs__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+  .docs__callout {
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+  }
+  .docs__callout span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .docs__callout p {
+    margin: 0;
+    font-size: 14px;
   }
   .docs__grid {
     display: grid;
@@ -426,6 +581,12 @@ file contents...</code></pre>
       position: static;
       border-bottom: 1px solid var(--border);
       padding-bottom: 16px;
+    }
+    .docs__hero {
+      grid-template-columns: 1fr;
+    }
+    .docs__mascot {
+      display: none;
     }
     .docs__nav {
       flex-flow: row wrap;
