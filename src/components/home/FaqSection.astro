@@ -1,0 +1,52 @@
+---
+import Reveal from "../Reveal.astro";
+
+type Props = {
+  repoUrl: string;
+};
+
+const { repoUrl } = Astro.props;
+---
+
+<section id="faq" class="faq">
+  <div class="faq__inner">
+    <Reveal class="section-head">
+      <p class="eyebrow">faq</p>
+      <h2 class="h2">the honest answers.</h2>
+    </Reveal>
+    <Reveal class="faq__list">
+      <details class="faq__item">
+        <summary class="faq__q">is it really free?</summary>
+        <p class="faq__a">yes. free, MIT licensed, open source. no trial, no upgrade tier, no "pro" version. if it saves you time, a github star is the only ask 🐙</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">is my data private?</summary>
+        <p class="faq__a">100%. marka.md is local-first. no telemetry, no analytics, no cloud sync, no accounts. your <code>.md</code> files stay on disk. the only time anything leaves your machine is when you copy markdown or a staged context bundle — then it's in your clipboard, and you decide where it goes.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">does it work on Windows? Linux?</summary>
+        <p class="faq__a">all three ship today. <strong>macOS</strong> (notarized + auto-updating), <strong>Windows</strong> (unsigned — SmartScreen → "More info" → "Run anyway" on first install), and <strong>Linux</strong> (AppImage works on any distro, .deb for Debian/Ubuntu/Mint/Pop!_OS, .rpm for Fedora/RHEL/Rocky/openSUSE). we don't sign Windows builds because paid certs aren't worth it for a free MIT project — full source on GitHub if you want to inspect or build yourself.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">how do updates work?</summary>
+        <p class="faq__a">auto-update via signed releases. marka.md checks for new versions on launch (and on demand from the ⌘K palette). when a new release lands, it downloads in the background, verifies via minisign, and prompts to relaunch. no manual reinstall.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">why not obsidian / bear / iA Writer?</summary>
+        <p class="faq__a">those are great. marka.md isn't trying to replace them as your main editor — it's a focused tool for one specific loop: open a folder of <code>.md</code>, edit, stage files for context, copy clean markdown, paste into Claude / ChatGPT / any AI chat. if obsidian's vault + plugins feel right for you, you don't need this.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">what about VS Code / Cursor / Zed?</summary>
+        <p class="faq__a">those are full code editors. marka.md is single-purpose: a calm markdown editor for the loop of "collect notes → write context → share with ai". if you already live in VS Code / Cursor / Zed, you don't need this — open <code>.md</code> from there and you're fine. marka.md exists for people who want a focused space for that workflow without the language-server / extension noise.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">does it support vim?</summary>
+        <p class="faq__a">yes — opt-in. open the theme menu and toggle "vim mode" under <code>editor</code>. status bar shows a colored pill (NORMAL/INSERT/VISUAL/REPLACE) so you always know where you are. uses <a href="https://github.com/replit/codemirror-vim" target="_blank" rel="noopener">@replit/codemirror-vim</a>, lazy-loaded — non-vim users don't pay the cost.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">how do I send feedback or report a bug?</summary>
+        <p class="faq__a">head to the <a href="/feedback">feedback page</a> — pick the github form for ideas/bugs, or just email me. i read everything. for security issues see <a href={`${repoUrl}/blob/main/SECURITY.md`} target="_blank" rel="noopener">SECURITY.md</a>. PRs welcome.</p>
+      </details>
+    </Reveal>
+  </div>
+</section>

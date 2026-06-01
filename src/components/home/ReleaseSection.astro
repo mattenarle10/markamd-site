@@ -1,0 +1,37 @@
+---
+import Reveal from "../Reveal.astro";
+
+type ReleaseHighlight = {
+  eyebrow: string;
+  title: string;
+  body: string;
+  items: { label: string; body: string }[];
+};
+
+type Props = {
+  releaseHighlight: ReleaseHighlight;
+};
+
+const { releaseHighlight } = Astro.props;
+---
+
+<section class="release">
+  <Reveal class="release__inner">
+    <p class="eyebrow release__eyebrow">{releaseHighlight.eyebrow}</p>
+    <div class="release__head">
+      <h2 class="release__title">{releaseHighlight.title}</h2>
+      <p class="release__body">
+        {releaseHighlight.body}
+      </p>
+    </div>
+    <div class="release__grid">
+      {releaseHighlight.items.map((h) => (
+        <article class="release__item reveal-child">
+          <p class="release__label">{h.label}</p>
+          <p class="release__copy">{h.body}</p>
+        </article>
+      ))}
+    </div>
+    <a href="/changelog" class="release__link">read the changelog →</a>
+  </Reveal>
+</section>

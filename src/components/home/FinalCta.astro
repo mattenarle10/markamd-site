@@ -1,0 +1,31 @@
+---
+import Reveal from "../Reveal.astro";
+import { AppleIcon, GithubIcon } from "../icons";
+
+type Props = {
+  version: string;
+  macHref: string;
+  repoUrl: string;
+};
+
+const { version, macHref, repoUrl } = Astro.props;
+---
+
+<section class="final">
+  <Reveal class="final__inner">
+    <img src="/mascot/inspect.png" alt="" width="120" height="120" class="final__art" />
+    <h2 class="final__title">
+      ready to ship cleaner <span class="accent">context</span>?
+    </h2>
+    <div class="final__ctas">
+      <a href={macHref} target="_blank" rel="noopener" class="btn btn--accent">
+        <AppleIcon size={14} />
+        download {version}
+      </a>
+      <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost-dark">
+        <GithubIcon size={14} />
+        view on github
+      </a>
+    </div>
+  </Reveal>
+</section>

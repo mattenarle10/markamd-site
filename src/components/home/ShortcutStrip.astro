@@ -1,0 +1,26 @@
+---
+import Reveal from "../Reveal.astro";
+
+type Props = {
+  shortcuts: { key: string; label: string }[];
+};
+
+const { shortcuts } = Astro.props;
+---
+
+<section class="keys">
+  <Reveal class="keys__inner">
+    <p class="eyebrow keys__caption">made for the keyboard.</p>
+    <div class="keys__grid">
+      {shortcuts.map((s) => (
+        <kbd
+          class="key reveal-child"
+          data-tooltip={s.label}
+          aria-label={`${s.label} — keyboard shortcut ${s.key}`}
+        >
+          {s.key}
+        </kbd>
+      ))}
+    </div>
+  </Reveal>
+</section>

@@ -1,0 +1,120 @@
+---
+import { AppleIcon, ChevronDownIcon, LinuxIcon, WindowsIcon } from "../icons";
+
+type Props = {
+  version: string;
+  macHref: string;
+  macIntelHref: string;
+  windowsHref: string;
+  linuxHref: string;
+  releasesPageUrl: string;
+  hasMacIntel: boolean;
+  hasWindows: boolean;
+  hasLinux: boolean;
+};
+
+const {
+  version,
+  macHref,
+  macIntelHref,
+  windowsHref,
+  linuxHref,
+  releasesPageUrl,
+  hasMacIntel,
+  hasWindows,
+  hasLinux,
+} = Astro.props;
+---
+
+<div
+  class="dl"
+  data-dl
+  data-mac={macHref}
+  data-windows={hasWindows ? windowsHref : ""}
+  data-linux={hasLinux ? linuxHref : ""}
+>
+  <a
+    href={macHref}
+    target="_blank"
+    rel="noopener"
+    class="dl__primary"
+    data-dl-primary
+    aria-label="download for macOS"
+  >
+    <span class="dl__primary-icon" aria-hidden="true">
+      <span class="dl__pi dl__pi--mac"><AppleIcon size={15} /></span>
+      <span class="dl__pi dl__pi--windows"><WindowsIcon size={15} /></span>
+      <span class="dl__pi dl__pi--linux"><LinuxIcon size={15} /></span>
+    </span>
+    <span class="dl__primary-text">
+      <span data-dl-label>
+        <span class="dl__pl dl__pl--mac">download for macOS</span>
+        <span class="dl__pl dl__pl--windows">download for Windows</span>
+        <span class="dl__pl dl__pl--linux">download for Linux</span>
+      </span>
+      <span class="dl__primary-ver">{version}</span>
+    </span>
+  </a>
+  <button
+    type="button"
+    class="dl__chevron"
+    data-dl-toggle
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-controls="dl-menu"
+    aria-label="show all platforms"
+  >
+    <ChevronDownIcon size={13} />
+  </button>
+  <div class="dl__menu" id="dl-menu" role="menu" data-dl-menu>
+    <p class="dl__menu-eyebrow" aria-hidden="true">choose platform</p>
+    <a class="dl__row" href={macHref} target="_blank" rel="noopener" role="menuitem" data-dl-row="mac">
+      <span class="dl__row-icon"><AppleIcon size={14} /></span>
+      <span class="dl__row-title">macOS</span>
+      <span class="dl__row-meta">apple silicon</span>
+      <span class="dl__row-arrow" aria-hidden="true">↓</span>
+    </a>
+    <a
+      class={`dl__row${hasMacIntel ? "" : " dl__row--soon"}`}
+      href={hasMacIntel ? macIntelHref : releasesPageUrl}
+      target="_blank"
+      rel="noopener"
+      role="menuitem"
+      data-dl-row="mac-intel"
+      aria-disabled={hasMacIntel ? "false" : "true"}
+    >
+      <span class="dl__row-icon"><AppleIcon size={14} /></span>
+      <span class="dl__row-title">macOS</span>
+      <span class="dl__row-meta">{hasMacIntel ? "intel" : "intel · coming soon"}</span>
+      {hasMacIntel ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
+    </a>
+    <a
+      class={`dl__row${hasWindows ? "" : " dl__row--soon"}`}
+      href={hasWindows ? windowsHref : releasesPageUrl}
+      target="_blank"
+      rel="noopener"
+      role="menuitem"
+      data-dl-row="windows"
+      aria-disabled={hasWindows ? "false" : "true"}
+    >
+      <span class="dl__row-icon"><WindowsIcon size={14} /></span>
+      <span class="dl__row-title">Windows</span>
+      <span class="dl__row-meta">{hasWindows ? "10+ · x64" : "coming soon"}</span>
+      {hasWindows ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
+    </a>
+    <a
+      class={`dl__row${hasLinux ? "" : " dl__row--soon"}`}
+      href={hasLinux ? linuxHref : releasesPageUrl}
+      target="_blank"
+      rel="noopener"
+      role="menuitem"
+      data-dl-row="linux"
+      aria-disabled={hasLinux ? "false" : "true"}
+    >
+      <span class="dl__row-icon"><LinuxIcon size={14} /></span>
+      <span class="dl__row-title">Linux</span>
+      <span class="dl__row-meta">{hasLinux ? "AppImage · .deb · .rpm" : "coming soon"}</span>
+      {hasLinux ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
+    </a>
+  </div>
+</div>

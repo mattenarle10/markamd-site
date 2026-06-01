@@ -1,0 +1,38 @@
+---
+import Reveal from "../Reveal.astro";
+
+type Step = {
+  n: string;
+  art: string;
+  title: string;
+  body: string;
+};
+
+type Props = {
+  steps: Step[];
+};
+
+const { steps } = Astro.props;
+---
+
+<section id="how" class="loop">
+  <div class="loop__inner">
+    <Reveal class="section-head">
+      <p class="eyebrow">how it works</p>
+      <h2 class="h2">one loop. nothing leaves your machine.</h2>
+    </Reveal>
+    <Reveal class="loop__grid">
+      {
+        steps.map((s) => (
+          <div class="slide reveal-child">
+            <div class="slide__halo" aria-hidden></div>
+            <img src={s.art} alt="" width="112" height="112" class="slide__art" />
+            <p class="slide__n">{s.n}</p>
+            <h3 class="slide__title">{s.title}</h3>
+            <p class="slide__body">{s.body}</p>
+          </div>
+        ))
+      }
+    </Reveal>
+  </div>
+</section>

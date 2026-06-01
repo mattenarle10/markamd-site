@@ -1,0 +1,30 @@
+---
+import FeatureCard from "../FeatureCard.astro";
+import Reveal from "../Reveal.astro";
+
+type Props = {
+  features: { title: string; body: string }[];
+};
+
+const { features } = Astro.props;
+---
+
+<section id="features" class="features">
+  <div class="features__inner">
+    <Reveal class="section-head">
+      <p class="eyebrow">features</p>
+      <h2 class="h2 h2--split" data-words>
+        <span class="word">everything</span>{" "}
+        <span class="word">you</span>{" "}
+        <span class="word">need</span>{" "}
+        <span class="word">to</span>{" "}
+        <span class="word">read,</span>{" "}
+        <span class="word">write,</span>{" "}
+        <span class="word">share.</span>
+      </h2>
+    </Reveal>
+    <Reveal class="features__grid">
+      {features.map((f) => <FeatureCard title={f.title} body={f.body} />)}
+    </Reveal>
+  </div>
+</section>

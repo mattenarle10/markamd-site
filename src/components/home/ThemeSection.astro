@@ -1,0 +1,43 @@
+---
+import Reveal from "../Reveal.astro";
+
+type ThemeFamily = {
+  name: string;
+  sub: string;
+  note: string;
+  swatches: string[][];
+};
+
+type Props = {
+  themeFamilies: ThemeFamily[];
+};
+
+const { themeFamilies } = Astro.props;
+---
+
+<section class="themes">
+  <Reveal class="themes__inner">
+    <p class="eyebrow themes__caption">14 themes, grouped like the app menu.</p>
+    <h2 class="themes__title">pick the room before you write.</h2>
+    <p class="themes__lede">
+      mono for focus, catppuccin for comfort, crafted palettes for long writing,
+      and AI-inspired themes for Claude, Codex, Gemini, and Cursor.
+    </p>
+    <div class="themes__grid">
+      {themeFamilies.map((family) => (
+        <article class="theme-family reveal-child">
+          <div class="theme-family__swatches" aria-hidden>
+            {family.swatches.map(([bg, accent]) => (
+              <span class="theme-family__swatch" style={`--sw-bg:${bg};--sw-accent:${accent};`}>
+                <span></span>
+              </span>
+            ))}
+          </div>
+          <p class="theme-family__name">{family.name}</p>
+          <p class="theme-family__sub">{family.sub}</p>
+          <p class="theme-family__note">{family.note}</p>
+        </article>
+      ))}
+    </div>
+  </Reveal>
+</section>

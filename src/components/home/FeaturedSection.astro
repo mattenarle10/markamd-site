@@ -1,0 +1,46 @@
+---
+import Reveal from "../Reveal.astro";
+
+type RepoStats = {
+  stars: number;
+  forks: number;
+  downloads: number;
+};
+
+type Props = {
+  featured: { name: string; meta: string; href: string }[];
+  stats: RepoStats;
+};
+
+const { featured, stats } = Astro.props;
+---
+
+<section class="featured">
+  <Reveal class="featured__inner">
+    <p class="featured__eyebrow">in the wild</p>
+    <h2 class="featured__title">spotted by markdown people</h2>
+    <p class="featured__lede">
+      early mentions, directories, and release signals from the places people
+      actually find small tools.
+    </p>
+    <ul class="featured__list">
+      {featured.map((f) => (
+        <li class="featured__item">
+          <a href={f.href} target="_blank" rel="noopener" class="featured__link">
+            <span class="featured__name">{f.name}</span>
+            <span class="featured__meta">{f.meta}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    {stats.downloads > 0 || stats.forks > 0 || stats.stars > 0 ? (
+      <p class="featured__stats" aria-label="live repository stats">
+        <span>⭐ <strong>{stats.stars}</strong> stars</span>
+        <span aria-hidden>·</span>
+        <span>⑂ <strong>{stats.forks}</strong> {stats.forks === 1 ? "fork" : "forks"}</span>
+        <span aria-hidden>·</span>
+        <span>⬇ <strong>{stats.downloads.toLocaleString()}+</strong> downloads</span>
+      </p>
+    ) : null}
+  </Reveal>
+</section>

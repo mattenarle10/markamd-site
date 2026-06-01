@@ -1,0 +1,72 @@
+---
+import HeroMascot from "../HeroMascot.astro";
+import Reveal from "../Reveal.astro";
+import { GithubIcon } from "../icons";
+import DownloadMenu from "./DownloadMenu.astro";
+
+type Props = {
+  version: string;
+  repoUrl: string;
+  macHref: string;
+  macIntelHref: string;
+  windowsHref: string;
+  linuxHref: string;
+  releasesPageUrl: string;
+  hasMacIntel: boolean;
+  hasWindows: boolean;
+  hasLinux: boolean;
+};
+
+const props = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero__glow" aria-hidden></div>
+  <div class="hero__orbs" aria-hidden>
+    <span class="hero__orb hero__orb--a"></span>
+    <span class="hero__orb hero__orb--b"></span>
+    <span class="hero__orb hero__orb--c"></span>
+  </div>
+  <div class="hero__inner">
+    <Reveal class="hero__mascot">
+      <HeroMascot size={148} />
+    </Reveal>
+    <Reveal as="h1" delay={120} class="hero__title">
+      <span class="reveal-child">write markdown.</span>
+      <span class="reveal-child">share with ai.</span>
+      <span class="reveal-child accent">
+        nothing leaves your machine.<span class="caret hero__caret" aria-hidden="true"></span>
+      </span>
+    </Reveal>
+    <Reveal as="p" delay={420} class="hero__sub">
+      the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.
+    </Reveal>
+    <Reveal delay={540} class="hero__ctas">
+      <DownloadMenu
+        version={props.version}
+        macHref={props.macHref}
+        macIntelHref={props.macIntelHref}
+        windowsHref={props.windowsHref}
+        linuxHref={props.linuxHref}
+        releasesPageUrl={props.releasesPageUrl}
+        hasMacIntel={props.hasMacIntel}
+        hasWindows={props.hasWindows}
+        hasLinux={props.hasLinux}
+      />
+      <a href={props.repoUrl} target="_blank" rel="noopener" class="btn btn--ghost">
+        <GithubIcon size={14} />
+        view source
+      </a>
+    </Reveal>
+    <Reveal as="p" delay={600} class="hero__status">
+      <span class="hero__status-pill">
+        <span class="hero__status-dot" aria-hidden></span>
+        notarized · auto-updating · {props.version} · MIT
+      </span>
+      <a href="/changelog" class="hero__status-link">release notes →</a>
+    </Reveal>
+    <Reveal as="p" delay={660} class="hero__trust">
+      local-first · MIT · macOS 13+ · Windows 10+ · Linux x86_64 · no telemetry
+    </Reveal>
+  </div>
+</section>
