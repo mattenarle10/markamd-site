@@ -5,11 +5,11 @@ export const repoUrl = "https://github.com/mattenarle10/markamd";
 export const features: Feature[] = [
   {
     title: "context tray",
-    body: "stage multiple markdown files from the sidebar, track file/token counts, and copy one AI-ready bundle with relative paths.",
+    body: "stage markdown files from one folder or many, track file/token counts, and copy one AI-ready bundle with relative paths.",
   },
   {
-    title: "IDE-style sidebar",
-    body: "drag files between folders. right-click for rename, new file, new folder. ⌘⌥Z to undo. your context library, organized like a project.",
+    title: "multi-folder explorer",
+    body: "open multiple roots, keep each folder separated, pin favorites, and drag files between folders. your context library, organized like a project.",
   },
   {
     title: "live preview",
@@ -22,6 +22,10 @@ export const features: Feature[] = [
   {
     title: "share with ai",
     body: "copy the current file as clean markdown, or stage several files and copy one context bundle. paste into claude, chatgpt, gemini, your local agent — anywhere that reads text.",
+  },
+  {
+    title: "open as text",
+    body: "peek into safe plain-text files beside your markdown notes. useful for prompts, configs, logs, and mixed project folders.",
   },
   {
     title: "vim mode (opt-in)",
@@ -147,20 +151,20 @@ export const themeFamilies: ThemeFamily[] = [
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
-    title: "tabs, languages, cleaner packages.",
-    body: "v1.5 started with the context tray. v1.5.3 rounds it out with file tabs, more interface languages, grouped themes, and cleaner app naming.",
+    title: "a real workspace sidebar.",
+    body: "v1.5.6 makes marka.md better for mixed project folders: multiple roots, pinned favorites, safe text preview, and local images that resolve from the file you are editing.",
     items: [
       {
-        label: "file tabs",
-        body: "keep multiple notes open and switch context without losing your place.",
+        label: "multi-folder explorer",
+        body: "add more than one root folder and keep each workspace separated in the sidebar.",
       },
       {
-        label: "more languages",
-        body: "the interface now covers a wider set of languages with a cleaner selector.",
+        label: "favorites",
+        body: "pin important files above the tree and reorder them with drag and drop.",
       },
       {
-        label: "app naming",
-        body: "packaged builds now line up around the marka.md name across release artifacts.",
+        label: "open as text",
+        body: "open safe plain-text files without turning marka.md into a full code editor.",
       },
     ],
   },
