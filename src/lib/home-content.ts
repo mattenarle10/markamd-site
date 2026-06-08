@@ -151,20 +151,20 @@ export const themeFamilies: ThemeFamily[] = [
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
-    title: "a real workspace sidebar.",
-    body: "v1.5.6 makes marka.md better for mixed project folders: multiple roots, pinned favorites, safe text preview, and local images that resolve from the file you are editing.",
+    title: "tabs and trees feel calmer.",
+    body: "The latest v1.5 update smooths out the daily workspace loop: tab actions, hidden dotfiles, synced selections, and a cleaner first-run tutorial.",
     items: [
       {
-        label: "multi-folder explorer",
-        body: "add more than one root folder and keep each workspace separated in the sidebar.",
+        label: "tab context menus",
+        body: "right-click an open tab for rename, copy path, reveal, open, and delete actions.",
       },
       {
-        label: "favorites",
-        body: "pin important files above the tree and reorder them with drag and drop.",
+        label: "hidden files",
+        body: "dotfiles like .env and .gitignore now show up in the folder tree.",
       },
       {
-        label: "open as text",
-        body: "open safe plain-text files without turning marka.md into a full code editor.",
+        label: "selection sync",
+        body: "select matching text in the editor or preview and marka.md highlights the pair.",
       },
     ],
   },
