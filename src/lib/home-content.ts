@@ -70,7 +70,7 @@ export const featured: FeaturedLink[] = [
   {
     name: "AlternativeTo",
     meta: "5★ user review",
-    href: "https://alternativeto.net/software/marka-md/",
+    href: "https://alternativeto.net/software/marka-md/about/",
   },
   {
     name: "kachibito.net",
@@ -81,6 +81,16 @@ export const featured: FeaturedLink[] = [
     name: "LinuxEasy",
     meta: "Italian feature",
     href: "https://www.linuxeasy.org/marka-md-editor-markdown-minimale-intelligenza-artificiale/",
+  },
+  {
+    name: "Markdown Handbook",
+    meta: "editor roundup",
+    href: "https://md-handbook.com/blog/markdown-link-no-36/",
+  },
+  {
+    name: "Web Apps Magazine",
+    meta: "Italian review",
+    href: "https://webappsmagazine.blogspot.com/2026/06/markamd-leditor-markdown-minimalista-e.html",
   },
   {
     name: "awesome-markdown-editors",
