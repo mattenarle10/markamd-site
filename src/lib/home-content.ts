@@ -162,7 +162,7 @@ const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
     title: "preview and file switching feel tighter.",
-    body: "The latest v1.5 update keeps the workspace loop smoother: browser-safe preview links, steadier selection sync, remembered scroll positions, and cleaner sidebar scrolling. Shipped with contributor help from @hoiyada7-maker.",
+    body: "The latest v1.5 update keeps the workspace loop smoother: browser-safe preview links, steadier selection sync, remembered scroll positions, and cleaner sidebar scrolling. v1.5.9 closes 3 issues, with 12 closed across the v1.5 cycle so far.",
     items: [
       {
         label: "preview links",
@@ -175,6 +175,10 @@ const releaseHighlightsByMinor = {
       {
         label: "selection sync",
         body: "text selections use source-line hints for more reliable editor and preview matching.",
+      },
+      {
+        label: "community loop",
+        body: "shipped with contributor PRs and feedback from people testing the app in the wild.",
       },
     ],
   },
