@@ -161,20 +161,20 @@ export const themeFamilies: ThemeFamily[] = [
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
-    title: "tabs and trees feel calmer.",
-    body: "The latest v1.5 update smooths out the daily workspace loop: tab actions, hidden dotfiles, synced selections, and a cleaner first-run tutorial.",
+    title: "preview and file switching feel tighter.",
+    body: "The latest v1.5 update keeps the workspace loop smoother: browser-safe preview links, steadier selection sync, remembered scroll positions, and cleaner sidebar scrolling. Shipped with contributor help from @hoiyada7-maker.",
     items: [
       {
-        label: "tab context menus",
-        body: "right-click an open tab for rename, copy path, reveal, open, and delete actions.",
+        label: "preview links",
+        body: "http and https links in rendered markdown now open in your browser.",
       },
       {
-        label: "hidden files",
-        body: "dotfiles like .env and .gitignore now show up in the folder tree.",
+        label: "scroll memory",
+        body: "switch files without losing your editor and preview position.",
       },
       {
         label: "selection sync",
-        body: "select matching text in the editor or preview and marka.md highlights the pair.",
+        body: "text selections use source-line hints for more reliable editor and preview matching.",
       },
     ],
   },
