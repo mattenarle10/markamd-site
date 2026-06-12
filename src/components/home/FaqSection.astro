@@ -25,11 +25,11 @@ const { repoUrl } = Astro.props;
       </details>
       <details class="faq__item">
         <summary class="faq__q">does it work on Windows? Linux?</summary>
-        <p class="faq__a">all three ship today. <strong>macOS</strong> (notarized + auto-updating), <strong>Windows</strong> (unsigned — SmartScreen → "More info" → "Run anyway" on first install), and <strong>Linux</strong> (AppImage works on any distro, .deb for Debian/Ubuntu/Mint/Pop!_OS, .rpm for Fedora/RHEL/Rocky/openSUSE). we don't sign Windows builds because paid certs aren't worth it for a free MIT project — full source on GitHub if you want to inspect or build yourself.</p>
+        <p class="faq__a">all three ship today. <strong>macOS</strong> (notarized + auto-updating, with a Homebrew cask at <code>mattenarle10/tap/marka-md</code>), <strong>Windows</strong> (unsigned — SmartScreen → "More info" → "Run anyway" on first install), and <strong>Linux</strong> (AppImage works on any distro, .deb for Debian/Ubuntu/Mint/Pop!_OS, .rpm for Fedora/RHEL/Rocky/openSUSE). we don't sign Windows builds because paid certs aren't worth it for a free MIT project — full source on GitHub if you want to inspect or build yourself.</p>
       </details>
       <details class="faq__item">
         <summary class="faq__q">how do updates work?</summary>
-        <p class="faq__a">auto-update via signed releases. marka.md checks for new versions on launch (and on demand from the ⌘K palette). when a new release lands, it downloads in the background, verifies via minisign, and prompts to relaunch. no manual reinstall.</p>
+        <p class="faq__a">auto-update via signed releases. marka.md checks for new versions on launch (and on demand from the ⌘K palette). when a new release lands, it downloads in the background, verifies via minisign, and prompts to relaunch. Homebrew installs can also update with <code>brew update && brew upgrade --cask marka-md</code>.</p>
       </details>
       <details class="faq__item">
         <summary class="faq__q">why not obsidian / bear / iA Writer?</summary>
