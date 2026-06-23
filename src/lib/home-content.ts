@@ -161,24 +161,24 @@ export const themeFamilies: ThemeFamily[] = [
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
-    title: "preview and file switching feel tighter.",
-    body: "The latest v1.5 update keeps the workspace loop smoother: browser-safe preview links, steadier selection sync, remembered scroll positions, and cleaner sidebar scrolling. v1.5.9 closes 3 issues, with 12 closed across the v1.5 cycle so far.",
+    title: "startup restore is safer.",
+    body: "v1.5.13 fixes a startup restore race where the demo buffer could appear under a real restored or opened file tab. the file on disk was not overwritten, but the visible buffer could be wrong until the app loaded the file cleanly.",
     items: [
       {
-        label: "preview links",
-        body: "http and https links in rendered markdown now open in your browser.",
+        label: "restore fix",
+        body: "real files no longer inherit the demo buffer during startup or open-with restore.",
       },
       {
-        label: "scroll memory",
-        body: "switch files without losing your editor and preview position.",
+        label: "safer tabs",
+        body: "untitled and demo tabs stay untitled until real content is loaded from disk.",
       },
       {
-        label: "selection sync",
-        body: "text selections use source-line hints for more reliable editor and preview matching.",
+        label: "data intact",
+        body: "this was a display/session-state bug, not a disk overwrite.",
       },
       {
-        label: "community loop",
-        body: "shipped with contributor PRs and feedback from people testing the app in the wild.",
+        label: "quick patch",
+        body: "shipped as a focused bugfix so updater users can move off v1.5.12.",
       },
     ],
   },
