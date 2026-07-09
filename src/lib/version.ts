@@ -10,8 +10,6 @@
 // prerelease dmgs go live first; signed/notarized stable comes later.
 
 const RELEASES_PAGE = "https://github.com/mattenarle10/markamd/releases/latest";
-const API =
-  "https://api.github.com/repos/mattenarle10/markamd/releases?per_page=1";
 
 export type Release = {
   tag: string;
@@ -47,6 +45,7 @@ type ApiRelease = {
   published_at?: string;
   body?: string;
   html_url?: string;
+  draft?: boolean;
   prerelease?: boolean;
   assets?: Array<{ name?: string; browser_download_url?: string }>;
 };
@@ -62,6 +61,18 @@ export type ReleaseEntry = {
 
 let releasesCached: ReleaseEntry[] | null = null;
 
+function releaseTime(release: Pick<ApiRelease, "published_at">): number {
+  if (!release.published_at) return 0;
+  const time = Date.parse(release.published_at);
+  return Number.isFinite(time) ? time : 0;
+}
+
+function sortPublishedReleases(releases: ApiRelease[]): ApiRelease[] {
+  return releases
+    .filter((release) => !release.draft && release.published_at)
+    .sort((a, b) => releaseTime(b) - releaseTime(a));
+}
+
 /**
  * Fetched at build time by /changelog. Returns up to `limit` most recent
  * releases (newest first). On API failure returns an empty array — the page
@@ -75,8 +86,8 @@ export async function getReleases(limit = 20): Promise<ReleaseEntry[]> {
       { headers: { Accept: "application/vnd.github+json" } },
     );
     if (!res.ok) throw new Error(`gh api ${res.status}`);
-    const arr = (await res.json()) as ApiRelease[];
-    releasesCached = arr.map((r): ReleaseEntry => ({
+    const arr = sortPublishedReleases((await res.json()) as ApiRelease[]);
+    releasesCached = arr.slice(0, limit).map((r): ReleaseEntry => ({
       tag: r.tag_name ?? "",
       name: r.name ?? r.tag_name ?? "",
       publishedAt: r.published_at ?? "",
@@ -95,11 +106,14 @@ export async function getReleases(limit = 20): Promise<ReleaseEntry[]> {
 export async function getLatestRelease(): Promise<Release> {
   if (cached) return cached;
   try {
-    const res = await fetch(API, {
+    const res = await fetch(
+      "https://api.github.com/repos/mattenarle10/markamd/releases?per_page=20",
+      {
       headers: { Accept: "application/vnd.github+json" },
-    });
+      },
+    );
     if (!res.ok) throw new Error(`gh api ${res.status}`);
-    const arr = (await res.json()) as ApiRelease[];
+    const arr = sortPublishedReleases((await res.json()) as ApiRelease[]);
     const release = arr[0];
     if (!release) throw new Error("no releases found");
 
