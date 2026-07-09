@@ -101,6 +101,8 @@ export const featured: FeaturedLink[] = [
 
 export const shortcuts: Shortcut[] = [
   { key: "⌘K", label: "command palette" },
+  { key: "⌘T", label: "new tab" },
+  { key: "⌘1..9", label: "switch tabs" },
   { key: "⌘⇧O", label: "open folder" },
   { key: "⌘ click", label: "stage context" },
   { key: "⌘S", label: "save" },
@@ -161,24 +163,24 @@ export const themeFamilies: ThemeFamily[] = [
 const releaseHighlightsByMinor = {
   "1.5": {
     eyebrow: "v1.5 release",
-    title: "startup restore is safer.",
-    body: "v1.5.13 fixes a startup restore race where the demo buffer could appear under a real restored or opened file tab. the file on disk was not overwritten, but the visible buffer could be wrong until the app loaded the file cleanly.",
+    title: "media previews and faster tabs.",
+    body: "v1.5.18 adds playable video and audio previews for markdown media links, plus quick tab controls for opening and switching notes without leaving the keyboard.",
     items: [
       {
-        label: "restore fix",
-        body: "real files no longer inherit the demo buffer during startup or open-with restore.",
+        label: "media preview",
+        body: "local and remote video/audio assets render as playable controls when linked from markdown.",
       },
       {
-        label: "safer tabs",
-        body: "untitled and demo tabs stay untitled until real content is loaded from disk.",
+        label: "new tab",
+        body: "⌘T / Ctrl+T opens a fresh untitled tab.",
       },
       {
-        label: "data intact",
-        body: "this was a display/session-state bug, not a disk overwrite.",
+        label: "jump tabs",
+        body: "⌘1 through ⌘9 / Ctrl+1 through Ctrl+9 switch visible tabs by position.",
       },
       {
-        label: "quick patch",
-        body: "shipped as a focused bugfix so updater users can move off v1.5.12.",
+        label: "docs updated",
+        body: "help, README, tutorial copy, and demo notes now list the new shortcuts.",
       },
     ],
   },
