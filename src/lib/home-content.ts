@@ -13,7 +13,7 @@ export const features: Feature[] = [
   },
   {
     title: "live preview",
-    body: "edit on the left, watch markdown render on the right. mermaid + shiki, all live.",
+    body: "edit on the left, watch markdown render on the right. mermaid + shiki, all live — or pop preview into its own window when you want more room.",
   },
   {
     title: "reading mode + editor-only",
@@ -33,7 +33,7 @@ export const features: Feature[] = [
   },
   {
     title: "find · undo · all keyboard",
-    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category. grouped themes too — mono, catppuccin, crafted palettes, and AI-inspired Claude / Codex / Gemini / Cursor.",
+    body: "⌘F find/replace, ⌘⌥Z undo file ops, ⌘K command palette grouped by category, with quick markdown insertions for tables, lists, and code blocks.",
   },
   {
     title: "stays local",
@@ -161,6 +161,29 @@ export const themeFamilies: ThemeFamily[] = [
 ];
 
 const releaseHighlightsByMinor = {
+  "1.6": {
+    eyebrow: "v1.6 release",
+    title: "preview anywhere. write faster.",
+    body: "v1.6.0 adds a separate live preview window, quick markdown insertions, and Traditional Chinese localization for a smoother writing setup.",
+    items: [
+      {
+        label: "separate preview",
+        body: "open rendered markdown in its own window and keep it on another display, desktop, or side of your workspace.",
+      },
+      {
+        label: "markdown inserts",
+        body: "drop in common blocks from the command palette: 2x2, 3x3, and 4x4 tables, bullets, numbered lists, and fenced code.",
+      },
+      {
+        label: "quiet controls",
+        body: "the preview-window action stays tucked into the preview pane instead of crowding the toolbar or command palette.",
+      },
+      {
+        label: "zh-tw",
+        body: "Traditional Chinese joins the interface language set for more local-first writing setups.",
+      },
+    ],
+  },
   "1.5": {
     eyebrow: "v1.5 release",
     title: "media previews and faster tabs.",

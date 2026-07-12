@@ -24,6 +24,8 @@ const shortcuts = [
   ["⌘⇧O", "open folder"],
   ["⌘O", "open file"],
   ["⌘N", "new buffer"],
+  ["⌘T", "new tab"],
+  ["⌘1…9", "switch to tab"],
   ["⌘S", "save"],
   ["⌘⇧S", "save as"],
   ["⌘B", "show or hide sidebar"],
@@ -126,7 +128,8 @@ const shortcuts = [
             <p>
               The default split view keeps source and rendered markdown side by side.
               Mermaid diagrams, code highlighting, task lists, tables, and math render in
-              the preview.
+              the preview. When you want more room, open the preview in its own window
+              and keep editing in the main app.
             </p>
           </div>
           <div>
@@ -139,8 +142,9 @@ const shortcuts = [
           <div>
             <h3>themes</h3>
             <p>
-              Theme groups keep the picker tidy: mono, Catppuccin, crafted palettes, and
-              tool-inspired Claude, Codex, Gemini, and Cursor styles.
+              Theme groups keep the picker tidy: mono, Catppuccin, crafted palettes,
+              AI-inspired Claude, Codex, Gemini, and Cursor styles, plus interface
+              languages including Traditional Chinese.
             </p>
           </div>
           <div>
@@ -174,6 +178,11 @@ file contents...</code></pre>
           <span>supported inputs</span>
           <p>Markdown is editable. CSV is previewed as a table. Plain text fallback is available when a file is safe to read.</p>
         </div>
+        <p>
+          Use the command palette while editing to insert common markdown blocks without
+          stopping to hand-type table scaffolds: tables, bulleted lists, numbered lists,
+          and fenced code blocks are built in.
+        </p>
         <ul class="docs__list">
           <li><strong>Markdown:</strong> edit <code>.md</code>, <code>.markdown</code>, and <code>.mdx</code> files.</li>
           <li><strong>CSV:</strong> open <code>.csv</code> files as a fast table preview.</li>
