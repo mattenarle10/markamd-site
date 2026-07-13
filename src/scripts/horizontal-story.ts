@@ -47,13 +47,29 @@ function setup() {
         story.querySelectorAll<HTMLElement>("[data-count]").forEach((counter) => {
           const target = Number((counter.dataset.count ?? "0").replaceAll(",", ""));
           if (!Number.isFinite(target)) return;
-          const state = { value: 0 };
-          gsap.to(state, {
-            value: target,
-            duration: 1.15,
-            ease: "power2.out",
-            onUpdate: () => {
-              counter.textContent = Math.round(state.value).toLocaleString();
+          const digits = String(Math.max(0, Math.floor(target))).length;
+          const floor = digits > 1 ? 10 ** (digits - 1) : 0;
+          const ceiling = 10 ** digits;
+          const spinValue = () => Math.floor(floor + Math.random() * (ceiling - floor));
+
+          counter.classList.add("is-rolling");
+          gsap.to({}, {
+            duration: 0.46,
+            ease: "none",
+            onStart: () => { counter.textContent = spinValue().toLocaleString(); },
+            onUpdate: () => { counter.textContent = spinValue().toLocaleString(); },
+            onComplete: () => {
+              const state = { value: Math.round(target * 0.58) };
+              gsap.to(state, {
+                value: target,
+                duration: 0.72,
+                ease: "power3.out",
+                onUpdate: () => { counter.textContent = Math.round(state.value).toLocaleString(); },
+                onComplete: () => {
+                  counter.textContent = target.toLocaleString();
+                  counter.classList.remove("is-rolling");
+                },
+              });
             },
           });
         });

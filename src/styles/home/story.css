@@ -135,9 +135,14 @@
 .story__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 14px; background: var(--border); }
 .story__stats > span { display: grid; place-items: center; gap: 3px; padding: 14px 10px; background: color-mix(in srgb, #fff 92%, transparent); color: var(--accent); text-align: center; transition: background-color 180ms ease; }
 .story__stats > span > b { display: inline-flex; align-items: baseline; gap: 7px; font-weight: 400; }
-.story__stats strong { color: var(--fg); font-family: var(--font-display); font-size: clamp(22px, 3.5vw, 40px); font-weight: 600; letter-spacing: -0.04em; text-transform: none; }
+.story__stats strong { display: inline-block; min-width: 2ch; color: var(--fg); font-family: var(--font-display); font-size: clamp(22px, 3.5vw, 40px); font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -0.04em; text-align: right; text-transform: none; }
+.story__stats strong.is-rolling { color: var(--accent); filter: blur(0.35px); animation: story-roulette 72ms steps(2, end) infinite; }
 .story__stats i { font-family: var(--font-mono); font-size: 15px; font-style: normal; }
 .story__stats small { color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; }
+
+@keyframes story-roulette {
+  50% { transform: translateY(-1px); }
+}
 .story__faq { display: grid; gap: 7px; }
 .story__faq details { border: 1px solid var(--border); border-radius: 10px; background: color-mix(in srgb, #fff 90%, transparent); transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
 .story__faq summary { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 13px 15px; cursor: pointer; color: var(--fg); font-size: 13px; font-weight: 600; list-style: none; transition: background-color 180ms ease; }
