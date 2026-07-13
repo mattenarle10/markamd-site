@@ -39,12 +39,14 @@ function setup() {
       let tween: gsap.core.Tween | undefined;
       let trigger: ScrollTrigger | undefined;
       let countersPlayed = false;
+      const faqItems = Array.from(story.querySelectorAll<HTMLDetailsElement>(".story__faq details"));
 
       const playCounters = () => {
         if (countersPlayed) return;
         countersPlayed = true;
         story.querySelectorAll<HTMLElement>("[data-count]").forEach((counter) => {
-          const target = Number(counter.dataset.count ?? 0);
+          const target = Number((counter.dataset.count ?? "0").replaceAll(",", ""));
+          if (!Number.isFinite(target)) return;
           const state = { value: 0 };
           gsap.to(state, {
             value: target,
@@ -164,7 +166,15 @@ function setup() {
         event.preventDefault();
         trigger.scroll(trigger.start + (trigger.end - trigger.start) * panelProgress(index));
       };
+      const onFaqToggle = (event: Event) => {
+        const opened = event.currentTarget as HTMLDetailsElement;
+        if (!opened.open) return;
+        faqItems.forEach((item) => {
+          if (item !== opened) item.open = false;
+        });
+      };
       links.forEach((link) => link.addEventListener("click", onProgressClick));
+      faqItems.forEach((item) => item.addEventListener("toggle", onFaqToggle));
 
       const observer = new ResizeObserver(scheduleRefresh);
       observer.observe(pin);
@@ -206,6 +216,7 @@ function setup() {
         window.removeEventListener("load", onLoad);
         window.removeEventListener("pageshow", onLoad);
         links.forEach((link) => link.removeEventListener("click", onProgressClick));
+        faqItems.forEach((item) => item.removeEventListener("toggle", onFaqToggle));
         trigger?.kill(true);
         tween?.kill();
         gsap.set(track, { clearProps: "transform" });
