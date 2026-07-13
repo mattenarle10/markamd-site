@@ -2,7 +2,7 @@
 import AppPreview from "../AppPreview.astro";
 import HeroMascot from "../HeroMascot.astro";
 import { AppleIcon, GithubIcon } from "../icons";
-import type { FeaturedLink, ReleaseHighlight, RepoStats, Shortcut, Step, ThemeFamily } from "../../lib/home-types";
+import type { FeaturedLink, RepoStats, Shortcut, Step, ThemeFamily } from "../../lib/home-types";
 import DownloadMenu from "./DownloadMenu.astro";
 import StoryAmbient from "./StoryAmbient.astro";
 
@@ -17,7 +17,6 @@ type Props = {
   hasMacIntel: boolean;
   hasWindows: boolean;
   hasLinux: boolean;
-  releaseHighlight: ReleaseHighlight;
   shortcuts: Shortcut[];
   themeFamilies: ThemeFamily[];
   steps: Step[];
@@ -27,7 +26,7 @@ type Props = {
 
 const {
   version, repoUrl, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl,
-  hasMacIntel, hasWindows, hasLinux, releaseHighlight, shortcuts, themeFamilies, steps, stats, featured,
+  hasMacIntel, hasWindows, hasLinux, shortcuts, themeFamilies, steps, stats, featured,
 } = Astro.props;
 
 const chapters = [
@@ -69,13 +68,22 @@ const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0
           </div>
           <p class="story__fineprint">notarized · auto-updating · {version} · MIT · no telemetry</p>
         </div>
+        <aside class="story__hero-side" aria-label="marka.md essentials">
+          <img src="/mascot/write.png" alt="" width="250" height="250" />
+          <p>one focused workspace for:</p>
+          <ul>
+            <li>plain files on your machine</li>
+            <li>live markdown beside the source</li>
+            <li>context you choose to copy</li>
+          </ul>
+        </aside>
       </section>
 
       <section id="story-write" class="story__panel story__panel--product" data-story-panel="write" aria-labelledby="story-write-title">
         <div class="story__copy">
           <p class="eyebrow">made for the thought in front of you.</p>
-          <h2 id="story-write-title">write, preview, and keep moving.</h2>
-          <p>one quiet workspace for the note you are writing now. the useful controls stay close without taking over the page.</p>
+          <h2 id="story-write-title">write, preview. keep moving.</h2>
+          <p>one quiet workspace for the note in front of you.</p>
           <div class="story__write-annotations">
             <div class="story__keys story__keys--compact" role="list" aria-label="a few keyboard shortcuts">
               {shortcuts.slice(0, 3).map((shortcut) => <kbd role="listitem" data-tooltip={shortcut.label} aria-label={`${shortcut.label} — keyboard shortcut ${shortcut.key}`}>{shortcut.key}<span>{shortcut.label}</span></kbd>)}
@@ -87,8 +95,7 @@ const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0
               <p><strong>your room, your theme.</strong> choices from light mono to matcha.</p>
             </div>
           </div>
-          <p class="story__release-note"><strong>{releaseHighlight.title}</strong> — {releaseHighlight.body}</p>
-          <a href="/changelog" class="story__text-link">read the changelog →</a>
+          <a href="/changelog" class="story__text-link">new in {version}: separate preview + quick inserts →</a>
         </div>
         <div class="story__product-preview"><AppPreview /></div>
       </section>
@@ -113,9 +120,9 @@ const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0
         <div class="story__copy"><p class="eyebrow">the honest answers.</p><h2 id="story-proof-title">small, local, and here for the long run.</h2></div>
         <div class="story__proof-grid">
           <p class="story__stats story__stats--wide" aria-label={`${stats.stars} GitHub stars, ${stats.forks} forks, ${stats.downloads.toLocaleString()} downloads`}>
-            <span><strong data-count={stats.stars}>{stats.stars}</strong><i aria-hidden="true">★</i></span>
-            <span><strong data-count={stats.forks}>{stats.forks}</strong><i aria-hidden="true">⑂</i></span>
-            <span><strong data-count={stats.downloads}>{stats.downloads.toLocaleString()}</strong><i aria-hidden="true">↓</i></span>
+            <span><b><strong data-count={stats.stars}>{stats.stars}</strong><i aria-hidden="true">★</i></b><small>stars</small></span>
+            <span><b><strong data-count={stats.forks}>{stats.forks}</strong><i aria-hidden="true">⑂</i></b><small>forks</small></span>
+            <span><b><strong data-count={stats.downloads}>{stats.downloads.toLocaleString()}</strong><i aria-hidden="true">↓</i></b><small>downloads</small></span>
           </p>
           <div class="story__proof-detail">
             <div class="story__mentions">

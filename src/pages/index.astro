@@ -7,7 +7,6 @@ import {
 } from "../components/home";
 import {
   featured,
-  getReleaseHighlight,
   repoUrl,
   shortcuts,
   steps,
@@ -24,7 +23,6 @@ const linuxHref = linuxUrl || releasesPageUrl;
 const hasMacIntel = macIntelUrl.length > 0;
 const hasWindows = windowsUrl.length > 0;
 const hasLinux = linuxUrl.length > 0;
-const releaseHighlight = getReleaseHighlight(version);
 ---
 
 <Layout>
@@ -40,7 +38,6 @@ const releaseHighlight = getReleaseHighlight(version);
     hasMacIntel={hasMacIntel}
     hasWindows={hasWindows}
     hasLinux={hasLinux}
-    releaseHighlight={releaseHighlight}
     shortcuts={shortcuts}
     themeFamilies={themeFamilies}
     steps={steps}

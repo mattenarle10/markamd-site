@@ -12,9 +12,9 @@ const { tag: version, releasesPageUrl } = await getLatestRelease();
 const nav = [
   { href: "#introduction", label: "introduction" },
   { href: "#getting-started", label: "getting started" },
-  { href: "#interface", label: "interface" },
+  { href: "#writing", label: "writing + preview" },
   { href: "#context-bundles", label: "context bundles" },
-  { href: "#files", label: "files" },
+  { href: "#workspace", label: "workspace + files" },
   { href: "#export", label: "export" },
   { href: "#shortcuts", label: "shortcuts" },
   { href: "#troubleshooting", label: "troubleshooting" },
@@ -33,13 +33,15 @@ const shortcuts = [
   ["⌘.", "reading mode"],
   ["⌘⇧.", "editor-only mode"],
   ["⌘⇧C", "copy current markdown"],
+  ["⌘F", "find in the current file"],
+  ["⌘P", "open or close the separate preview"],
   ["⌘/", "help"],
 ];
 ---
 
 <Layout
   title="docs · marka.md"
-  description="learn the marka.md workflow: local markdown, file tabs, themes, context bundles, CSV preview, PDF export, and shortcuts."
+  description="learn the marka.md workflow: local markdown, live preview, file tabs, context bundles, export, and shortcuts."
 >
   <SiteNav />
 
@@ -60,11 +62,11 @@ const shortcuts = [
       <header class="docs__hero" id="introduction">
         <div class="docs__hero-copy">
           <p class="docs__eyebrow">the marka manual</p>
-          <h1>local markdown, organized for serious writing workflows.</h1>
+          <h1>local markdown for the work you actually want to share.</h1>
           <p class="docs__lede">
-            Marka is a desktop markdown editor for working with plain files, live
-            previews, project notes, and reusable context bundles. It stays local,
-            keeps the interface quiet, and avoids turning your notes into a service.
+            Marka is a desktop markdown editor for plain files, live preview, and clean
+            AI context bundles. It stays local, keeps the interface quiet, and leaves
+            your notes as regular files on disk.
           </p>
           <div class="docs__meta" aria-label="project facts">
             <span>local-first</span>
@@ -81,8 +83,8 @@ const shortcuts = [
       <section class="docs__section" id="getting-started">
         <h2>getting started</h2>
         <p>
-          The app is file-first: open a folder, edit normal files, and keep ownership of
-          the project structure on disk.
+          The app is file-first: open one or more folders, edit normal files, and keep
+          ownership of the project structure on disk.
         </p>
         <p>
           On macOS, you can install from the DMG or use Homebrew:
@@ -95,61 +97,62 @@ const shortcuts = [
             <span>01</span>
             <div>
               <strong>Open a folder.</strong>
-              Pick the notes or project folder you want to work from. The sidebar becomes
-              your local context library.
+              Pick the notes or project folder you want to work from. Pin favorites and
+              let the sidebar become your local context library.
             </div>
           </li>
           <li>
             <span>02</span>
             <div>
               <strong>Open or create a file.</strong>
-              Markdown files open with editor + preview. CSV files open as a lightweight
-              read-only table preview.
+              Markdown opens beside a live preview. Use tabs to keep several notes close;
+              CSV opens as a lightweight read-only table preview.
             </div>
           </li>
           <li>
             <span>03</span>
             <div>
               <strong>Stage context.</strong>
-              Use the sidebar buttons to stage files, watch token counts, then copy one
-              reusable bundle for handoff.
+              Use the sidebar buttons to stage files. The context tray shows file and
+              token counts, then copies one bundle when you are ready.
             </div>
           </li>
         </ol>
       </section>
 
-      <section class="docs__section" id="interface">
-        <h2>interface</h2>
+      <section class="docs__section" id="writing">
+        <h2>writing + preview</h2>
         <div class="docs__grid">
           <div>
             <h3>editor + preview</h3>
             <p>
               The default split view keeps source and rendered markdown side by side.
-              Mermaid diagrams, code highlighting, task lists, tables, and math render in
-              the preview. When you want more room, open the preview in its own window
-              and keep editing in the main app.
+              Code highlighting, Mermaid diagrams, media previews, task lists, and
+              tables render beside the source. When you want more room, open the preview
+              in its own window and keep editing in the main app.
             </p>
           </div>
           <div>
-            <h3>tabs</h3>
+            <h3>modes + find</h3>
             <p>
-              Keep several files open while you move between notes. Unsaved changes stay
-              attached to each tab until you save or close it.
+              Reading mode clears the chrome for proofreading; editor-only mode stays
+              focused on text. Search, opt-in Vim mode, and platform shortcuts
+              are there when you need them.
             </p>
           </div>
           <div>
             <h3>themes</h3>
             <p>
               Theme groups keep the picker tidy: mono, Catppuccin, crafted palettes,
-              AI-inspired Claude, Codex, Gemini, and Cursor styles, plus interface
-              languages including Traditional Chinese.
+              AI-inspired Claude, Codex, Gemini, and Cursor styles sit alongside quiet
+              mono and crafted palettes. The interface also supports Traditional Chinese.
             </p>
           </div>
           <div>
-            <h3>view modes</h3>
+            <h3>quick inserts</h3>
             <p>
-              Reading mode hides editing chrome for proofreading. Editor-only mode gives
-              you a focused text surface for drafting or plain text files.
+              The command palette can insert 2×2 or 3×3 tables, bulleted and numbered
+              lists, and fenced code blocks without breaking your flow.
             </p>
           </div>
         </div>
@@ -170,8 +173,8 @@ const shortcuts = [
 file contents...</code></pre>
       </section>
 
-      <section class="docs__section" id="files">
-        <h2>files</h2>
+      <section class="docs__section" id="workspace">
+        <h2>workspace + files</h2>
         <div class="docs__callout">
           <span>supported inputs</span>
           <p>Markdown is editable. CSV is previewed as a table. Plain text fallback is available when a file is safe to read.</p>
@@ -186,6 +189,7 @@ file contents...</code></pre>
           <li><strong>CSV:</strong> open <code>.csv</code> files as a fast table preview.</li>
           <li><strong>Plain text:</strong> unsupported text files can be opened as text when the app can read them safely.</li>
           <li><strong>Local images:</strong> relative image paths in markdown resolve from the current file folder.</li>
+          <li><strong>Workspace care:</strong> drag files to move them, undo file operations, and let Marka notice external file changes.</li>
           <li><strong>Native files:</strong> right-click files to copy paths, reveal in file manager, rename, delete, or open with the default app.</li>
         </ul>
       </section>
@@ -194,13 +198,14 @@ file contents...</code></pre>
         <h2>export</h2>
         <p>
           PDF export prints the rendered preview with clean document margins and browser
-          headers disabled by the app. Mermaid diagrams and code blocks render from the
-          preview before the print handoff.
+          headers disabled by the app. Mermaid diagrams and code blocks render before the
+          print handoff; code blocks can also be copied directly from preview.
         </p>
       </section>
 
       <section class="docs__section" id="shortcuts">
         <h2>shortcuts</h2>
+        <p>These use the macOS symbols. On Windows and Linux, use the matching Ctrl-based shortcut.</p>
         <div class="docs__shortcut-list">
           {shortcuts.map(([key, label]) => (
             <div class="docs__shortcut">
@@ -239,7 +244,7 @@ file contents...</code></pre>
           <img src="/mascot/notebook.png" alt="" width="112" height="112" />
         </div>
         <p class="docs__utility-label">start here</p>
-        <p class="docs__utility-copy">the current stable release is {version}.</p>
+        <p class="docs__utility-copy">{version} adds separate previews, quick markdown inserts, and Traditional Chinese.</p>
         <div class="docs__actions">
           <DocAction href={releasesPageUrl} label={`download ${version}`} icon="download" primary />
           <DocAction href={repoUrl} label="view source" icon="github" />
