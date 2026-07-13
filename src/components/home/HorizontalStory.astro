@@ -1,6 +1,5 @@
 ---
 import AppPreview from "../AppPreview.astro";
-import HeroMascot from "../HeroMascot.astro";
 import { AppleIcon, GithubIcon } from "../icons";
 import type { FeaturedLink, RepoStats, Step } from "../../lib/home-types";
 import DownloadMenu from "./DownloadMenu.astro";
@@ -55,7 +54,6 @@ const chapters = [
     <div class="story__track">
       <section id="story-start" class="story__panel story__panel--hero" data-story-panel="start" aria-labelledby="story-start-title">
         <div class="story__copy">
-          <HeroMascot size={148} />
           <p class="eyebrow">marka.md</p>
           <h1 id="story-start-title">write markdown.<br />share with ai.<br /><span class="accent">nothing leaves your machine.</span></h1>
           <p>the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.</p>
