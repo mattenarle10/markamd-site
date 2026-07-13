@@ -16,20 +16,21 @@ const lastUpdated = "2026-05-14";
 
   <main class="privacy">
     <article class="privacy__article">
-      <p class="privacy__eyebrow">privacy</p>
-      <h1 class="privacy__title">
-        marka.md is local-first.
-        <br />
-        <span class="privacy__accent">we collect nothing.</span>
-      </h1>
-      <p class="privacy__lede">
-        the app does not transmit, log, or store any personal data outside your machine.
-        no telemetry. no analytics. no crash reporting. no account, no cloud, no sign-in.
-        (this website itself does use cookieless aggregate analytics — see
-        <a href="#about-this-website">about this website</a> below.)
-      </p>
+      <header class="privacy__hero">
+        <div>
+          <p class="privacy__eyebrow">a plain promise</p>
+          <h1 class="privacy__title">your notes<br />stay <span class="privacy__accent">yours.</span></h1>
+        </div>
+        <p class="privacy__lede">
+          the app does not transmit, log, or store any personal data outside your machine.
+          no telemetry. no analytics. no crash reporting. no account, no cloud, no sign-in.
+          (this website itself does use cookieless aggregate analytics — see
+          <a href="#about-this-website">about this website</a> below.)
+        </p>
+      </header>
 
-      <section class="privacy__section">
+      <div class="privacy__contract">
+      <section class="privacy__section privacy__section--wide">
         <h2 class="privacy__h2">what stays on your computer</h2>
         <ul class="privacy__list">
           <li>
@@ -70,7 +71,7 @@ const lastUpdated = "2026-05-14";
         </ul>
       </section>
 
-      <section class="privacy__section">
+      <section class="privacy__section privacy__section--statement">
         <h2 class="privacy__h2">your data is yours</h2>
         <p class="privacy__p">
           marka.md works because your notes are just files on disk. delete the app, your
@@ -79,7 +80,7 @@ const lastUpdated = "2026-05-14";
         </p>
       </section>
 
-      <section class="privacy__section" id="about-this-website">
+      <section class="privacy__section privacy__section--wide" id="about-this-website">
         <h2 class="privacy__h2">about this website</h2>
         <p class="privacy__p">
           this notice is about the <strong>marka.md app</strong>. the landing site you're
@@ -126,6 +127,7 @@ const lastUpdated = "2026-05-14";
         </p>
       </section>
 
+      </div>
       <p class="privacy__version">marka.md · {version} · MIT</p>
     </article>
   </main>
@@ -134,39 +136,41 @@ const lastUpdated = "2026-05-14";
 </Layout>
 
 <style is:global>
-  .privacy {
-    background: var(--bg);
-    padding: 96px 24px 128px;
-  }
+  .privacy { padding: 88px 24px 96px; background: var(--bg); }
   .privacy__article {
-    max-width: 720px;
+    max-width: 1180px;
     margin: 0 auto;
     color: var(--fg);
   }
+  .privacy__hero { min-height: min(680px, calc(100svh - 140px)); display: grid; grid-template-columns: 1.2fr .8fr; gap: 64px; align-items: end; padding: 32px 0 72px; border-bottom: 1px solid var(--border); }
   .privacy__eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.18em;
     color: var(--muted);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
   .privacy__title {
     font-family: var(--font-display);
-    font-size: clamp(36px, 5.5vw, 64px);
-    line-height: 1.04;
+    font-size: clamp(56px, 8vw, 120px);
+    line-height: .9;
     letter-spacing: -0.025em;
     font-weight: 600;
-    margin-bottom: 32px;
+    margin: 0;
   }
   .privacy__accent { color: var(--accent); }
   .privacy__lede {
     font-size: 19px;
     line-height: 1.6;
     color: var(--muted);
-    margin-bottom: 64px;
+    margin: 0;
+    align-self: end;
   }
-  .privacy__section { margin-bottom: 48px; }
+  .privacy__contract { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 64px; padding-top: 64px; }
+  .privacy__section { padding: 0 0 44px; margin: 0 0 40px; border-bottom: 1px solid var(--border); }
+  .privacy__section--wide { grid-column: 1 / -1; max-width: 760px; }
+  .privacy__section--statement { padding: 42px; background: var(--accent-soft); border: 0; border-radius: 16px; }
   .privacy__h2 {
     font-family: var(--font-display);
     font-size: 22px;
@@ -218,7 +222,7 @@ const lastUpdated = "2026-05-14";
     border-bottom-color: var(--accent);
   }
   .privacy__version {
-    margin-top: 80px;
+    margin-top: 32px;
     padding-top: 24px;
     border-top: 1px solid var(--border);
     font-family: var(--font-mono);
@@ -226,7 +230,14 @@ const lastUpdated = "2026-05-14";
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--muted);
-    text-align: center;
+    text-align: left;
+  }
+  @media (max-width: 720px) {
+    .privacy { padding-top: 48px; }
+    .privacy__hero, .privacy__contract { display: block; }
+    .privacy__hero { min-height: 0; padding: 32px 0 52px; }
+    .privacy__lede { margin-top: 36px; }
+    .privacy__section { margin-bottom: 32px; }
   }
 
 </style>

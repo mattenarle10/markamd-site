@@ -4,6 +4,7 @@ import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import DocAction from "../components/DocAction.astro";
 import { getLatestRelease } from "../lib/version";
+import "../styles/pages/docs.css";
 
 const repoUrl = "https://github.com/mattenarle10/markamd";
 const { tag: version, releasesPageUrl } = await getLatestRelease();
@@ -45,19 +46,20 @@ const shortcuts = [
   <main class="docs">
     <aside class="docs__rail" aria-label="docs navigation">
       <div class="docs__rail-inner">
-        <p class="docs__rail-title">docs</p>
+        <p class="docs__rail-title"><span aria-hidden="true">/</span> manual</p>
         <nav class="docs__nav">
           {nav.map((item) => (
             <a href={item.href}>{item.label}</a>
           ))}
         </nav>
+        <p class="docs__rail-note">marka.md {version}<br />local-first desktop app</p>
       </div>
     </aside>
 
     <article class="docs__article">
       <header class="docs__hero" id="introduction">
         <div class="docs__hero-copy">
-          <p class="docs__eyebrow">introduction</p>
+          <p class="docs__eyebrow">the marka manual</p>
           <h1>local markdown, organized for serious writing workflows.</h1>
           <p class="docs__lede">
             Marka is a desktop markdown editor for working with plain files, live
@@ -69,14 +71,10 @@ const shortcuts = [
             <span>MIT</span>
             <span>macOS · Windows · Linux</span>
           </div>
-          <div class="docs__actions">
-            <DocAction href={releasesPageUrl} label={`download ${version}`} icon="download" primary />
-            <DocAction href={repoUrl} label="view source" icon="github" />
-          </div>
         </div>
-        <div class="docs__mascot" aria-hidden="true">
-          <img src="/mascot/notebook.png" alt="" width="112" height="112" />
-          <span>docs for {version}</span>
+        <div class="docs__hero-index" aria-hidden="true">
+          <span>01</span>
+          <span>read me</span>
         </div>
       </header>
 
@@ -234,12 +232,30 @@ file contents...</code></pre>
         </div>
       </section>
     </article>
+
+    <aside class="docs__utility" aria-label="docs utilities">
+      <div class="docs__utility-inner">
+        <div class="docs__utility-mark" aria-hidden="true">
+          <img src="/mascot/notebook.png" alt="" width="112" height="112" />
+        </div>
+        <p class="docs__utility-label">start here</p>
+        <p class="docs__utility-copy">the current stable release is {version}.</p>
+        <div class="docs__actions">
+          <DocAction href={releasesPageUrl} label={`download ${version}`} icon="download" primary />
+          <DocAction href={repoUrl} label="view source" icon="github" />
+        </div>
+        <div class="docs__utility-links">
+          <a href="#shortcuts">keyboard shortcuts <span aria-hidden="true">↘</span></a>
+          <a href={`${repoUrl}/issues`} target="_blank" rel="noopener">report an issue <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </aside>
   </main>
 
   <SiteFooter version={version} />
 </Layout>
 
-<style is:global>
+<!-- <style is:global>
   .docs {
     max-width: var(--max-content);
     margin: 0 auto;
@@ -658,4 +674,4 @@ file contents...</code></pre>
       grid-template-columns: 76px 1fr;
     }
   }
-</style>
+</style> -->

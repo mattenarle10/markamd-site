@@ -26,49 +26,19 @@ type Props = {
 };
 
 const {
-  version,
-  repoUrl,
-  macHref,
-  macIntelHref,
-  windowsHref,
-  linuxHref,
-  releasesPageUrl,
-  hasMacIntel,
-  hasWindows,
-  hasLinux,
-  releaseHighlight,
-  shortcuts,
-  themeFamilies,
-  steps,
-  stats,
-  featured,
+  version, repoUrl, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl,
+  hasMacIntel, hasWindows, hasLinux, releaseHighlight, shortcuts, themeFamilies, steps, stats, featured,
 } = Astro.props;
 
 const chapters = [
-  ["hero", "start"],
-  ["product", "the app"],
-  ["keyboard", "keys"],
-  ["themes", "themes"],
+  ["start", "start"],
+  ["write", "write"],
   ["workflow", "the loop"],
-  ["capabilities", "inside"],
   ["proof", "proof"],
   ["download", "download"],
 ] as const;
 
-const capabilityLanes = [
-  {
-    title: "write",
-    body: "edit beside live preview, pop preview into its own window, and use calm reading or editor-only modes when you need them.",
-  },
-  {
-    title: "organize",
-    body: "work across folders, pin the useful stuff, stage notes, and keep a context tray that knows what is ready to share.",
-  },
-  {
-    title: "share",
-    body: "copy one clean markdown file or a relative-path context bundle for whichever AI chat or local agent is next.",
-  },
-];
+const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0, 3);
 ---
 
 <main class="story" data-story>
@@ -78,8 +48,7 @@ const capabilityLanes = [
       {chapters.map(([id, label], index) => (
         <li>
           <a href={`#story-${id}`} data-story-link={id} class="story__progress-link" aria-current={index === 0 ? "step" : undefined} aria-label={`Chapter ${index + 1}: ${label}`}>
-            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-            {label}
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>{label}
           </a>
         </li>
       ))}
@@ -88,11 +57,11 @@ const capabilityLanes = [
 
   <div class="story__pin">
     <div class="story__track">
-      <section id="story-hero" class="story__panel story__panel--hero" data-story-panel="hero" aria-labelledby="story-hero-title">
+      <section id="story-start" class="story__panel story__panel--hero" data-story-panel="start" aria-labelledby="story-start-title">
         <div class="story__copy">
           <HeroMascot size={148} />
           <p class="eyebrow">marka.md</p>
-          <h1 id="story-hero-title">write markdown.<br />share with ai.<br /><span class="accent">nothing leaves your machine.</span></h1>
+          <h1 id="story-start-title">write markdown.<br />share with ai.<br /><span class="accent">nothing leaves your machine.</span></h1>
           <p>the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.</p>
           <div class="story__actions">
             <DownloadMenu {...{ version, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl, hasMacIntel, hasWindows, hasLinux }} />
@@ -102,56 +71,35 @@ const capabilityLanes = [
         </div>
       </section>
 
-      <section id="story-product" class="story__panel story__panel--product" data-story-panel="product" aria-labelledby="story-product-title">
+      <section id="story-write" class="story__panel story__panel--product" data-story-panel="write" aria-labelledby="story-write-title">
         <div class="story__copy">
-          <p class="eyebrow">{releaseHighlight.eyebrow}</p>
-          <h2 id="story-product-title">{releaseHighlight.title}</h2>
-          <p>{releaseHighlight.body}</p>
-          <ul class="story__release-list">
-            {releaseHighlight.items.slice(0, 3).map((item) => <li><strong>{item.label}</strong> — {item.body}</li>)}
-          </ul>
+          <p class="eyebrow">made for the thought in front of you.</p>
+          <h2 id="story-write-title">write, preview, and keep moving.</h2>
+          <p>one quiet workspace for the note you are writing now. the useful controls stay close without taking over the page.</p>
+          <div class="story__write-annotations">
+            <div class="story__keys story__keys--compact" role="list" aria-label="a few keyboard shortcuts">
+              {shortcuts.slice(0, 3).map((shortcut) => <kbd role="listitem" data-tooltip={shortcut.label} aria-label={`${shortcut.label} — keyboard shortcut ${shortcut.key}`}>{shortcut.key}<span>{shortcut.label}</span></kbd>)}
+            </div>
+            <div class="story__theme-note">
+              <span class="story__theme-swatches" aria-hidden="true">
+                {themeSwatches.map(([bg, accent]) => <i style={`--sw-bg:${bg};--sw-accent:${accent};`}></i>)}
+              </span>
+              <p><strong>your room, your theme.</strong> choices from light mono to matcha.</p>
+            </div>
+          </div>
+          <p class="story__release-note"><strong>{releaseHighlight.title}</strong> — {releaseHighlight.body}</p>
           <a href="/changelog" class="story__text-link">read the changelog →</a>
         </div>
         <div class="story__product-preview"><AppPreview /></div>
-      </section>
-
-      <section id="story-keyboard" class="story__panel story__panel--keyboard" data-story-panel="keyboard" aria-labelledby="story-keyboard-title">
-        <div class="story__copy">
-          <p class="eyebrow">made for the keyboard.</p>
-          <h2 id="story-keyboard-title">stay in the thought.</h2>
-          <p>the small moves are all nearby. use the mouse when you want to, not because you have to.</p>
-        </div>
-        <div class="story__keys" role="list" aria-label="keyboard shortcuts">
-          {shortcuts.map((shortcut) => <kbd role="listitem" data-tooltip={shortcut.label} aria-label={`${shortcut.label} — keyboard shortcut ${shortcut.key}`}>{shortcut.key}<span>{shortcut.label}</span></kbd>)}
-        </div>
-      </section>
-
-      <section id="story-themes" class="story__panel story__panel--themes" data-story-panel="themes" aria-labelledby="story-themes-title">
-        <div class="story__copy">
-          <p class="eyebrow">14 themes, grouped like the app menu.</p>
-          <h2 id="story-themes-title">pick the room before you write.</h2>
-          <p>quiet mono, familiar catppuccin, crafted palettes, and a few nods to the AI tools your notes end up in.</p>
-        </div>
-        <div class="story__theme-grid">
-          {themeFamilies.map((family) => (
-            <article class="story__theme-family">
-              <div class="story__swatches" aria-hidden="true">
-                {family.swatches.map(([bg, accent]) => <span style={`--sw-bg:${bg};--sw-accent:${accent};`}><i></i></span>)}
-              </div>
-              <h3>{family.name}</h3>
-              <p>{family.sub}</p>
-              <small>{family.note}</small>
-            </article>
-          ))}
-        </div>
       </section>
 
       <section id="story-workflow" class="story__panel story__panel--workflow" data-story-panel="workflow" aria-labelledby="story-workflow-title">
         <div class="story__copy">
           <p class="eyebrow">how it works</p>
           <h2 id="story-workflow-title">one loop. nothing leaves your machine.</h2>
+          <p>collect the useful notes, write in the same place, then copy exactly the context you meant to share.</p>
         </div>
-        <ol class="story__steps">
+        <ol class="story__steps" aria-label="the marka.md workflow">
           {steps.map((step) => (
             <li>
               <img src={step.art} alt="" width="112" height="112" />
@@ -161,17 +109,10 @@ const capabilityLanes = [
         </ol>
       </section>
 
-      <section id="story-capabilities" class="story__panel story__panel--capabilities" data-story-panel="capabilities" aria-labelledby="story-capabilities-title">
-        <div class="story__copy"><p class="eyebrow">the useful bits.</p><h2 id="story-capabilities-title">simple where it counts.</h2></div>
-        <div class="story__lanes">
-          {capabilityLanes.map((lane, index) => <article><span>{String(index + 1).padStart(2, "0")}</span><h3>{lane.title}</h3><p>{lane.body}</p></article>)}
-        </div>
-      </section>
-
       <section id="story-proof" class="story__panel story__panel--proof" data-story-panel="proof" aria-labelledby="story-proof-title">
         <div class="story__copy"><p class="eyebrow">the honest answers.</p><h2 id="story-proof-title">small, local, and here for the long run.</h2></div>
         <div class="story__proof-grid">
-          <p class="story__stats" aria-label={`${stats.stars} GitHub stars, ${stats.forks} forks, ${stats.downloads.toLocaleString()} downloads`}>
+          <p class="story__stats story__stats--wide" aria-label={`${stats.stars} GitHub stars, ${stats.forks} forks, ${stats.downloads.toLocaleString()} downloads`}>
             <span><strong data-count={stats.stars}>{stats.stars}</strong><i aria-hidden="true">★</i></span>
             <span><strong data-count={stats.forks}>{stats.forks}</strong><i aria-hidden="true">⑂</i></span>
             <span><strong data-count={stats.downloads}>{stats.downloads.toLocaleString()}</strong><i aria-hidden="true">↓</i></span>
@@ -199,9 +140,7 @@ const capabilityLanes = [
             <a href={macHref} target="_blank" rel="noopener" class="btn btn--accent"><AppleIcon size={14} /> download {version}</a>
             <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost"><GithubIcon size={14} /> view on github</a>
           </div>
-          <nav class="story__closing-links" aria-label="more marka.md links">
-            <a href="/docs">docs</a><a href="/feedback">feedback</a><a href="/privacy">privacy</a>
-          </nav>
+          <nav class="story__closing-links" aria-label="more marka.md links"><a href="/docs">docs</a><a href="/feedback">feedback</a><a href="/privacy">privacy</a></nav>
         </div>
       </section>
     </div>
