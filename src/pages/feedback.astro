@@ -20,20 +20,19 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
 
   <main class="fb">
     <article class="fb__article">
-      <p class="fb__eyebrow">feedback</p>
-      <h1 class="fb__title">
-        tell me what you think.
-        <br />
-        <span class="fb__accent">honestly.</span>
-      </h1>
-      <p class="fb__lede">
-        marka.md is built in the open. every idea, complaint, or "would be cool if…"
-        helps shape the next release. pick whichever channel feels right.
-      </p>
+      <header class="fb__intro">
+        <p class="fb__eyebrow">an open line</p>
+        <h1 class="fb__title">what’s on your mind?</h1>
+        <p class="fb__lede">
+          marka.md is built in the open. every idea, complaint, or "would be cool if…"
+          helps shape the next release. pick the door that feels right.
+        </p>
+      </header>
 
-      <section class="fb__cards">
+      <section class="fb__cards" aria-label="Feedback options">
         <a class="fb__card" href={feedbackUrl} target="_blank" rel="noopener">
-          <div class="fb__card-icon" aria-hidden="true">💬</div>
+          <span class="fb__card-number" aria-hidden="true">01</span>
+          <div class="fb__card-icon" aria-hidden="true">idea</div>
           <h2 class="fb__card-title">share an idea or feature request</h2>
           <p class="fb__card-body">
             opens a structured form on github. best for ideas, missing features,
@@ -43,7 +42,8 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
         </a>
 
         <a class="fb__card" href={bugUrl} target="_blank" rel="noopener">
-          <div class="fb__card-icon" aria-hidden="true">🐛</div>
+          <span class="fb__card-number" aria-hidden="true">02</span>
+          <div class="fb__card-icon" aria-hidden="true">bug</div>
           <h2 class="fb__card-title">report a bug</h2>
           <p class="fb__card-body">
             something not working? this opens a quick bug report form with the
@@ -53,7 +53,8 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
         </a>
 
         <a class="fb__card" href={mailto}>
-          <div class="fb__card-icon" aria-hidden="true">✉️</div>
+          <span class="fb__card-number" aria-hidden="true">03</span>
+          <div class="fb__card-icon" aria-hidden="true">hello</div>
           <h2 class="fb__card-title">just send an email</h2>
           <p class="fb__card-body">
             no github account, no form, no public thread. opens your mail app
@@ -63,7 +64,7 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
         </a>
       </section>
 
-      <p class="fb__note">
+      <p class="fb__note" role="note">
         i read everything. response time depends on the channel — github usually
         within a day or two, email when i can. salamat 🐙
       </p>
@@ -74,14 +75,17 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
 </Layout>
 
 <style is:global>
-  .fb {
-    background: var(--bg);
-    padding: 96px 24px 128px;
-  }
+  .fb { min-height: calc(100svh - 56px); padding: 56px 24px 32px; background: linear-gradient(135deg, var(--bg) 0%, var(--accent-soft) 155%); }
   .fb__article {
-    max-width: 880px;
+    max-width: 1280px;
     margin: 0 auto;
     color: var(--fg);
+    min-height: calc(100svh - 144px);
+    display: grid;
+    grid-template-columns: minmax(260px, .7fr) minmax(0, 1.3fr);
+    grid-template-rows: 1fr auto;
+    gap: 32px 64px;
+    align-items: center;
   }
   .fb__eyebrow {
     font-family: var(--font-mono);
@@ -89,63 +93,64 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
     text-transform: uppercase;
     letter-spacing: 0.18em;
     color: var(--muted);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .fb__title {
     font-family: var(--font-display);
-    font-size: clamp(36px, 5.5vw, 64px);
-    line-height: 1.04;
+    font-size: clamp(48px, 6.2vw, 92px);
+    line-height: .95;
     letter-spacing: -0.025em;
     font-weight: 600;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
   .fb__accent { color: var(--accent); }
   .fb__lede {
     font-size: 19px;
     line-height: 1.6;
     color: var(--muted);
-    margin-bottom: 56px;
-    max-width: 640px;
+    margin: 0;
+    max-width: 420px;
   }
   .fb__cards {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin-bottom: 56px;
-  }
-  @media (min-width: 720px) {
-    .fb__cards {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--border);
   }
   .fb__card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    padding: 24px;
-    background: color-mix(in srgb, var(--fg) 3%, transparent);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    gap: 18px;
+    min-height: 390px;
+    padding: 28px;
+    background: color-mix(in srgb, #fff 88%, transparent);
     text-decoration: none;
     color: inherit;
-    transition:
-      border-color 220ms ease,
-      transform 220ms ease,
-      background 220ms ease;
+    transition: transform 260ms ease, background 260ms ease, color 260ms ease;
   }
   .fb__card:hover {
-    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
-    background: color-mix(in srgb, var(--accent) 5%, transparent);
-    transform: translateY(-2px);
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-8px);
   }
+  .fb__card:hover .fb__card-title, .fb__card:hover .fb__card-body, .fb__card:hover .fb__card-cta { color: inherit; }
+  .fb__card-number { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .fb__card:hover .fb__card-number { color: color-mix(in srgb, #fff 70%, transparent); }
   .fb__card-icon {
-    font-size: 28px;
+    font-family: var(--font-mono);
+    font-size: 12px;
     line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--accent);
   }
   .fb__card-title {
     font-family: var(--font-display);
-    font-size: 17px;
+    font-size: clamp(20px, 2vw, 27px);
     line-height: 1.3;
     letter-spacing: -0.01em;
     font-weight: 600;
@@ -168,11 +173,20 @@ const mailto = "mailto:enarlem10@gmail.com?subject=marka.md%20feedback";
     margin-top: 4px;
   }
   .fb__note {
+    grid-column: 1 / -1;
     font-size: 14px;
     line-height: 1.6;
     color: var(--muted);
-    padding-top: 32px;
+    padding-top: 20px;
     border-top: 1px solid var(--border);
-    max-width: 640px;
+    max-width: none;
+  }
+  @media (max-width: 800px) {
+    .fb { padding-top: 40px; }
+    .fb__article { display: block; min-height: 0; }
+    .fb__intro { margin-bottom: 40px; }
+    .fb__cards { grid-template-columns: 1fr; }
+    .fb__card { min-height: 0; }
+    .fb__note { margin-top: 36px; }
   }
 </style>

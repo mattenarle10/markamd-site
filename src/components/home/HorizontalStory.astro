@@ -1,0 +1,139 @@
+---
+import AppPreview from "../AppPreview.astro";
+import HeroMascot from "../HeroMascot.astro";
+import { AppleIcon, GithubIcon } from "../icons";
+import type { FeaturedLink, RepoStats, Step } from "../../lib/home-types";
+import DownloadMenu from "./DownloadMenu.astro";
+import StoryAmbient from "./StoryAmbient.astro";
+
+type Props = {
+  version: string;
+  repoUrl: string;
+  macHref: string;
+  macIntelHref: string;
+  windowsHref: string;
+  linuxHref: string;
+  releasesPageUrl: string;
+  hasMacIntel: boolean;
+  hasWindows: boolean;
+  hasLinux: boolean;
+  steps: Step[];
+  stats: RepoStats;
+  featured: FeaturedLink[];
+};
+
+const {
+  version, repoUrl, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl,
+  hasMacIntel, hasWindows, hasLinux, steps, stats, featured,
+} = Astro.props;
+
+const chapters = [
+  ["start", "start"],
+  ["write", "write"],
+  ["workflow", "the loop"],
+  ["proof", "proof"],
+  ["download", "download"],
+] as const;
+
+---
+
+<main class="story" data-story>
+  <StoryAmbient />
+  <nav class="story__progress" aria-label="story chapters" data-story-progress>
+    <ol>
+      {chapters.map(([id, label], index) => (
+        <li>
+          <a href={`#story-${id}`} data-story-link={id} class="story__progress-link" aria-current={index === 0 ? "step" : undefined} aria-label={`Chapter ${index + 1}: ${label}`}>
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>{label}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class="story__pin">
+    <div class="story__track">
+      <section id="story-start" class="story__panel story__panel--hero" data-story-panel="start" aria-labelledby="story-start-title">
+        <div class="story__copy">
+          <HeroMascot size={148} />
+          <p class="eyebrow">marka.md</p>
+          <h1 id="story-start-title">write markdown.<br />share with ai.<br /><span class="accent">nothing leaves your machine.</span></h1>
+          <p>the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.</p>
+          <div class="story__actions">
+            <DownloadMenu {...{ version, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl, hasMacIntel, hasWindows, hasLinux }} />
+            <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost"><GithubIcon size={14} /> view source</a>
+          </div>
+          <p class="story__fineprint">notarized · auto-updating · {version} · MIT · no telemetry</p>
+        </div>
+        <aside class="story__hero-side" aria-label="marka.md essentials">
+          <img src="/mascot/write.png" alt="" width="250" height="250" />
+          <p>one focused workspace for:</p>
+          <ul>
+            <li>plain files on your machine</li>
+            <li>live markdown beside the source</li>
+            <li>context you choose to copy</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section id="story-write" class="story__panel story__panel--product" data-story-panel="write" aria-labelledby="story-write-title">
+        <div class="story__copy">
+          <p class="eyebrow">made for the thought in front of you.</p>
+          <h2 id="story-write-title">write, preview. keep moving.</h2>
+        </div>
+        <div class="story__product-preview"><AppPreview /></div>
+      </section>
+
+      <section id="story-workflow" class="story__panel story__panel--workflow" data-story-panel="workflow" aria-labelledby="story-workflow-title">
+        <div class="story__copy">
+          <p class="eyebrow">how it works</p>
+          <h2 id="story-workflow-title">one loop. nothing leaves your machine.</h2>
+          <p>collect the useful notes, write in the same place, then copy exactly the context you meant to share.</p>
+        </div>
+        <ol class="story__steps" aria-label="the marka.md workflow">
+          {steps.map((step) => (
+            <li>
+              <img src={step.art} alt="" width="112" height="112" />
+              <p>{step.n}</p><h3>{step.title}</h3><span>{step.body}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section id="story-proof" class="story__panel story__panel--proof" data-story-panel="proof" aria-labelledby="story-proof-title">
+        <div class="story__copy"><p class="eyebrow">the honest answers.</p><h2 id="story-proof-title">small, local, and here for the long run.</h2></div>
+        <div class="story__proof-grid">
+          <p class="story__stats story__stats--wide" aria-label={`${stats.stars} GitHub stars, ${stats.forks} forks, ${stats.downloads.toLocaleString()} downloads`}>
+            <span><b><strong data-count={stats.stars}>{stats.stars}</strong><i aria-hidden="true">★</i></b><small>stars</small></span>
+            <span><b><strong data-count={stats.forks}>{stats.forks}</strong><i aria-hidden="true">⑂</i></b><small>forks</small></span>
+            <span><b><strong data-count={stats.downloads}>{stats.downloads.toLocaleString()}</strong><i aria-hidden="true">↓</i></b><small>downloads</small></span>
+          </p>
+          <div class="story__proof-detail">
+            <div class="story__mentions">
+              <p class="story__mentions-label">in the wild</p>
+              <ul>{featured.slice(0, 4).map((mention) => <li><a href={mention.href} target="_blank" rel="noopener">{mention.name} <span>— {mention.meta}</span></a></li>)}</ul>
+            </div>
+            <div class="story__faq">
+              <details><summary>is it really free?</summary><p>yes. free, MIT licensed, open source. no trial or upgrade tier.</p></details>
+              <details><summary>is my data private?</summary><p>yes. your files stay on disk until you choose to copy markdown or a context bundle.</p></details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="story-download" class="story__panel story__panel--cta" data-story-panel="download" aria-labelledby="story-download-title">
+        <div class="story__copy">
+          <img src="/mascot/inspect.png" alt="" width="120" height="120" />
+          <p class="eyebrow">ready when you are.</p>
+          <h2 id="story-download-title">ship cleaner <span class="accent">context.</span></h2>
+          <p>free forever. local-first by default.</p>
+          <div class="story__actions">
+            <a href={macHref} target="_blank" rel="noopener" class="btn btn--accent"><AppleIcon size={14} /> download {version}</a>
+            <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost"><GithubIcon size={14} /> view on github</a>
+          </div>
+          <nav class="story__closing-links" aria-label="more marka.md links"><a href="/docs">docs</a><a href="/feedback">feedback</a><a href="/privacy">privacy</a></nav>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

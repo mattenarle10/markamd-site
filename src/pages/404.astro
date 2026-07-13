@@ -15,23 +15,28 @@ const { tag: version } = await getLatestRelease();
 
   <main class="nf">
     <div class="nf__inner">
-      <div class="nf__mascot" aria-hidden="true">
-        <img src="/mascot/inspect.png" alt="" width="200" height="200" />
+      <div class="nf__copy">
+        <p class="nf__code">lost at sea · 404</p>
+        <h1 class="nf__title">
+          this page<br /><span class="nf__accent">swam away.</span>
+        </h1>
+        <p class="nf__lede">
+          the octopus searched everywhere — no luck. maybe the link is old, or the
+          page never existed. let’s get you back to dry land.
+        </p>
+        <div class="nf__ctas">
+          <a class="nf__btn nf__btn--primary" href="/">← back home</a>
+          <a class="nf__btn" href="/changelog">changelog</a>
+          <a class="nf__btn" href="/feedback">report broken link</a>
+        </div>
       </div>
 
-      <p class="nf__code">404</p>
-      <h1 class="nf__title">
-        hmm, this page<br /><span class="nf__accent">swam away.</span>
-      </h1>
-      <p class="nf__lede">
-        the octopus searched everywhere — no luck. maybe the link is old, or the
-        page never existed. let's get you back to dry land.
-      </p>
-
-      <div class="nf__ctas">
-        <a class="nf__btn nf__btn--primary" href="/">← back home</a>
-        <a class="nf__btn" href="/changelog">changelog</a>
-        <a class="nf__btn" href="/feedback">report broken link</a>
+      <div class="nf__scene">
+        <div class="nf__ring nf__ring--one" aria-hidden="true"></div>
+        <div class="nf__ring nf__ring--two" aria-hidden="true"></div>
+        <div class="nf__mascot" aria-hidden="true">
+        <img src="/mascot/inspect.png" alt="" width="200" height="200" />
+        </div>
       </div>
 
       <div class="nf__hints">
@@ -58,21 +63,29 @@ const { tag: version } = await getLatestRelease();
 
 <style is:global>
   .nf {
-    background: var(--bg);
-    padding: 64px 24px 96px;
-    min-height: calc(100vh - 200px);
+    background: radial-gradient(circle at 77% 42%, var(--accent-soft), transparent 30%), var(--bg);
+    padding: 32px 24px;
+    min-height: calc(100svh - 56px);
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .nf__inner {
-    max-width: 640px;
+    width: min(1120px, 100%);
     margin: 0 auto;
     color: var(--fg);
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
   }
+  .nf__copy { max-width: 520px; }
+  .nf__scene { position: relative; min-height: 420px; display: grid; place-items: center; }
+  .nf__ring { position: absolute; border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); border-radius: 50%; }
+  .nf__ring--one { width: min(38vw, 440px); aspect-ratio: 1; }
+  .nf__ring--two { width: min(27vw, 310px); aspect-ratio: 1; }
   .nf__mascot {
-    margin: 0 auto 32px;
+    margin: 0;
     width: 200px;
     height: 200px;
     display: flex;
@@ -93,16 +106,16 @@ const { tag: version } = await getLatestRelease();
   }
   .nf__code {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.22em;
     color: var(--accent);
-    margin-bottom: 12px;
+    margin-bottom: 18px;
   }
   .nf__title {
     font-family: var(--font-display);
-    font-size: clamp(36px, 5.5vw, 56px);
-    line-height: 1.04;
+    font-size: clamp(52px, 6.2vw, 88px);
+    line-height: .92;
     letter-spacing: -0.025em;
     font-weight: 600;
     margin-bottom: 20px;
@@ -112,15 +125,15 @@ const { tag: version } = await getLatestRelease();
     font-size: 16px;
     line-height: 1.6;
     color: var(--muted);
-    margin: 0 auto 36px;
+    margin: 0 0 36px;
     max-width: 480px;
   }
   .nf__ctas {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
-    margin-bottom: 56px;
+    margin-bottom: 0;
   }
   .nf__btn {
     display: inline-flex;
@@ -158,7 +171,11 @@ const { tag: version } = await getLatestRelease();
     border-top: 1px solid var(--border);
     padding-top: 32px;
     text-align: left;
-    display: inline-block;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    align-items: start;
   }
   .nf__hints-title {
     font-family: var(--font-mono);
@@ -167,14 +184,15 @@ const { tag: version } = await getLatestRelease();
     letter-spacing: 0.18em;
     color: var(--muted);
     margin-bottom: 14px;
-    text-align: center;
+    text-align: left;
   }
   .nf__hints-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
   }
   .nf__hints-list li {
     font-size: 14px;
@@ -195,5 +213,14 @@ const { tag: version } = await getLatestRelease();
     .nf__mascot {
       animation: none;
     }
+  }
+  @media (max-width: 720px) {
+    .nf { padding: 48px 24px; }
+    .nf__inner { display: flex; flex-direction: column; align-items: stretch; gap: 28px; }
+    .nf__scene { min-height: 250px; order: -1; }
+    .nf__mascot { width: 150px; height: 150px; }
+    .nf__ring--one { width: 250px; }
+    .nf__ring--two { width: 180px; }
+    .nf__hints { display: block; }
   }
 </style>

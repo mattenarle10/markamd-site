@@ -10,14 +10,13 @@ const { repoUrl, macHref, version } = Astro.props;
 
 <header class="nav">
   <div class="nav__inner">
-    <a href="/" class="nav__brand">
+    <a href="/" class="nav__brand" aria-label="marka.md home">
       <img src="/mascot/logo.png" alt="" width="28" height="28" />
       <span>marka.md</span>
     </a>
-    <nav class="nav__links">
-      <a href="#features" class="nav__link">features</a>
+    <nav class="nav__links" aria-label="primary navigation">
       <a href="/docs" class="nav__link">docs</a>
-      <a href="#faq" class="nav__link">faq</a>
+      <a href="#story-proof" class="nav__link">faq</a>
       <a href={repoUrl} target="_blank" rel="noopener" class="nav__link">github</a>
       <a href={macHref} target="_blank" rel="noopener" class="nav__cta">
         download {version}

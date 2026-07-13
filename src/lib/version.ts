@@ -166,7 +166,8 @@ export async function getLatestRelease(): Promise<Release> {
 // ─── live repo stats (build-time only) ──────────────────────────────────────
 // Used by the landing's "in the wild" stats strip. Stars come from the repo
 // endpoint, downloads are the sum of recent release-asset download counts, open
-// issues come from search API (lets us exclude PRs). All fail-safe to zeros.
+// issues come from search API (lets us exclude PRs). A checked-in GitHub baseline
+// keeps the landing honest and legible when GitHub temporarily rate-limits a build.
 
 export type RepoStats = {
   stars: number;
@@ -177,7 +178,7 @@ export type RepoStats = {
   openIssues: number;
 };
 
-const STATS_FALLBACK: RepoStats = { stars: 0, forks: 0, downloads: 0, openIssues: 0 };
+const STATS_FALLBACK: RepoStats = { stars: 404, forks: 24, downloads: 10_480, openIssues: 0 };
 
 let statsCached: RepoStats | null = null;
 
@@ -220,7 +221,7 @@ export async function getRepoStats(): Promise<RepoStats> {
     };
     return statsCached;
   } catch (err) {
-    console.warn("[markamd-site] stats fetch failed, using zeros:", err);
+    console.warn("[markamd-site] stats fetch failed, using checked-in GitHub baseline:", err);
     statsCached = STATS_FALLBACK;
     return statsCached;
   }
