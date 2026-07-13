@@ -2,7 +2,7 @@
 import AppPreview from "../AppPreview.astro";
 import HeroMascot from "../HeroMascot.astro";
 import { AppleIcon, GithubIcon } from "../icons";
-import type { FeaturedLink, RepoStats, Shortcut, Step, ThemeFamily } from "../../lib/home-types";
+import type { FeaturedLink, RepoStats, Step } from "../../lib/home-types";
 import DownloadMenu from "./DownloadMenu.astro";
 import StoryAmbient from "./StoryAmbient.astro";
 
@@ -17,8 +17,6 @@ type Props = {
   hasMacIntel: boolean;
   hasWindows: boolean;
   hasLinux: boolean;
-  shortcuts: Shortcut[];
-  themeFamilies: ThemeFamily[];
   steps: Step[];
   stats: RepoStats;
   featured: FeaturedLink[];
@@ -26,7 +24,7 @@ type Props = {
 
 const {
   version, repoUrl, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl,
-  hasMacIntel, hasWindows, hasLinux, shortcuts, themeFamilies, steps, stats, featured,
+  hasMacIntel, hasWindows, hasLinux, steps, stats, featured,
 } = Astro.props;
 
 const chapters = [
@@ -37,7 +35,6 @@ const chapters = [
   ["download", "download"],
 ] as const;
 
-const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0, 3);
 ---
 
 <main class="story" data-story>
@@ -83,19 +80,6 @@ const themeSwatches = themeFamilies.flatMap((family) => family.swatches).slice(0
         <div class="story__copy">
           <p class="eyebrow">made for the thought in front of you.</p>
           <h2 id="story-write-title">write, preview. keep moving.</h2>
-          <p>one quiet workspace for the note in front of you.</p>
-          <div class="story__write-annotations">
-            <div class="story__keys story__keys--compact" role="list" aria-label="a few keyboard shortcuts">
-              {shortcuts.slice(0, 3).map((shortcut) => <kbd role="listitem" data-tooltip={shortcut.label} aria-label={`${shortcut.label} — keyboard shortcut ${shortcut.key}`}>{shortcut.key}<span>{shortcut.label}</span></kbd>)}
-            </div>
-            <div class="story__theme-note">
-              <span class="story__theme-swatches" aria-hidden="true">
-                {themeSwatches.map(([bg, accent]) => <i style={`--sw-bg:${bg};--sw-accent:${accent};`}></i>)}
-              </span>
-              <p><strong>your room, your theme.</strong> choices from light mono to matcha.</p>
-            </div>
-          </div>
-          <a href="/changelog" class="story__text-link">new in {version}: separate preview + quick inserts →</a>
         </div>
         <div class="story__product-preview"><AppPreview /></div>
       </section>

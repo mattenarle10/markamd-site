@@ -8,9 +8,7 @@ import {
 import {
   featured,
   repoUrl,
-  shortcuts,
   steps,
-  themeFamilies,
 } from "../lib/home-content";
 import { getLatestRelease, getRepoStats } from "../lib/version";
 
@@ -38,8 +36,6 @@ const hasLinux = linuxUrl.length > 0;
     hasMacIntel={hasMacIntel}
     hasWindows={hasWindows}
     hasLinux={hasLinux}
-    shortcuts={shortcuts}
-    themeFamilies={themeFamilies}
     steps={steps}
     stats={stats}
     featured={featured}
