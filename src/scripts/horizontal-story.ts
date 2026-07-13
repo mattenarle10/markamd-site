@@ -27,6 +27,20 @@ function setup() {
 
       const panels = Array.from(track.querySelectorAll<HTMLElement>(".story__panel"));
       if (panels.length === 0) return;
+      const productPreview = story.querySelector<HTMLElement>(".story__product-preview");
+      const productIndex = panels.findIndex((panel) => panel.dataset.storyPanel === "write");
+      const workflowIndex = panels.findIndex((panel) => panel.dataset.storyPanel === "workflow");
+      const workflowSteps = workflowIndex >= 0
+        ? Array.from(panels[workflowIndex].querySelectorAll<HTMLElement>(".story__steps li"))
+        : [];
+      const ctaIndex = panels.findIndex((panel) => panel.dataset.storyPanel === "download");
+      const ctaTitle = ctaIndex >= 0
+        ? panels[ctaIndex].querySelector<HTMLElement>("#story-download-title")
+        : null;
+      const ctaWord = ctaTitle?.querySelector<HTMLElement>(".story__cta-word") ?? null;
+      const ctaActions = ctaIndex >= 0
+        ? panels[ctaIndex].querySelector<HTMLElement>(".story__actions")
+        : null;
 
       let disposed = false;
       let initialized = false;
@@ -97,6 +111,49 @@ function setup() {
         const centre = panels[index].offsetLeft + panels[index].offsetWidth / 2;
         return gsap.utils.clamp(0, 1, (centre - pin.clientWidth / 2) / maxDistance);
       };
+      const updateProductPreview = (progress: number) => {
+        if (!productPreview || productIndex < 0) return;
+        const centre = panelProgress(productIndex);
+        // Start before the write panel reaches centre so the preview is already
+        // arriving as the panel enters the viewport, not halfway through it.
+        const reveal = gsap.utils.clamp(0, 1, (progress - (centre - 0.35)) / 0.3);
+        const dropDistance = Math.min(pin.clientHeight * 0.52, 460);
+        gsap.set(productPreview, {
+          y: gsap.utils.interpolate(-dropDistance, 0, reveal),
+          autoAlpha: gsap.utils.interpolate(0.22, 1, reveal),
+        });
+      };
+      const updateWorkflowSteps = (progress: number) => {
+        if (workflowIndex < 0 || workflowSteps.length === 0) return;
+        const centre = panelProgress(workflowIndex);
+        const sceneReveal = gsap.utils.clamp(0, 1, (progress - (centre - 0.34)) / 0.36);
+
+        workflowSteps.forEach((step, index) => {
+          const reveal = gsap.utils.clamp(0, 1, (sceneReveal - index * 0.16) / 0.48);
+          gsap.set(step, {
+            y: gsap.utils.interpolate(76, 0, reveal),
+            rotation: gsap.utils.interpolate(index === 1 ? -2 : 2, 0, reveal),
+            autoAlpha: gsap.utils.interpolate(0.12, 1, reveal),
+          });
+        });
+      };
+      const updateCta = (progress: number) => {
+        if (ctaIndex < 0 || !ctaTitle) return;
+        const centre = panelProgress(ctaIndex);
+        const reveal = gsap.utils.clamp(0, 1, (progress - (centre - 0.32)) / 0.32);
+        gsap.set(ctaTitle, {
+          y: gsap.utils.interpolate(58, 0, reveal),
+          autoAlpha: reveal,
+        });
+        if (ctaActions) {
+          const actionsReveal = gsap.utils.clamp(0, 1, (reveal - 0.34) / 0.56);
+          gsap.set(ctaActions, {
+            y: gsap.utils.interpolate(24, 0, actionsReveal),
+            autoAlpha: actionsReveal,
+          });
+        }
+        if (ctaWord) ctaWord.style.setProperty("--story-word-reveal", String(reveal));
+      };
       const setActive = (progress: number, direction = 1) => {
         let next = panels.length - 1;
         for (let index = 0; index < panels.length - 1; index += 1) {
@@ -130,6 +187,9 @@ function setup() {
       const start = () => {
         if (disposed || initialized) return;
         initialized = true;
+        if (productPreview) story.classList.add("has-product-drop");
+        if (workflowSteps.length > 0) story.classList.add("has-workflow-rise");
+        if (ctaTitle) story.classList.add("has-cta-reveal");
 
         tween = gsap.to(track, {
           x: () => -distance(),
@@ -142,11 +202,24 @@ function setup() {
             scrub: 0.8,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onRefresh: (self) => setActive(self.progress, self.direction || 1),
-            onUpdate: (self) => setActive(self.progress, self.direction || 1),
+            onRefresh: (self) => {
+              updateProductPreview(self.progress);
+              updateWorkflowSteps(self.progress);
+              updateCta(self.progress);
+              setActive(self.progress, self.direction || 1);
+            },
+            onUpdate: (self) => {
+              updateProductPreview(self.progress);
+              updateWorkflowSteps(self.progress);
+              updateCta(self.progress);
+              setActive(self.progress, self.direction || 1);
+            },
           },
         });
         trigger = tween.scrollTrigger;
+        updateProductPreview(trigger?.progress ?? 0);
+        updateWorkflowSteps(trigger?.progress ?? 0);
+        updateCta(trigger?.progress ?? 0);
         setActive(trigger?.progress ?? 0);
         ScrollTrigger.refresh();
       };
@@ -236,6 +309,14 @@ function setup() {
         trigger?.kill(true);
         tween?.kill();
         gsap.set(track, { clearProps: "transform" });
+        if (productPreview) gsap.set(productPreview, { clearProps: "opacity,transform" });
+        workflowSteps.forEach((step) => gsap.set(step, { clearProps: "opacity,transform" }));
+        if (ctaTitle) gsap.set(ctaTitle, { clearProps: "opacity,transform" });
+        if (ctaActions) gsap.set(ctaActions, { clearProps: "opacity,transform" });
+        if (ctaWord) ctaWord.style.removeProperty("--story-word-reveal");
+        story.classList.remove("has-product-drop");
+        story.classList.remove("has-workflow-rise");
+        story.classList.remove("has-cta-reveal");
         links.forEach((link) => {
           link.classList.remove("is-active");
           link.removeAttribute("aria-current");
