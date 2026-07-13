@@ -1,0 +1,209 @@
+---
+import AppPreview from "../AppPreview.astro";
+import HeroMascot from "../HeroMascot.astro";
+import { AppleIcon, GithubIcon } from "../icons";
+import type { FeaturedLink, ReleaseHighlight, RepoStats, Shortcut, Step, ThemeFamily } from "../../lib/home-types";
+import DownloadMenu from "./DownloadMenu.astro";
+import StoryAmbient from "./StoryAmbient.astro";
+
+type Props = {
+  version: string;
+  repoUrl: string;
+  macHref: string;
+  macIntelHref: string;
+  windowsHref: string;
+  linuxHref: string;
+  releasesPageUrl: string;
+  hasMacIntel: boolean;
+  hasWindows: boolean;
+  hasLinux: boolean;
+  releaseHighlight: ReleaseHighlight;
+  shortcuts: Shortcut[];
+  themeFamilies: ThemeFamily[];
+  steps: Step[];
+  stats: RepoStats;
+  featured: FeaturedLink[];
+};
+
+const {
+  version,
+  repoUrl,
+  macHref,
+  macIntelHref,
+  windowsHref,
+  linuxHref,
+  releasesPageUrl,
+  hasMacIntel,
+  hasWindows,
+  hasLinux,
+  releaseHighlight,
+  shortcuts,
+  themeFamilies,
+  steps,
+  stats,
+  featured,
+} = Astro.props;
+
+const chapters = [
+  ["hero", "start"],
+  ["product", "the app"],
+  ["keyboard", "keys"],
+  ["themes", "themes"],
+  ["workflow", "the loop"],
+  ["capabilities", "inside"],
+  ["proof", "proof"],
+  ["download", "download"],
+] as const;
+
+const capabilityLanes = [
+  {
+    title: "write",
+    body: "edit beside live preview, pop preview into its own window, and use calm reading or editor-only modes when you need them.",
+  },
+  {
+    title: "organize",
+    body: "work across folders, pin the useful stuff, stage notes, and keep a context tray that knows what is ready to share.",
+  },
+  {
+    title: "share",
+    body: "copy one clean markdown file or a relative-path context bundle for whichever AI chat or local agent is next.",
+  },
+];
+---
+
+<main class="story" data-story>
+  <StoryAmbient />
+  <nav class="story__progress" aria-label="story chapters" data-story-progress>
+    <ol>
+      {chapters.map(([id, label], index) => (
+        <li>
+          <a href={`#story-${id}`} data-story-link={id} class="story__progress-link" aria-current={index === 0 ? "step" : undefined} aria-label={`Chapter ${index + 1}: ${label}`}>
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            {label}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class="story__pin">
+    <div class="story__track">
+      <section id="story-hero" class="story__panel story__panel--hero" data-story-panel="hero" aria-labelledby="story-hero-title">
+        <div class="story__copy">
+          <HeroMascot size={148} />
+          <p class="eyebrow">marka.md</p>
+          <h1 id="story-hero-title">write markdown.<br />share with ai.<br /><span class="accent">nothing leaves your machine.</span></h1>
+          <p>the calm markdown editor for the notes and context bundles you share with ai. local-first, MIT, macOS · Windows · Linux.</p>
+          <div class="story__actions">
+            <DownloadMenu {...{ version, macHref, macIntelHref, windowsHref, linuxHref, releasesPageUrl, hasMacIntel, hasWindows, hasLinux }} />
+            <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost"><GithubIcon size={14} /> view source</a>
+          </div>
+          <p class="story__fineprint">notarized · auto-updating · {version} · MIT · no telemetry</p>
+        </div>
+      </section>
+
+      <section id="story-product" class="story__panel story__panel--product" data-story-panel="product" aria-labelledby="story-product-title">
+        <div class="story__copy">
+          <p class="eyebrow">{releaseHighlight.eyebrow}</p>
+          <h2 id="story-product-title">{releaseHighlight.title}</h2>
+          <p>{releaseHighlight.body}</p>
+          <ul class="story__release-list">
+            {releaseHighlight.items.slice(0, 3).map((item) => <li><strong>{item.label}</strong> — {item.body}</li>)}
+          </ul>
+          <a href="/changelog" class="story__text-link">read the changelog →</a>
+        </div>
+        <div class="story__product-preview"><AppPreview /></div>
+      </section>
+
+      <section id="story-keyboard" class="story__panel story__panel--keyboard" data-story-panel="keyboard" aria-labelledby="story-keyboard-title">
+        <div class="story__copy">
+          <p class="eyebrow">made for the keyboard.</p>
+          <h2 id="story-keyboard-title">stay in the thought.</h2>
+          <p>the small moves are all nearby. use the mouse when you want to, not because you have to.</p>
+        </div>
+        <div class="story__keys" role="list" aria-label="keyboard shortcuts">
+          {shortcuts.map((shortcut) => <kbd role="listitem" data-tooltip={shortcut.label} aria-label={`${shortcut.label} — keyboard shortcut ${shortcut.key}`}>{shortcut.key}<span>{shortcut.label}</span></kbd>)}
+        </div>
+      </section>
+
+      <section id="story-themes" class="story__panel story__panel--themes" data-story-panel="themes" aria-labelledby="story-themes-title">
+        <div class="story__copy">
+          <p class="eyebrow">14 themes, grouped like the app menu.</p>
+          <h2 id="story-themes-title">pick the room before you write.</h2>
+          <p>quiet mono, familiar catppuccin, crafted palettes, and a few nods to the AI tools your notes end up in.</p>
+        </div>
+        <div class="story__theme-grid">
+          {themeFamilies.map((family) => (
+            <article class="story__theme-family">
+              <div class="story__swatches" aria-hidden="true">
+                {family.swatches.map(([bg, accent]) => <span style={`--sw-bg:${bg};--sw-accent:${accent};`}><i></i></span>)}
+              </div>
+              <h3>{family.name}</h3>
+              <p>{family.sub}</p>
+              <small>{family.note}</small>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="story-workflow" class="story__panel story__panel--workflow" data-story-panel="workflow" aria-labelledby="story-workflow-title">
+        <div class="story__copy">
+          <p class="eyebrow">how it works</p>
+          <h2 id="story-workflow-title">one loop. nothing leaves your machine.</h2>
+        </div>
+        <ol class="story__steps">
+          {steps.map((step) => (
+            <li>
+              <img src={step.art} alt="" width="112" height="112" />
+              <p>{step.n}</p><h3>{step.title}</h3><span>{step.body}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section id="story-capabilities" class="story__panel story__panel--capabilities" data-story-panel="capabilities" aria-labelledby="story-capabilities-title">
+        <div class="story__copy"><p class="eyebrow">the useful bits.</p><h2 id="story-capabilities-title">simple where it counts.</h2></div>
+        <div class="story__lanes">
+          {capabilityLanes.map((lane, index) => <article><span>{String(index + 1).padStart(2, "0")}</span><h3>{lane.title}</h3><p>{lane.body}</p></article>)}
+        </div>
+      </section>
+
+      <section id="story-proof" class="story__panel story__panel--proof" data-story-panel="proof" aria-labelledby="story-proof-title">
+        <div class="story__copy"><p class="eyebrow">the honest answers.</p><h2 id="story-proof-title">small, local, and here for the long run.</h2></div>
+        <div class="story__proof-grid">
+          <p class="story__stats" aria-label={`${stats.stars} GitHub stars, ${stats.forks} forks, ${stats.downloads.toLocaleString()} downloads`}>
+            <span><strong data-count={stats.stars}>{stats.stars}</strong><i aria-hidden="true">★</i></span>
+            <span><strong data-count={stats.forks}>{stats.forks}</strong><i aria-hidden="true">⑂</i></span>
+            <span><strong data-count={stats.downloads}>{stats.downloads.toLocaleString()}</strong><i aria-hidden="true">↓</i></span>
+          </p>
+          <div class="story__proof-detail">
+            <div class="story__mentions">
+              <p class="story__mentions-label">in the wild</p>
+              <ul>{featured.slice(0, 4).map((mention) => <li><a href={mention.href} target="_blank" rel="noopener">{mention.name} <span>— {mention.meta}</span></a></li>)}</ul>
+            </div>
+            <div class="story__faq">
+              <details><summary>is it really free?</summary><p>yes. free, MIT licensed, open source. no trial or upgrade tier.</p></details>
+              <details><summary>is my data private?</summary><p>yes. your files stay on disk until you choose to copy markdown or a context bundle.</p></details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="story-download" class="story__panel story__panel--cta" data-story-panel="download" aria-labelledby="story-download-title">
+        <div class="story__copy">
+          <img src="/mascot/inspect.png" alt="" width="120" height="120" />
+          <p class="eyebrow">ready when you are.</p>
+          <h2 id="story-download-title">ship cleaner <span class="accent">context.</span></h2>
+          <p>free forever. local-first by default.</p>
+          <div class="story__actions">
+            <a href={macHref} target="_blank" rel="noopener" class="btn btn--accent"><AppleIcon size={14} /> download {version}</a>
+            <a href={repoUrl} target="_blank" rel="noopener" class="btn btn--ghost"><GithubIcon size={14} /> view on github</a>
+          </div>
+          <nav class="story__closing-links" aria-label="more marka.md links">
+            <a href="/docs">docs</a><a href="/feedback">feedback</a><a href="/privacy">privacy</a>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

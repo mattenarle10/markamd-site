@@ -1,15 +1,5 @@
 @import "./home/nav.css";
 @import "./home/shared.css";
-@import "./home/hero.css";
-@import "./home/screen.css";
-@import "./home/release.css";
-@import "./home/loop.css";
-@import "./home/features.css";
-@import "./home/keys.css";
-@import "./home/themes.css";
-@import "./home/install.css";
-@import "./home/featured.css";
-@import "./home/faq.css";
-@import "./home/final-cta.css";
-@import "./home/footer.css";
+@import "./home/ambient.css";
+@import "./home/story.css";
 @import "./home/download-menu.css";

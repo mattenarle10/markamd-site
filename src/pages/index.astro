@@ -1,24 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import "../styles/home.css";
-import Typewriter from "../components/Typewriter.astro";
 import {
-  FeaturedSection,
-  FaqSection,
-  FeaturesSection,
-  FinalCta,
-  HeroSection,
+  HorizontalStory,
   HomeNav,
-  LoopSection,
-  ReleaseSection,
-  ScreenSection,
-  ShortcutStrip,
-  ThemeSection,
 } from "../components/home";
-import SiteFooter from "../components/SiteFooter.astro";
 import {
   featured,
-  features,
   getReleaseHighlight,
   repoUrl,
   shortcuts,
@@ -41,7 +29,7 @@ const releaseHighlight = getReleaseHighlight(version);
 
 <Layout>
   <HomeNav repoUrl={repoUrl} macHref={macHref} version={version} />
-  <HeroSection
+  <HorizontalStory
     version={version}
     repoUrl={repoUrl}
     macHref={macHref}
@@ -52,25 +40,17 @@ const releaseHighlight = getReleaseHighlight(version);
     hasMacIntel={hasMacIntel}
     hasWindows={hasWindows}
     hasLinux={hasLinux}
+    releaseHighlight={releaseHighlight}
+    shortcuts={shortcuts}
+    themeFamilies={themeFamilies}
+    steps={steps}
+    stats={stats}
+    featured={featured}
   />
-  <ScreenSection />
-  <ReleaseSection releaseHighlight={releaseHighlight} />
-  <ShortcutStrip shortcuts={shortcuts} />
-  <ThemeSection themeFamilies={themeFamilies} />
-  <LoopSection steps={steps} />
-  <Typewriter
-    lines={[
-      { text: "context-ready markdown.", tone: "fg" },
-      { text: "stage files. copy one clean bundle.", tone: "muted" },
-    ]}
-  />
-  <FeaturesSection features={features} />
-  <FeaturedSection featured={featured} stats={stats} />
-  <FaqSection repoUrl={repoUrl} />
-  <FinalCta version={version} macHref={macHref} repoUrl={repoUrl} />
-  <SiteFooter version={version} />
 </Layout>
 
 <script>
   import "../scripts/home";
+  import "../scripts/horizontal-story";
+  import "../scripts/story-ambient";
 </script>
