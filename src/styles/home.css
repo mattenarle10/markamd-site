@@ -3,3 +3,6 @@
 @import "./home/ambient.css";
 @import "./home/story.css";
 @import "./home/download-menu.css";
+
+.story__terminal { font-size: .85rem; line-height: 1.6; }
+.story__terminal code { white-space: normal; overflow-wrap: anywhere; }
