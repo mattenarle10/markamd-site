@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import DocAction from "../components/DocAction.astro";
+import TerminalCommand from "../components/TerminalCommand.astro";
 import { getLatestRelease } from "../lib/version";
 import "../styles/pages/docs.css";
 
@@ -12,6 +13,7 @@ const { tag: version, releasesPageUrl } = await getLatestRelease();
 const nav = [
   { href: "#introduction", label: "introduction" },
   { href: "#getting-started", label: "getting started" },
+  { href: "#terminal", label: "terminal (macOS)" },
   { href: "#writing", label: "writing + preview" },
   { href: "#context-bundles", label: "context bundles" },
   { href: "#workspace", label: "workspace + files" },
@@ -118,6 +120,41 @@ const shortcuts = [
             </div>
           </li>
         </ol>
+      </section>
+
+      <section class="docs__section" id="terminal">
+        <h2>open from your terminal</h2>
+        <p><strong>macOS.</strong> Open a Markdown file
+          from Ghostty, Codex, or any terminal without hunting through Finder.</p>
+        <ol class="terminal-steps">
+          <li>Install the latest marka.md release and open the app.</li>
+          <li>Open Help or the command palette and choose <strong>install marka command</strong>.</li>
+          <li>Run <code>marka --help</code> in your terminal.</li>
+        </ol>
+        <TerminalCommand command="marka open notes.md" />
+        <TerminalCommand command={'marka open --wait "review this.md"'} />
+        <p>Use <code>marka open -- -draft.md</code> for a name beginning with a dash.</p>
+        <p>The command accepts one existing <code>.md</code>, <code>.markdown</code>,
+          or <code>.mdx</code> file. Relative paths work from your terminal's current folder.</p>
+        <p><code>--wait</code> resumes when you close the file's tab or quit the app.
+          Saving alone does not finish the wait. Cancelling an unsaved-close prompt
+          keeps it waiting. Ctrl-C cancels the wait without closing your document.</p>
+        <div class="docs__callout"><span>for agents</span><p>Exit code 0 means the open request
+          succeeded or the wait ended. It does not mean a person approved the document.
+          Exit code 1 reports a launch/open failure, 2 reports invalid input, and
+          130 means the wait was cancelled.</p></div>
+        <h3>command not found?</h3>
+        <p>The app installs <code>~/.local/bin/marka</code>. If that directory is
+          missing from PATH, run this line and add it to your shell profile
+          (usually <code>~/.zshrc</code>) for future terminals:</p>
+        <TerminalCommand command={'export PATH="$HOME/.local/bin:$PATH"'} />
+        <p>The installer does not edit shell settings or overwrite unrelated commands.
+          After moving the app, use the install action again to refresh the launcher.</p>
+        <h3>why does Finder still show marka.md.app?</h3>
+        <p>The new macOS bundle is <code>marka.app</code>. In-app updates preserve
+          the older folder name. Quit normally, rename <code>marka.md.app</code> to
+          <code>marka.app</code> in Applications, and reopen it. Reinstall the command
+          afterward. Keep any existing destination and leave the signed bundle's contents alone.</p>
       </section>
 
       <section class="docs__section" id="writing">

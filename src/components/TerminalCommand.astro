@@ -1,0 +1,34 @@
+---
+const { command } = Astro.props as { command: string };
+---
+
+<div class="terminal-command">
+  <pre><code>{command}</code></pre>
+  <button type="button" data-copy-command={command} aria-label={`copy ${command}`}>copy</button>
+  <span class="copy-status" role="status"></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-copy-command]").forEach(button => {
+    button.addEventListener("click", async () => {
+      const status = button.parentElement?.querySelector("[role=status]");
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyCommand ?? "");
+        button.textContent = "copied";
+        if (status) status.textContent = "command copied";
+      } catch {
+        button.textContent = "copy failed";
+        if (status) status.textContent = "copy failed; select and copy the command manually";
+      }
+      window.setTimeout(() => { button.textContent = "copy"; }, 2000);
+    });
+  });
+</script>
+
+<style>
+  .terminal-command { position: relative; margin: 1rem 0; }
+  .terminal-command pre { margin: 0; padding-right: 5.5rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .terminal-command button { position: absolute; top: .75rem; right: .75rem; border: 1px solid currentColor; background: transparent; color: inherit; padding: .25rem .5rem; font: inherit; font-size: .75rem; cursor: pointer; }
+  .terminal-command button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  .copy-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+</style>
