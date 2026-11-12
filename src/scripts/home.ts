@@ -77,16 +77,38 @@ if (/Windows/i.test(navigator.userAgent)) {
   const primaryRow = menu.querySelector<HTMLAnchorElement>(`[data-dl-row="${chosen}"]`);
   if (primaryRow) primaryRow.dataset.active = "true";
 
+  const positionMenu = () => {
+    const anchor = dl.getBoundingClientRect();
+    const panel = dl.closest(".story__panel")?.getBoundingClientRect();
+    const navBottom = nav?.getBoundingClientRect().bottom ?? 0;
+    const top = Math.max(12, navBottom + 8, panel ? panel.top + 12 : 0);
+    const bottom = Math.min(window.innerHeight - 12, panel ? panel.bottom - 12 : window.innerHeight);
+    const below = Math.max(0, bottom - anchor.bottom - 8);
+    const above = Math.max(0, anchor.top - top - 8);
+    const openAbove = below < menu.scrollHeight + 2 && above > below;
+
+    dl.dataset.placement = openAbove ? "above" : "below";
+    menu.style.maxHeight = `${openAbove ? above : below}px`;
+
+    const left = Math.max(16, panel ? panel.left + 16 : 0);
+    const right = Math.min(window.innerWidth - 16, panel ? panel.right - 16 : window.innerWidth);
+    menu.style.left = `${Math.max(left, Math.min(anchor.left, right - menu.offsetWidth)) - anchor.left}px`;
+  };
+
   const setOpen = (open: boolean) => {
     dl.dataset.open = String(open);
     toggle.setAttribute("aria-expanded", String(open));
     if (open) {
+      positionMenu();
       window.requestAnimationFrame(() => {
+        if (!isOpen()) return;
         const target =
           menu.querySelector<HTMLAnchorElement>('.dl__row[data-active="true"]:not(.dl__row--soon)') ??
           rows.find((r) => !r.classList.contains("dl__row--soon"));
-        target?.focus();
+        target?.focus({ preventScroll: true });
       });
+    } else if (menu.contains(document.activeElement)) {
+      toggle.focus({ preventScroll: true });
     }
   };
   const isOpen = () => dl.dataset.open === "true";
@@ -99,6 +121,15 @@ if (/Windows/i.test(navigator.userAgent)) {
   document.addEventListener("click", (e) => {
     if (!dl.contains(e.target as Node)) setOpen(false);
   });
+
+  menu.addEventListener("click", (e) => {
+    if ((e.target as Element).closest("a")) setOpen(false);
+  });
+  dl.addEventListener("focusout", (e) => {
+    if (!dl.contains(e.relatedTarget as Node | null)) setOpen(false);
+  });
+  window.addEventListener("scroll", () => setOpen(false), { passive: true });
+  window.addEventListener("resize", () => setOpen(false));
 
   dl.addEventListener("keydown", (e) => {
     const focusables = rows.filter((r) => !r.classList.contains("dl__row--soon"));
