@@ -17,6 +17,7 @@
   }
   .dl[data-open="true"] {
     background: var(--accent);
+    transform: none;
     box-shadow: 0 14px 28px -14px color-mix(in srgb, var(--accent) 55%, transparent);
   }
 
@@ -94,12 +95,16 @@
   }
   .dl[data-open="true"] .dl__chevron svg { transform: rotate(180deg); }
 
-  /* dropdown panel — compact card, sharp shadow, no overflow */
+  /* Fit within the visible story panel; scroll only when neither side fits. */
   .dl__menu {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
-    min-width: 280px;
+    left: 0;
+    width: 340px;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: #fff;
     color: var(--fg);
     border: 1px solid var(--border);
@@ -114,13 +119,17 @@
     display: none;
     isolation: isolate;
   }
+  .dl[data-placement="above"] .dl__menu {
+    top: auto;
+    bottom: calc(100% + 8px);
+  }
   .dl[data-open="true"] .dl__menu {
     display: flex;
-    animation: dl-menu-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    animation: dl-menu-in 180ms ease;
   }
   @keyframes dl-menu-in {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   .dl__menu-eyebrow {
     font-family: var(--font-mono);
@@ -135,8 +144,10 @@
   /* row — dense line, columns aligned across rows */
   .dl__row {
     display: grid;
-    grid-template-columns: 18px 80px 1fr auto;
+    grid-template-columns: 18px 72px minmax(0, 1fr) 12px;
     align-items: center;
+    flex-shrink: 0;
+    min-height: 44px;
     column-gap: 10px;
     padding: 9px 14px;
     border-radius: 8px;
@@ -189,9 +200,7 @@
     font-size: 11px;
     color: var(--muted);
     letter-spacing: -0.005em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
   }
   .dl__row-arrow {
     font-family: var(--font-mono);
@@ -228,12 +237,9 @@
     .dl__chevron { padding: 0 16px; }
     .dl__menu {
       left: 0;
-      right: 0;
-      min-width: 0;
       width: 100%;
     }
     .dl__row { padding: 9px 10px; }
-    .dl__row-arrow { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .dl, .dl__primary, .dl__chevron, .dl__chevron svg,

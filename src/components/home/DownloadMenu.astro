@@ -66,7 +66,7 @@ const {
   >
     <ChevronDownIcon size={13} />
   </button>
-  <div class="dl__menu" id="dl-menu" role="menu" data-dl-menu>
+  <div class="dl__menu" id="dl-menu" role="menu" aria-label="download options" data-dl-menu data-lenis-prevent>
     <p class="dl__menu-eyebrow" aria-hidden="true">choose platform</p>
     <a class="dl__row" href={macHref} target="_blank" rel="noopener" role="menuitem" data-dl-row="mac">
       <span class="dl__row-icon"><AppleIcon size={14} /></span>
@@ -102,6 +102,14 @@ const {
       <span class="dl__row-meta">{hasWindows ? "10+ · x64" : "coming soon"}</span>
       {hasWindows ? <span class="dl__row-arrow" aria-hidden="true">↓</span> : <span class="dl__row-badge">soon</span>}
     </a>
+    {hasWindows && (
+      <a class="dl__row" href="/docs/#windows-install" role="menuitem">
+        <span class="dl__row-icon"><WindowsIcon size={14} /></span>
+        <span class="dl__row-title">Windows</span>
+        <span class="dl__row-meta">WinGet</span>
+        <span class="dl__row-arrow" aria-hidden="true">↗</span>
+      </a>
+    )}
     <a
       class={`dl__row${hasLinux ? "" : " dl__row--soon"}`}
       href={hasLinux ? linuxHref : releasesPageUrl}
