@@ -94,6 +94,16 @@ const shortcuts = [
           can update with <code>brew update && brew upgrade --cask marka-md</code>;
           the signed in-app updater remains available too.
         </p>
+        <h3 id="windows-install">windows · WinGet</h3>
+        <p>Install marka.md from the WinGet community repository:</p>
+        <TerminalCommand command="winget install --id mattenarle10.markamd --exact --source winget" />
+        <p>To check for and install a newer version available through WinGet:</p>
+        <TerminalCommand command="winget upgrade --id mattenarle10.markamd --exact --source winget" />
+        <p>
+          The WinGet package may trail the latest GitHub release. You can also use
+          the Windows installer from the download menu for the latest release.
+          <a href="https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/mattenarle10/markamd">View the package manifests ↗</a>
+        </p>
         <ol class="docs__steps">
           <li>
             <span>01</span>
